@@ -1,5 +1,18 @@
 {
-  "test": {
-    "title": "これはテストです"
+  "common": {},
+  "management": {
+    "sidebar": {
+      "applicant": "応募者",
+      "reserver": "予約者",
+      "interviewer": "面接官",
+      "mail": "メールテンプレート",
+      "analysis": "データ集計",
+      "history": "操作ログ",
+      "setting": "設定",
+      "logout": "ログアウト"
+    },
+    "toolbar": {
+      "logout": "ログアウト"
+    }
   }
 }
