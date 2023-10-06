@@ -1,17 +1,22 @@
 import EnhancedTable from '@/components/Table'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { useTranslation } from 'react-i18next'
+import { useTranslations } from 'next-intl'
 
 const Applicants = () => {
-  const { t } = useTranslation('common')
+  const t = useTranslations()
 
-  return <EnhancedTable />
+  return (
+    <>
+      <EnhancedTable />
+    </>
+  )
 }
 
 export const getServerSideProps = async ({ locale }) => {
   return {
     props: {
-      ...(await serverSideTranslations(locale)),
+      messages: (
+        await import(`../../../../public/locales/${locale}/common.json`)
+      ).default,
     },
   }
 }

@@ -1,6 +1,7 @@
 {
   "common": {},
   "management": {
+    "login": "ログイン",
     "sidebar": {
       "applicant": "応募者",
       "reserver": "予約者",
