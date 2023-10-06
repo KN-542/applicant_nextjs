@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { useRouter } from 'next/router'
 import {
   Card,
   CardMedia,
@@ -11,19 +12,25 @@ import {
   ListItemButton,
   Divider,
   Box,
+  Button,
 } from '@mui/material'
+import PersonIcon from '@mui/icons-material/Person'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import CoPresentIcon from '@mui/icons-material/CoPresent'
+import MailIcon from '@mui/icons-material/Mail'
+import EqualizerIcon from '@mui/icons-material/Equalizer'
+import HistoryIcon from '@mui/icons-material/History'
 import { styled } from '@mui/material/styles'
 import IconButton from '@mui/material/IconButton'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import Avatar from '@mui/material/Avatar'
 import { SideBarModel } from 'types/management'
 import { indigo } from '@mui/material/colors'
+import { useTranslations } from 'next-intl'
 
 type Props = {
   drawerOpen: boolean
   onToggleDrawer: () => void
-  locales: string[]
-  data: SideBarModel[]
 }
 
 const DrawerList = styled('div')(() => ({
@@ -31,6 +38,48 @@ const DrawerList = styled('div')(() => ({
 }))
 
 const SideBar = (props: Props) => {
+  const router = useRouter()
+  const t = useTranslations()
+
+  const data: SideBarModel[] = [
+    {
+      name: t('management.sidebar.applicant'),
+      href: '/management/admin/applicant',
+      target: true,
+      icon: <PersonIcon />,
+    },
+    {
+      name: t('management.sidebar.reserver'),
+      href: '/management/admin/reserver',
+      target: false,
+      icon: <CalendarMonthIcon />,
+    },
+    {
+      name: t('management.sidebar.interviewer'),
+      href: '/management/admin/interviewer',
+      target: false,
+      icon: <CoPresentIcon />,
+    },
+    {
+      name: t('management.sidebar.mail'),
+      href: '/management/admin/mail',
+      target: false,
+      icon: <MailIcon />,
+    },
+    {
+      name: t('management.sidebar.analysis'),
+      href: '/management/admin/analysis',
+      target: false,
+      icon: <EqualizerIcon />,
+    },
+    {
+      name: t('management.sidebar.history'),
+      href: '/management/admin/history',
+      target: false,
+      icon: <HistoryIcon />,
+    },
+  ]
+
   return (
     <Drawer
       variant="temporary"
@@ -51,27 +100,19 @@ const SideBar = (props: Props) => {
             fontFamily: '-apple-system, BlinkMacSystemFont, Roboto, sans-serif',
           }}
         >
-          {/* <IconButton
+          <IconButton
             aria-label="menu-button"
             size="large"
             color="inherit"
             onClick={props.onToggleDrawer}
           >
-            <Avatar sx={{ bgcolor: 'inherit.main' }}> */}
-          {/* <AccountCircleIcon fontSize="large" sx={{ mb: '1rem' }} /> */}
-          {/* </Avatar>
-          </IconButton> */}
-          <Image
-            src="/logo.png"
-            alt="Vercel Logo"
-            width={200}
-            height={48}
-            priority
-          />
+            <AccountCircleIcon fontSize="large" />
+          </IconButton>
+          <p color="inherit">ユーザー名</p>
         </Box>
 
         <List>
-          {props.data.map((row) => {
+          {data.map((row) => {
             return (
               <ListItem
                 disablePadding
@@ -80,16 +121,24 @@ const SideBar = (props: Props) => {
               >
                 <ListItemButton>
                   {row.icon}
-                  <Link
-                    style={{
+                  <Button
+                    sx={{
                       textDecoration: 'none',
                       color: 'grey',
-                      marginLeft: '2rem',
+                      ml: '2rem',
                     }}
-                    href={row.href}
+                    onClick={(e) => {
+                      e.preventDefault()
+
+                      for (const r of data) {
+                        r.target = false
+                      }
+                      row.target = true
+                      router.push(row.href)
+                    }}
                   >
                     {row.name}
-                  </Link>
+                  </Button>
                 </ListItemButton>
               </ListItem>
             )

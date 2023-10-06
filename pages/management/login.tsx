@@ -15,11 +15,14 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 import Copyright from '@/components/Copyright'
 import { validation } from '@/hooks/validation'
+import { useTranslations } from 'next-intl'
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme()
 
 const Login = () => {
+  const t = useTranslations()
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
@@ -36,7 +39,7 @@ const Login = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            {t('management.login')}
           </Typography>
           <Box
             component="form"
@@ -94,6 +97,15 @@ const Login = () => {
       </Container>
     </ThemeProvider>
   )
+}
+
+export const getServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      messages: (await import(`../../public/locales/${locale}/common.json`))
+        .default,
+    },
+  }
 }
 
 export default Login

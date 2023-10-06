@@ -1,0 +1,14 @@
+{
+  "title": "ホーム",
+  "name": "{name} 様",
+  "message": "こんにちは",
+  "sidebar.applicant": "応募者",
+  "sidebar.reserver": "予約者",
+  "sidebar.interviewer": "面接官",
+  "sidebar.mail": "メールテンプレート",
+  "sidebar.analysis": "データ集計",
+  "sidebar.history": "操作ログ",
+  "sidebar.setting": "設定",
+  "sidebar.logout": "ログアウト",
+  "toolbar.logout": "ログアウト"
+}
