@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
 import IconButton from '@mui/material/IconButton'
 import MenuIcon from '@mui/icons-material/Menu'
 import { AppBar } from '@material-ui/core'
@@ -29,7 +28,6 @@ const ToolBar = (props: Props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6">News</Typography>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Button color="inherit">{t('management.toolbar.logout')}</Button>
             <Image
