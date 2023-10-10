@@ -1,27 +1,71 @@
-import * as React from 'react'
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Checkbox from '@mui/material/Checkbox'
-import Link from '@mui/material/Link'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
+import React from 'react'
+import {
+  Avatar,
+  Button,
+  CssBaseline,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Box,
+  Typography,
+  Container,
+} from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-
 import Copyright from '@/components/Copyright'
-import { validation } from '@/hooks/validation'
+import { FormValidation, FormValidationValue } from '@/hooks/validation'
 import { useTranslations } from 'next-intl'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { ValidationType } from '@/enum/validation'
+import ErrorHandler from '@/components/ErrorHandler'
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme()
+
+type Inputs = {
+  mail: string
+  password: string
+}
 
 const Login = () => {
   const t = useTranslations()
+
+  const formValidationValue: FormValidationValue = {
+    mail: {
+      max: 2,
+    },
+    password: {
+      max: 20,
+    },
+  }
+
+  const formValidation: FormValidation = {
+    mail: [
+      {
+        type: ValidationType.Required,
+        message:
+          t('management.features.login.mail') + t('common.validate.required'),
+      },
+      {
+        type: ValidationType.MaxLength,
+        message:
+          t('management.features.login.mail') +
+          t('common.validate.max.1') +
+          String(formValidationValue.mail.max) +
+          t('common.validate.max.2'),
+      },
+    ],
+  }
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<Inputs>()
+
+  const submit: SubmitHandler<Inputs> = (data) => console.log(data)
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -39,11 +83,11 @@ const Login = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            {t('management.login')}
+            {t('management.features.login.login')}
           </Typography>
           <Box
             component="form"
-            onSubmit={validation.handleSubmit}
+            onSubmit={handleSubmit(submit)}
             noValidate
             sx={{ mt: 1 }}
           >
@@ -51,21 +95,25 @@ const Login = () => {
               margin="normal"
               required
               fullWidth
-              id="email"
               label="Email Address"
-              name="email"
-              autoComplete="email"
               autoFocus
+              {...register('mail', {
+                required: true,
+                maxLength: formValidationValue.mail.max,
+              })}
+              aria-invalid={errors.mail ? 'true' : 'false'}
             />
+            <ErrorHandler
+              validations={formValidation.mail}
+              type={errors.mail?.type}
+            ></ErrorHandler>
             <TextField
               margin="normal"
               required
               fullWidth
-              name="password"
               label="Password"
-              type="password"
-              id="password"
               autoComplete="current-password"
+              {...register('password')}
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}

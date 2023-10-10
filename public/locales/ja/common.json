@@ -1,7 +1,21 @@
 {
-  "common": {},
+  "common": {
+    "validate": {
+      "required": "は必須入力項目です",
+      "max": {
+        "1": "は",
+        "2": "文字以内で入力してください"
+      }
+    }
+  },
   "management": {
-    "login": "ログイン",
+    "features": {
+      "login": {
+        "login": "ログイン",
+        "mail": "メールアドレス",
+        "password": "パスワード"
+      }
+    },
     "sidebar": {
       "applicant": "応募者",
       "reserver": "予約者",

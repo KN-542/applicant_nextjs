@@ -1,11 +1,15 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { Provider } from 'react-redux'
+import { persistStore } from 'redux-persist'
+import { PersistGate } from 'redux-persist/integration/react'
 import SideBar from '@/components/SideBar'
 import '@/styles/globals.css'
 import _ from 'lodash'
 import { appWithTranslation } from 'next-i18next'
 import ToolBar from '@/components/ToolBar'
 import { NextIntlClientProvider } from 'next-intl'
+import store from '@/hooks/store/store'
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter()
@@ -15,26 +19,34 @@ const App = ({ Component, pageProps }) => {
     const [drawerOpen, setDrawerOpen] = useState(false)
 
     return (
-      <NextIntlClientProvider messages={pageProps.messages}>
-        <ToolBar
-          onToggleDrawer={() => {
-            setDrawerOpen((b) => !b)
-          }}
-        />
-        <SideBar
-          drawerOpen={drawerOpen}
-          onToggleDrawer={() => {
-            setDrawerOpen((b) => !b)
-          }}
-        />
-        <Component {...pageProps} />
-      </NextIntlClientProvider>
+      <Provider store={store}>
+        <PersistGate persistor={persistStore(store)}>
+          <NextIntlClientProvider messages={pageProps.messages}>
+            <ToolBar
+              onToggleDrawer={() => {
+                setDrawerOpen((b) => !b)
+              }}
+            />
+            <SideBar
+              drawerOpen={drawerOpen}
+              onToggleDrawer={() => {
+                setDrawerOpen((b) => !b)
+              }}
+            />
+            <Component {...pageProps} />
+          </NextIntlClientProvider>
+        </PersistGate>
+      </Provider>
     )
   } else {
     return (
-      <NextIntlClientProvider messages={pageProps.messages}>
-        <Component {...pageProps} />
-      </NextIntlClientProvider>
+      <Provider store={store}>
+        <PersistGate persistor={persistStore(store)}>
+          <NextIntlClientProvider messages={pageProps.messages}>
+            <Component {...pageProps} />
+          </NextIntlClientProvider>
+        </PersistGate>
+      </Provider>
     )
   }
 }
