@@ -1,6 +1,7 @@
 type ValidationType = {
   max?: number
   min?: number
+  pattern?: RegExp
 }
 export type Validation = {
   type: string

@@ -2,18 +2,23 @@
   "common": {
     "validate": {
       "required": "は必須入力項目です",
-      "max": {
-        "1": "は",
-        "2": "文字以内で入力してください"
-      }
+      "minLength": "文字以上",
+      "maxLength": "文字以内で入力してください",
+      "halfAlphaNum": "半角英数字で入力してください",
+      "pattern": {
+        "mail": "メールアドレス形式で入力してください"
+      },
+      "is": "は"
     }
   },
   "management": {
     "features": {
       "login": {
-        "login": "ログイン",
+        "top": "CLINKS 採用",
         "mail": "メールアドレス",
-        "password": "パスワード"
+        "password": "パスワード",
+        "login": "サインイン",
+        "forgotPassword": "パスワードを忘れた場合"
       }
     },
     "sidebar": {
@@ -23,11 +28,11 @@
       "mail": "メールテンプレート",
       "analysis": "データ集計",
       "history": "操作ログ",
-      "setting": "設定",
-      "logout": "ログアウト"
+      "setting": "個人設定"
     },
     "toolbar": {
-      "logout": "ログアウト"
+      "setting": "個人設定",
+      "logout": "サインアウト"
     }
   }
 }
