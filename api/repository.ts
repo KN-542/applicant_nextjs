@@ -2,14 +2,8 @@ import axios from 'axios'
 import { APICommonHeader } from '.'
 
 // ログインCSR
-export const loginCSR = async () => {
-  console.log(process.env)
-  //   console.log(import.meta.env)
-  const res = await axios.post(
-    `http://localhost:8080/login`,
-    {},
-    APICommonHeader,
-  )
+export const loginCSR = async (baseUrl: string) => {
+  const res = await axios.post(`${baseUrl}/login`, {}, APICommonHeader)
   return res
 }
 // ログインSSR
