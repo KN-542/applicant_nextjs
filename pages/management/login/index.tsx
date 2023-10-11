@@ -28,19 +28,17 @@ type Inputs = {
   password: string
 }
 
-const Login = (props) => {
-  const { _data, baseUrl, _message } = props
-
+const Login = ({ baseUrl }) => {
   const [_dataCSR, setDataCSR] = useState('')
 
-  const login = async () => {
+  const testAPI = async () => {
     await loginCSR(baseUrl).then((res) => {
       setDataCSR(res.data)
     })
   }
 
   useEffect(() => {
-    login()
+    testAPI()
   }, [])
 
   const t = useTranslations()
@@ -152,6 +150,7 @@ const Login = (props) => {
               fullWidth
               label={t('management.features.login.mail')}
               autoFocus
+              sx={{ minWidth: 396 }}
               {...register('mail', {
                 required: true,
                 maxLength: formValidationValue.mail.max,
@@ -171,6 +170,7 @@ const Login = (props) => {
               fullWidth
               label={t('management.features.login.password')}
               autoComplete="current-password"
+              sx={{ minWidth: 396 }}
               {...register('password', {
                 required: true,
                 minLength: formValidationValue.password.min,
