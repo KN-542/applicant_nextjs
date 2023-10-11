@@ -18,7 +18,8 @@
       "@/components/*": ["components/*"],
       "@/styles/*": ["styles/*"],
       "@/hooks/*": ["hooks/*"],
-      "@/enum/*": ["enum/*"]
+      "@/enum/*": ["enum/*"],
+      "@/api/*": ["api/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
