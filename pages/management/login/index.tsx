@@ -20,6 +20,7 @@ import { Pattern, ValidationType } from '@/enum/validation'
 import ErrorHandler from '@/components/ErrorHandler'
 import { trim } from 'lodash'
 import { loginCSR, loginSSR } from '@/api/repository'
+import { useRouter } from 'next/router'
 
 const defaultTheme = createTheme()
 
@@ -29,6 +30,8 @@ type Inputs = {
 }
 
 const Login = ({ baseUrl }) => {
+  const router = useRouter()
+
   const [_dataCSR, setDataCSR] = useState('')
 
   const testAPI = async () => {
@@ -118,7 +121,12 @@ const Login = ({ baseUrl }) => {
     formState: { errors },
   } = useForm<Inputs>()
 
-  const submit: SubmitHandler<Inputs> = (d: Inputs) => console.log(d)
+  const submit: SubmitHandler<Inputs> = async (_d: Inputs) => {
+    // TODO API
+    await loginCSR(baseUrl).then(() => {
+      router.push('/management/admin/applicant')
+    })
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
