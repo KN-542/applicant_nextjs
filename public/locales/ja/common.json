@@ -28,7 +28,8 @@
       "mail": "メールテンプレート",
       "analysis": "データ集計",
       "history": "操作ログ",
-      "setting": "個人設定"
+      "setting": "個人設定",
+      "logout": "サインアウト"
     },
     "toolbar": {
       "setting": "個人設定",

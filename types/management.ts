@@ -1,16 +1,21 @@
 // レフトメニュー model
-type SideBarModel = {
+export type SideBarModel = {
   id: number
   name: string
   href: string
-  target: boolean
   icon: JSX.Element
+  button?: () => void
 }
 
-// レフトメニュー store
-type SideBarStore = {
+// レフトメニュー store用model
+export type SideBarStoreModel = {
   targetId: number
   targetName: string
 }
 
-export type { SideBarModel, SideBarStore }
+// ログインユーザー model
+export type UserModel = {
+  sessionId: string
+  name: string
+  mail: string
+}
