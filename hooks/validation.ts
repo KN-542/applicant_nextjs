@@ -1,12 +1,12 @@
-const validation = {
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    const data = new FormData(event.currentTarget)
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    })
-  },
+type ValidationType = {
+  max?: number
+  min?: number
+  pattern?: RegExp
+}
+export type Validation = {
+  type: string
+  message: string
 }
 
-export { validation }
+export type FormValidationValue = Record<string, ValidationType>
+export type FormValidation = Record<string, Validation[]>

@@ -11,15 +11,25 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@material-ui/core": "^4.12.4",
     "@mui/icons-material": "^5.14.11",
+    "@mui/lab": "^5.0.0-alpha.146",
     "@mui/material": "^5.14.11",
+    "@mui/styles": "^5.14.11",
+    "@reduxjs/toolkit": "^1.9.7",
     "@types/lodash": "^4.14.199",
+    "axios": "^1.5.1",
     "i18next": "^23.5.1",
+    "lodash": "^4.17.21",
+    "material-table": "^2.0.5",
     "next": "latest",
     "next-i18next": "^14.0.3",
+    "next-intl": "^2.20.2",
     "react": "latest",
     "react-dom": "latest",
-    "react-i18next": "^13.2.2"
+    "react-hook-form": "^7.47.0",
+    "react-i18next": "^13.2.2",
+    "redux-persist": "^6.0.0"
   },
   "devDependencies": {
     "@types/node": "latest",

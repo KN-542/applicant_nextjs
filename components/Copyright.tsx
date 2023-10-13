@@ -1,7 +1,12 @@
 import Typography from '@mui/material/Typography'
 import Link from '@mui/material/Link'
+import { SxProps, Theme } from '@mui/material/styles'
 
-const Copyright = (props: any) => {
+type Props = {
+  sx?: SxProps<Theme>
+}
+
+const Copyright = (props: Props) => {
   return (
     <Typography
       variant="body2"
@@ -10,8 +15,8 @@ const Copyright = (props: any) => {
       {...props}
     >
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://www.clinks.jp/">
+        CLINKS Co., Ltd.
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
