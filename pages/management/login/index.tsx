@@ -21,6 +21,18 @@ import ErrorHandler from '@/components/ErrorHandler'
 import { trim } from 'lodash'
 import { loginCSR, loginSSR } from '@/api/repository'
 import { useRouter } from 'next/router'
+import {
+  LoginMain,
+  MinWidth396,
+  Mt1,
+  Mt20,
+  Mt3Mb1,
+  Mt8Mb4,
+  SecondaryMainM1,
+} from '@/styles/index'
+import store from '@/hooks/store/store'
+import { mgUserSignIn } from '@/hooks/store'
+import { UserModel } from 'types/management'
 
 const defaultTheme = createTheme()
 
@@ -121,26 +133,26 @@ const Login = ({ baseUrl }) => {
     formState: { errors },
   } = useForm<Inputs>()
 
-  const submit: SubmitHandler<Inputs> = async (_d: Inputs) => {
+  const submit: SubmitHandler<Inputs> = async (d: Inputs) => {
     // TODO API
     await loginCSR(baseUrl).then(() => {
+      store.dispatch(
+        mgUserSignIn({
+          sessionId: 'session_id1',
+          name: '古家野 有栖',
+          mail: d.mail,
+        } as UserModel),
+      )
       router.push('/management/admin/applicant')
     })
   }
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs" sx={{ mt: 20 }}>
+      <Container component="main" maxWidth="xs" sx={Mt20}>
         <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+        <Box sx={LoginMain}>
+          <Avatar sx={SecondaryMainM1}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -150,7 +162,7 @@ const Login = ({ baseUrl }) => {
             component="form"
             onSubmit={handleSubmit(submit)}
             noValidate
-            sx={{ mt: 1 }}
+            sx={Mt1}
           >
             <TextField
               margin="normal"
@@ -158,7 +170,7 @@ const Login = ({ baseUrl }) => {
               fullWidth
               label={t('management.features.login.mail')}
               autoFocus
-              sx={{ minWidth: 396 }}
+              sx={MinWidth396}
               {...register('mail', {
                 required: true,
                 maxLength: formValidationValue.mail.max,
@@ -178,7 +190,7 @@ const Login = ({ baseUrl }) => {
               fullWidth
               label={t('management.features.login.password')}
               autoComplete="current-password"
-              sx={{ minWidth: 396 }}
+              sx={MinWidth396}
               {...register('password', {
                 required: true,
                 minLength: formValidationValue.password.min,
@@ -192,7 +204,7 @@ const Login = ({ baseUrl }) => {
               validations={formValidation.password}
               type={errors.password?.type}
             ></ErrorHandler>
-            <Grid container sx={{ mt: 3, mb: 1 }}>
+            <Grid container sx={Mt3Mb1}>
               <Grid item>
                 <Link href="#" variant="body2">
                   {t('management.features.login.forgotPassword')}
@@ -204,7 +216,7 @@ const Login = ({ baseUrl }) => {
             </Button>
           </Box>
         </Box>
-        <Copyright sx={{ mt: 8, mb: 4 }} />
+        <Copyright sx={Mt8Mb4} />
       </Container>
     </ThemeProvider>
   )

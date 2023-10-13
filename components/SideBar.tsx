@@ -17,12 +17,14 @@ import EqualizerIcon from '@mui/icons-material/Equalizer'
 import HistoryIcon from '@mui/icons-material/History'
 import IconButton from '@mui/material/IconButton'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
-import { SideBarModel, SideBarStore } from 'types/management'
+import SettingsIcon from '@mui/icons-material/Settings'
+import LogoutIcon from '@mui/icons-material/Logout'
+import { SideBarModel, SideBarStoreModel } from 'types/management'
 import { indigo } from '@mui/material/colors'
 import { useTranslations } from 'next-intl'
 import store, { RootState } from '@/hooks/store/store'
 import _ from 'lodash'
-import { mgSideBarChange } from '@/hooks/store'
+import { mgSideBarChange, mgSignOut } from '@/hooks/store'
 
 type Props = {
   drawerOpen: boolean
@@ -33,56 +35,103 @@ const SideBar = (props: Props) => {
   const router = useRouter()
   const t = useTranslations()
 
-  const target = useSelector((state: RootState) => state.management.sidebar)
+  const user = useSelector((state: RootState) => state.management.user)
 
   const data: SideBarModel[] = [
     {
       id: 1,
       name: t('management.sidebar.applicant'),
       href: '/management/admin/applicant',
-      target: false,
       icon: <PersonIcon />,
     },
     {
       id: 2,
       name: t('management.sidebar.reserver'),
       href: '/management/admin/reserver',
-      target: false,
       icon: <CalendarMonthIcon />,
     },
     {
       id: 3,
       name: t('management.sidebar.interviewer'),
       href: '/management/admin/interviewer',
-      target: false,
       icon: <CoPresentIcon />,
     },
     {
       id: 4,
       name: t('management.sidebar.mail'),
       href: '/management/admin/mail',
-      target: false,
       icon: <MailIcon />,
     },
     {
       id: 5,
       name: t('management.sidebar.analysis'),
       href: '/management/admin/analysis',
-      target: false,
       icon: <EqualizerIcon />,
     },
     {
       id: 6,
       name: t('management.sidebar.history'),
       href: '/management/admin/history',
-      target: false,
       icon: <HistoryIcon />,
     },
   ]
-  for (const d of data) {
-    d.target = _.isEqual(d.id, target.targetId)
+  const subData: SideBarModel[] = [
+    {
+      id: 7,
+      name: t('management.sidebar.setting'),
+      href: '/management/admin/setting',
+      icon: <SettingsIcon />,
+    },
+    {
+      id: 8,
+      name: t('management.sidebar.logout'),
+      href: '',
+      icon: <LogoutIcon />,
+      button: async () => {
+        // TODO API
+        store.dispatch(mgSignOut())
+        router.push('/management/login')
+      },
+    },
+  ]
+
+  const sideEvent = (row: SideBarModel) => {
+    store.dispatch(
+      mgSideBarChange({
+        targetId: row.id,
+        targetName: row.name,
+      } as SideBarStoreModel),
+    )
+    router.push(row.href)
   }
-  if (_.isEmpty(_.filter(data, (d) => d.target))) data[0].target = true
+
+  const renderRow = (row: SideBarModel): JSX.Element => {
+    return (
+      <ListItem disablePadding key={row.name} sx={{ mt: '1rem', mb: '1rem' }}>
+        <ListItemButton
+          onClick={
+            row.button
+              ? row.button
+              : (e) => {
+                  e.preventDefault()
+                  sideEvent(row)
+                }
+          }
+        >
+          {row.icon}
+          <Box
+            sx={{
+              textDecoration: 'none',
+              color: 'grey',
+              ml: '2rem',
+            }}
+          >
+            {row.name}
+          </Box>
+        </ListItemButton>
+      </ListItem>
+    )
+  }
 
   return (
     <Drawer
@@ -116,50 +165,14 @@ const SideBar = (props: Props) => {
           >
             <AccountCircleIcon fontSize="large" />
           </IconButton>
-          <p color="inherit">ユーザー名</p>
+          <p color="inherit">{user.name}</p>
         </Box>
 
-        <List>
-          {data.map((row) => {
-            return (
-              <ListItem
-                disablePadding
-                key={row.name}
-                sx={{ mt: '1rem', mb: '1rem' }}
-              >
-                <ListItemButton>
-                  {row.icon}
-                  <Button
-                    sx={{
-                      textDecoration: 'none',
-                      color: 'grey',
-                      ml: '2rem',
-                    }}
-                    onClick={(e) => {
-                      e.preventDefault()
-
-                      for (const r of data) {
-                        r.target = false
-                      }
-                      row.target = true
-                      store.dispatch(
-                        mgSideBarChange({
-                          targetId: row.id,
-                          targetName: row.name,
-                        } as SideBarStore),
-                      )
-                      router.push(row.href)
-                    }}
-                  >
-                    {row.name}
-                  </Button>
-                </ListItemButton>
-              </ListItem>
-            )
-          })}
-        </List>
+        <List>{data.map((row) => renderRow(row))}</List>
 
         <Divider />
+
+        <List>{subData.map((row) => renderRow(row))}</List>
       </Box>
     </Drawer>
   )
