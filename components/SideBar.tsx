@@ -7,7 +7,6 @@ import {
   ListItemButton,
   Divider,
   Box,
-  Button,
 } from '@mui/material'
 import PersonIcon from '@mui/icons-material/Person'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
@@ -25,6 +24,7 @@ import { useTranslations } from 'next-intl'
 import store, { RootState } from '@/hooks/store/store'
 import _ from 'lodash'
 import { mgSideBarChange, mgSignOut } from '@/hooks/store'
+import { RouterPath } from '@/enum/router'
 
 type Props = {
   drawerOpen: boolean
@@ -41,37 +41,37 @@ const SideBar = (props: Props) => {
     {
       id: 1,
       name: t('management.sidebar.applicant'),
-      href: '/management/admin/applicant',
+      href: RouterPath.ManagementApplicant,
       icon: <PersonIcon />,
     },
     {
       id: 2,
       name: t('management.sidebar.reserver'),
-      href: '/management/admin/reserver',
+      href: RouterPath.ManagementReserver,
       icon: <CalendarMonthIcon />,
     },
     {
       id: 3,
       name: t('management.sidebar.interviewer'),
-      href: '/management/admin/interviewer',
+      href: RouterPath.ManagementInterviewer,
       icon: <CoPresentIcon />,
     },
     {
       id: 4,
       name: t('management.sidebar.mail'),
-      href: '/management/admin/mail',
+      href: RouterPath.ManagementMailTemplate,
       icon: <MailIcon />,
     },
     {
       id: 5,
       name: t('management.sidebar.analysis'),
-      href: '/management/admin/analysis',
+      href: RouterPath.ManagementAnalysis,
       icon: <EqualizerIcon />,
     },
     {
       id: 6,
       name: t('management.sidebar.history'),
-      href: '/management/admin/history',
+      href: RouterPath.ManagementHistory,
       icon: <HistoryIcon />,
     },
   ]
@@ -79,7 +79,7 @@ const SideBar = (props: Props) => {
     {
       id: 7,
       name: t('management.sidebar.setting'),
-      href: '/management/admin/setting',
+      href: RouterPath.ManagementSetting,
       icon: <SettingsIcon />,
     },
     {
@@ -90,7 +90,7 @@ const SideBar = (props: Props) => {
       button: async () => {
         // TODO API
         store.dispatch(mgSignOut())
-        router.push('/management/login')
+        router.push(RouterPath.ManagementLogin)
       },
     },
   ]

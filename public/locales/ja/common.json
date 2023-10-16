@@ -1,5 +1,14 @@
 {
   "common": {
+    "title": {
+      "login": "サインイン",
+      "applicant": {
+        "list": "応募者一覧"
+      }
+    },
+    "table": {
+      "rowsPerPage": "ページあたりの行数"
+    },
     "validate": {
       "required": "は必須入力項目です",
       "minLength": "文字以上",
@@ -19,6 +28,35 @@
         "password": "パスワード",
         "login": "サインイン",
         "forgotPassword": "パスワードを忘れた場合"
+      },
+      "applicant": {
+        "upload": "アップロード",
+        "status": {
+          "scheduleUnanswered": "日程未回答",
+          "scheduleAnswered": "日程回答済み",
+          "documentsSubmitted": "書類提出済み",
+          "offer": "内定",
+          "internalCommitments": "内定承諾済み",
+          "calendarAnswerDeadlineExceeded": "日程回答期限超過",
+          "deadlineForSubmissionOfBooksExceeds": "書類提出期限超過",
+          "failingToPassThePhysicalExamination": "書類選考落ち",
+          "failingAnInterview": "面接落ち",
+          "withdrawal": "選考辞退",
+          "internalizedDismissal": "内定辞退",
+          "dismissalAfterInternalCommitment": "内定承諾後辞退"
+        },
+        "header": {
+          "name": "氏名",
+          "mail": "メールアドレス",
+          "status": "選考状況",
+          "interviewerDate": "面接予定日",
+          "resume": "履歴書",
+          "curriculumVitae": "職務経歴書"
+        },
+        "documents": {
+          "t": "あり",
+          "f": "なし"
+        }
       }
     },
     "sidebar": {
