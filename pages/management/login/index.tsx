@@ -33,6 +33,7 @@ import {
 import store from '@/hooks/store/store'
 import { mgUserSignIn } from '@/hooks/store'
 import { UserModel } from 'types/management'
+import { RouterPath } from '@/enum/router'
 
 const defaultTheme = createTheme()
 
@@ -143,7 +144,7 @@ const Login = ({ baseUrl }) => {
           mail: d.mail,
         } as UserModel),
       )
-      router.push('/management/admin/applicant')
+      router.push(RouterPath.ManagementApplicant)
     })
   }
 

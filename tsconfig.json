@@ -19,7 +19,8 @@
       "@/styles/*": ["styles/*"],
       "@/hooks/*": ["hooks/*"],
       "@/enum/*": ["enum/*"],
-      "@/api/*": ["api/*"]
+      "@/api/*": ["api/*"],
+      "@/types/*": ["types/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
