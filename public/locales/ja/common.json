@@ -4,10 +4,16 @@
       "login": "サインイン",
       "applicant": {
         "list": "応募者一覧"
+      },
+      "modal": {
+        "upload": "ファイルアップロード"
       }
     },
     "table": {
       "rowsPerPage": "ページあたりの行数"
+    },
+    "button": {
+      "cancel": "キャンセル"
     },
     "validate": {
       "required": "は必須入力項目です",
@@ -31,6 +37,11 @@
       },
       "applicant": {
         "upload": "アップロード",
+        "site": {
+          "recruit": "リクナビ/Next",
+          "mynavi": "マイナビ",
+          "doda": "DODA"
+        },
         "status": {
           "scheduleUnanswered": "日程未回答",
           "scheduleAnswered": "日程回答済み",
@@ -47,7 +58,9 @@
         },
         "header": {
           "name": "氏名",
+          "site": "媒体",
           "mail": "メールアドレス",
+          "age": "年齢",
           "status": "選考状況",
           "interviewerDate": "面接予定日",
           "resume": "履歴書",

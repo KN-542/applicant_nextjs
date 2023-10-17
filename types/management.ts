@@ -22,10 +22,18 @@ export type UserModel = {
 
 // 応募者一覧 table body
 export type ApplicantsTableBody = {
+  // No
+  no: number
+  // ID
+  id: number
   // 氏名
   name: string
+  // 媒体
+  site: number
   // メールアドレス
   mail: string
+  // 年齢
+  age: number
   // 選考状況
   status: number | string
   // 面接予定日
