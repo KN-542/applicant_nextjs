@@ -1,3 +1,23 @@
+// 媒体
+export enum Site {
+  Recruit = 1,
+  Mynavi,
+  Doda,
+}
+export const dispApplicantSite = (n: number): string => {
+  switch (n) {
+    case Site.Recruit:
+      return 'management.features.applicant.site.recruit'
+    case Site.Mynavi:
+      return 'management.features.applicant.site.mynavi'
+    case Site.Doda:
+      return 'management.features.applicant.site.doda'
+    default:
+      return 'TODO'
+  }
+}
+
+// 応募者ステータス
 export enum ApplicantStatus {
   // 日程未回答
   ScheduleUnanswered,
@@ -24,7 +44,6 @@ export enum ApplicantStatus {
   // 内定承諾後辞退
   DismissalAfterInternalCommitment,
 }
-
 export const dispApplicantStatus = (n: number): string => {
   switch (n) {
     case ApplicantStatus.ScheduleUnanswered:

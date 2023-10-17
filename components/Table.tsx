@@ -18,51 +18,9 @@ import { common } from '@material-ui/core/colors'
 
 type Props = {
   headers: TableHeader[]
-  bodys: Record<string, any>[]
+  bodies: Record<string, any>[]
   isCheckbox?: boolean
 }
-
-// Dataのinterface(tableのカラムに該当する)
-interface Data {
-  calories: number
-  carbs: number
-  fat: number
-  name: string
-  protein: number
-}
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
-): Data {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-  }
-}
-
-// テストの実データ
-const rows = [
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Donut', 452, 25.0, 51, 4.9),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Honeycomb', 408, 3.2, 87, 6.5),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Jelly Bean', 375, 0.0, 94, 0.0),
-  createData('KitKat', 518, 26.0, 65, 7.0),
-  createData('Lollipop', 392, 0.2, 98, 0.0),
-  createData('Marshmallow', 318, 0, 81, 2.0),
-  createData('Nougat', 360, 19.0, 9, 37.0),
-  createData('Oreo', 437, 18.0, 63, 4.0),
-]
 
 // 並び替え機能(Generics型で定義)
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -89,8 +47,6 @@ function getComparator<Key extends keyof any>(
     : (a, b) => -descendingComparator(a, b, orderBy)
 }
 
-// This method is created for cross-browser compatibility, if you don't
-// need to support IE11, you can use Array.prototype.sort() directly
 function stableSort<T>(
   array: readonly T[],
   comparator: (a: T, b: T) => number,
@@ -106,56 +62,11 @@ function stableSort<T>(
   return stabilizedThis.map((el) => el[0])
 }
 
-// Tableのヘッダー
-interface HeadCell {
-  disablePadding: boolean
-  id: keyof Data
-  label: string
-  numeric: boolean
-}
-
-const headCells: readonly HeadCell[] = [
-  {
-    id: 'name',
-    numeric: false,
-    disablePadding: true,
-    label: 'Dessert (100g serving)',
-  },
-  {
-    id: 'calories',
-    numeric: true,
-    disablePadding: false,
-    label: 'Calories',
-  },
-  {
-    id: 'fat',
-    numeric: true,
-    disablePadding: false,
-    label: 'Fat (g)',
-  },
-  {
-    id: 'carbs',
-    numeric: true,
-    disablePadding: false,
-    label: 'Carbs (g)',
-  },
-  {
-    id: 'protein',
-    numeric: true,
-    disablePadding: false,
-    label: 'Protein (g)',
-  },
-]
-
 interface EnhancedTableProps {
   numSelected: number
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data,
-  ) => void
+  onRequestSort: (event: React.MouseEvent<unknown>) => void
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void
   order: Order
-  orderBy: string
   rowCount: number
   headers: TableHeader[]
   isCheckbox?: boolean
@@ -197,7 +108,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
             sortDirection={
               header.sort ? (header.sort.isAsc ? 'asc' : 'desc') : false
             }
-            sx={{ backgroundColor: common.black, color: common.white }}
+            sx={{ bgcolor: common.black, color: common.white }}
           >
             <TableSortLabel
               active={header.sort ? header.sort.target : false}
@@ -221,37 +132,20 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   )
 }
 
-interface EnhancedTableToolbarProps {
-  numSelected: number
-}
-
 export default function EnhancedTable(props: Props) {
   const t = useTranslations()
 
   const [order, setOrder] = React.useState<Order>('asc')
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('calories')
   const [selected, setSelected] = React.useState<readonly string[]>([])
   const [page, setPage] = React.useState(0)
   const [dense, setDense] = React.useState(false)
-  const [rowsPerPage, setRowsPerPage] = React.useState(5)
+  const [rowsPerPage, setRowsPerPage] = React.useState(100)
 
-  const handleRequestSort = (
-    event: React.MouseEvent<unknown>,
-    property: keyof Data,
-  ) => {
-    const isAsc = orderBy === property && order === 'asc'
-    setOrder(isAsc ? 'desc' : 'asc')
-    setOrderBy(property)
-  }
+  const handleRequestSort = () => {}
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name)
-      setSelected(newSelecteds)
-      return
-    }
-    setSelected([])
-  }
+  const handleSelectAllClick = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {}
 
   const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
     const selectedIndex = selected.indexOf(name)
@@ -286,9 +180,8 @@ export default function EnhancedTable(props: Props) {
 
   const isSelected = (name: string) => selected.indexOf(name) !== -1
 
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - size(props.bodies)) : 0
 
   return (
     <Box sx={{ width: '90%', m: '0 auto' }}>
@@ -302,15 +195,14 @@ export default function EnhancedTable(props: Props) {
             <EnhancedTableHead
               numSelected={selected.length}
               order={order}
-              orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={size(props.bodys)}
+              rowCount={size(props.bodies)}
               headers={props.headers}
               isCheckbox={props.isCheckbox}
             />
             <TableBody>
-              {stableSort(props.bodys, getComparator(order, orderBy))
+              {stableSort(props.bodies, getComparator(order, 'orderBy'))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(String(row.name))
@@ -369,9 +261,9 @@ export default function EnhancedTable(props: Props) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[100, 200, 300]}
           component="div"
-          count={size(props.bodys)}
+          count={size(props.bodies)}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
