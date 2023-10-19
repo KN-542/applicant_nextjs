@@ -37,6 +37,7 @@
       },
       "applicant": {
         "upload": "アップロード",
+        "search": "条件検索",
         "site": {
           "recruit": "リクナビ/Next",
           "mynavi": "マイナビ",

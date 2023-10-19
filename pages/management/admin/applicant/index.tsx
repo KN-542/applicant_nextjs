@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import EnhancedTable from '@/components/Table'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
+import ManageSearchIcon from '@mui/icons-material/ManageSearch'
 import { ApplicantsTableBody, TableHeader } from '@/types/management'
 import { useTranslations } from 'next-intl'
 import { Box, Button } from '@mui/material'
@@ -17,7 +18,6 @@ import { ApplicantsDownloadRequest } from '@/api/model/management'
 import { applicantsDownloadCSR, applicantsSearchSSR } from '@/api/repository'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
-import { RouterPath } from '@/enum/router'
 
 const Applicants = ({ list, baseUrl }) => {
   const router = useRouter()
@@ -170,6 +170,22 @@ const Applicants = ({ list, baseUrl }) => {
           <Button
             variant="contained"
             sx={{
+              ml: 1,
+              backgroundColor: orange[800],
+              '&:hover': {
+                backgroundColor: '#fff',
+                color: orange[800],
+              },
+            }}
+            onClick={() => setBodies([])}
+          >
+            <ManageSearchIcon sx={{ mr: 0.25 }} />
+            {t('management.features.applicant.search')}
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              ml: 1,
               backgroundColor: orange[800],
               '&:hover': {
                 backgroundColor: '#fff',
