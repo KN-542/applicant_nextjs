@@ -13,11 +13,21 @@ export type SideBarStoreModel = {
   targetName: string
 }
 
+// コンテンツ
+export type Contents = {
+  key: string
+  element: JSX.Element
+}
+
 // ログインユーザー model
 export type UserModel = {
-  sessionId: string
   name: string
   mail: string
+}
+
+// 設定 model
+export type SettingModel = {
+  color: string
 }
 
 // 応募者一覧 table body
