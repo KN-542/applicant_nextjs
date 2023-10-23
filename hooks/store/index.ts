@@ -1,10 +1,10 @@
+import { indigo } from '@mui/material/colors'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { SideBarStoreModel, UserModel } from 'types/management'
+import { SettingModel, SideBarStoreModel, UserModel } from 'types/management'
 
 const state = {
   management: {
     user: {
-      sessionId: '',
       name: '',
       mail: '',
     } as UserModel,
@@ -12,6 +12,9 @@ const state = {
       targetId: 0,
       targetName: '',
     } as SideBarStoreModel,
+    setting: {
+      color: indigo[500],
+    } as SettingModel,
   },
 }
 
@@ -28,8 +31,15 @@ export const slice = createSlice({
     mgSideBarChange: (state, action: PayloadAction<SideBarStoreModel>) => {
       Object.assign(state.management.sidebar, action.payload)
     },
-    mgSignOut: (state) => Object.assign(state, initState),
+    mgChangeSetting: (state, action: PayloadAction<SettingModel>) => {
+      Object.assign(state.management.setting, action.payload)
+    },
+    mgSignOut: (state) => {
+      Object.assign(state.management.sidebar, initState.management.sidebar)
+      Object.assign(state.management.user, initState.management.user)
+    },
   },
 })
 
-export const { mgUserSignIn, mgSideBarChange, mgSignOut } = slice.actions
+export const { mgUserSignIn, mgSideBarChange, mgChangeSetting, mgSignOut } =
+  slice.actions

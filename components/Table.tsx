@@ -1,4 +1,6 @@
 import * as React from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/hooks/store/store'
 import Box from '@mui/material/Box'
 import Table from '@mui/material/Table'
 import TableBody from '@mui/material/TableBody'
@@ -29,13 +31,15 @@ type EnhancedTableProps = {
 }
 
 const EnhancedTableHead = (props: EnhancedTableProps) => {
+  const setting = useSelector((state: RootState) => state.management.setting)
+
   return (
     <TableHead>
       <TableRow>
         {props.isCheckbox && (
           <TableCell padding="checkbox">
             <Checkbox
-              color="primary"
+              color="default"
               indeterminate={props.numSelected < props.rowCount}
               checked={isEqual(props.numSelected, props.rowCount)}
               onChange={props.onSelectAllClick}
@@ -47,7 +51,7 @@ const EnhancedTableHead = (props: EnhancedTableProps) => {
         )}
         <TableCell
           sx={{
-            backgroundColor: common.black,
+            backgroundColor: setting.color,
             color: common.white,
             padding: 0.5,
           }}
@@ -60,7 +64,7 @@ const EnhancedTableHead = (props: EnhancedTableProps) => {
             sortDirection={
               header.sort ? (header.sort.isAsc ? 'asc' : 'desc') : false
             }
-            sx={{ bgcolor: common.black, color: common.white }}
+            sx={{ bgcolor: setting.color, color: common.white }}
           >
             {header.name}
           </TableCell>

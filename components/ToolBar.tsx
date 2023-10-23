@@ -22,6 +22,7 @@ const ToolBar = (props: Props) => {
   const t = useTranslations()
 
   const user = useSelector((state: RootState) => state.management.user)
+  const setting = useSelector((state: RootState) => state.management.setting)
 
   const logout = async () => {
     // TODO API
@@ -32,8 +33,11 @@ const ToolBar = (props: Props) => {
   return (
     <AppBar
       position="static"
-      color="primary"
-      style={{ position: 'fixed', top: 0 }}
+      style={{
+        position: 'fixed',
+        top: 0,
+        backgroundColor: setting.color,
+      }}
     >
       <Box sx={{ flexGrow: 1 }}>
         <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>

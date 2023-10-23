@@ -15,6 +15,8 @@ export const decideTitle = (path: string) => {
       return 'common.title.login'
     case RouterPath.ManagementApplicant:
       return 'common.title.applicant.list'
+    case RouterPath.ManagementSetting:
+      return 'common.title.setting.index'
     default:
       return '404' // TODO
   }

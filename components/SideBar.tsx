@@ -19,7 +19,6 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import SettingsIcon from '@mui/icons-material/Settings'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { SideBarModel, SideBarStoreModel } from 'types/management'
-import { indigo } from '@mui/material/colors'
 import { useTranslations } from 'next-intl'
 import store, { RootState } from '@/hooks/store/store'
 import _ from 'lodash'
@@ -36,6 +35,7 @@ const SideBar = (props: Props) => {
   const t = useTranslations()
 
   const user = useSelector((state: RootState) => state.management.user)
+  const setting = useSelector((state: RootState) => state.management.setting)
 
   const data: SideBarModel[] = [
     {
@@ -152,7 +152,9 @@ const SideBar = (props: Props) => {
             justifyContent: 'center',
             alignItems: 'center',
             padding: '1em',
-            backgroundColor: indigo[500],
+            backgroundColor: useSelector(
+              (state: RootState) => state.management.setting,
+            ).color,
             color: '#ffffff',
             fontFamily: '-apple-system, BlinkMacSystemFont, Roboto, sans-serif',
           }}
