@@ -139,7 +139,6 @@ const Login = ({ baseUrl }) => {
     await loginCSR(baseUrl).then(() => {
       store.dispatch(
         mgUserSignIn({
-          sessionId: 'session_id1',
           name: '古家野 有栖',
           mail: d.mail,
         } as UserModel),

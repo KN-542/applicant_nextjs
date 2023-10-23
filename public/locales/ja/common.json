@@ -5,6 +5,9 @@
       "applicant": {
         "list": "応募者一覧"
       },
+      "setting": {
+        "index": "個人設定"
+      },
       "modal": {
         "upload": "ファイルアップロード"
       }
@@ -71,6 +74,12 @@
           "t": "あり",
           "f": "なし"
         }
+      },
+      "setting": {
+        "name": "氏名",
+        "mail": "メールアドレス",
+        "role": "ロール",
+        "color": "テーマカラー"
       }
     },
     "sidebar": {
