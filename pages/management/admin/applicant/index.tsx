@@ -1,11 +1,13 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '@/hooks/store/store'
 import EnhancedTable from '@/components/Table'
 import UploadFileIcon from '@mui/icons-material/UploadFile'
 import ManageSearchIcon from '@mui/icons-material/ManageSearch'
 import { ApplicantsTableBody, TableHeader } from '@/types/management'
 import { useTranslations } from 'next-intl'
 import { Box, Button } from '@mui/material'
-import { orange } from '@mui/material/colors'
+import { common } from '@mui/material/colors'
 import { isEmpty, map } from 'lodash'
 import {
   ApplicantStatus,
@@ -22,6 +24,8 @@ import { useRouter } from 'next/router'
 const Applicants = ({ list, baseUrl }) => {
   const router = useRouter()
   const t = useTranslations()
+
+  const setting = useSelector((state: RootState) => state.management.setting)
 
   const [bodies, setBodies] = useState(list)
 
@@ -171,10 +175,10 @@ const Applicants = ({ list, baseUrl }) => {
             variant="contained"
             sx={{
               ml: 1,
-              backgroundColor: orange[800],
+              backgroundColor: setting.color,
               '&:hover': {
-                backgroundColor: '#fff',
-                color: orange[800],
+                backgroundColor: common.white,
+                color: setting.color,
               },
             }}
             onClick={() => setBodies([])}
@@ -186,10 +190,10 @@ const Applicants = ({ list, baseUrl }) => {
             variant="contained"
             sx={{
               ml: 1,
-              backgroundColor: orange[800],
+              backgroundColor: setting.color,
               '&:hover': {
-                backgroundColor: '#fff',
-                color: orange[800],
+                backgroundColor: common.white,
+                color: setting.color,
               },
             }}
             onClick={() => setOpen(true)}
