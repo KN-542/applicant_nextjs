@@ -19,7 +19,7 @@ export type Contents = {
   element: JSX.Element
 }
 
-// ログインユーザー model
+// ログインユーザ model
 export type UserModel = {
   name: string
   mail: string
@@ -52,6 +52,20 @@ export type ApplicantsTableBody = {
   resume: JSX.Element
   // 職務経歴書
   curriculumVitae: JSX.Element
+}
+
+// ユーザ一覧 table body
+export type UsersTableBody = {
+  // No
+  no: number
+  // ID
+  id: number
+  // 氏名
+  name: string
+  // メールアドレス
+  mail: string
+  // ロールID
+  role: number
 }
 
 // table head sort

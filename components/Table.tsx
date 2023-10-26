@@ -39,7 +39,7 @@ const EnhancedTableHead = (props: EnhancedTableProps) => {
         {props.isCheckbox && (
           <TableCell padding="checkbox">
             <Checkbox
-              color="default"
+              style={{ color: setting.color }}
               indeterminate={props.numSelected < props.rowCount}
               checked={isEqual(props.numSelected, props.rowCount)}
               onChange={props.onSelectAllClick}

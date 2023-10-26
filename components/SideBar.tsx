@@ -52,8 +52,8 @@ const SideBar = (props: Props) => {
     },
     {
       id: 3,
-      name: t('management.sidebar.interviewer'),
-      href: RouterPath.ManagementInterviewer,
+      name: t('management.sidebar.user'),
+      href: RouterPath.ManagementUser,
       icon: <CoPresentIcon />,
     },
     {

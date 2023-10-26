@@ -20,6 +20,7 @@ import { ApplicantsDownloadRequest } from '@/api/model/management'
 import { applicantsDownloadCSR, applicantsSearchSSR } from '@/api/repository'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
+import NextHead from '@/components/Header'
 
 const Applicants = ({ list, baseUrl }) => {
   const router = useRouter()
@@ -161,6 +162,7 @@ const Applicants = ({ list, baseUrl }) => {
   }
   return (
     <>
+      <NextHead></NextHead>
       <Box sx={{ mt: 12 }}>
         <Box
           sx={{

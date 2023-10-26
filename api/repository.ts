@@ -38,3 +38,12 @@ export const applicantsSearchSSR = async () => {
   )
   return res
 }
+
+// ユーザ一覧 SSR
+export const UserListSSR = async () => {
+  const res = await axios.post(
+    `${process.env.NEXT_SSR_URL}/applicant/users`,
+    APICommonHeader,
+  )
+  return res
+}
