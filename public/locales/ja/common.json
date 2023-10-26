@@ -5,6 +5,10 @@
       "applicant": {
         "list": "応募者一覧"
       },
+      "user": {
+        "list": "ユーザ一覧",
+        "create": "ユーザ作成"
+      },
       "setting": {
         "index": "個人設定"
       },
@@ -20,6 +24,7 @@
     },
     "validate": {
       "required": "は必須入力項目です",
+      "requiredRadio": "を選択してください",
       "minLength": "文字以上",
       "maxLength": "文字以内で入力してください",
       "halfAlphaNum": "半角英数字で入力してください",
@@ -75,6 +80,18 @@
           "f": "なし"
         }
       },
+      "user": {
+        "create": "ユーザを作成",
+        "role": {
+          "admin": "最高責任者",
+          "interviewer": "面接官"
+        },
+        "header": {
+          "name": "氏名",
+          "mail": "メールアドレス",
+          "role": "ロール"
+        }
+      },
       "setting": {
         "name": "氏名",
         "mail": "メールアドレス",
@@ -85,7 +102,7 @@
     "sidebar": {
       "applicant": "応募者",
       "reserver": "予約者",
-      "interviewer": "面接官",
+      "user": "ユーザ",
       "mail": "メールテンプレート",
       "analysis": "データ集計",
       "history": "操作ログ",

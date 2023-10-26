@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import { RouterPath } from '@/enum/router'
 import { map } from 'lodash'
+import NextHead from '@/components/Header'
 
 const Setting = () => {
   const router = useRouter()
@@ -102,7 +103,12 @@ const Setting = () => {
     },
   ]
 
-  return <Content data={data}></Content>
+  return (
+    <>
+      <NextHead></NextHead>
+      <Content data={data}></Content>
+    </>
+  )
 }
 
 export const getServerSideProps = async ({ locale }) => {

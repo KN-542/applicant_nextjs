@@ -11,7 +11,6 @@ import {
   Container,
 } from '@mui/material'
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Copyright from '@/components/Copyright'
 import { FormValidation, FormValidationValue } from '@/hooks/validation'
 import { useTranslations } from 'next-intl'
@@ -34,8 +33,7 @@ import store from '@/hooks/store/store'
 import { mgUserSignIn } from '@/hooks/store'
 import { UserModel } from 'types/management'
 import { RouterPath } from '@/enum/router'
-
-const defaultTheme = createTheme()
+import NextHead from '@/components/Header'
 
 type Inputs = {
   mail: string
@@ -148,7 +146,8 @@ const Login = ({ baseUrl }) => {
   }
 
   return (
-    <ThemeProvider theme={defaultTheme}>
+    <>
+      <NextHead></NextHead>
       <Container component="main" maxWidth="xs" sx={Mt20}>
         <CssBaseline />
         <Box sx={LoginMain}>
@@ -218,7 +217,7 @@ const Login = ({ baseUrl }) => {
         </Box>
         <Copyright sx={Mt8Mb4} />
       </Container>
-    </ThemeProvider>
+    </>
   )
 }
 
