@@ -1,0 +1,82 @@
+// レフトメニュー model
+export type SideBarModel = {
+  id: number
+  name: string
+  href: string
+  icon: JSX.Element
+  button?: () => void
+}
+
+// レフトメニュー store用model
+export type SideBarStoreModel = {
+  targetId: number
+  targetName: string
+}
+
+// コンテンツ
+export type Contents = {
+  key: string
+  element: JSX.Element
+}
+
+// ログインユーザ model
+export type UserModel = {
+  name: string
+  mail: string
+}
+
+// 設定 model
+export type SettingModel = {
+  color: string
+}
+
+// 応募者一覧 table body
+export type ApplicantsTableBody = {
+  // No
+  no: number
+  // ID
+  id: number
+  // 氏名
+  name: string
+  // 媒体
+  site: number
+  // メールアドレス
+  mail: string
+  // 年齢
+  age: number
+  // 選考状況
+  status: number | string
+  // 面接予定日
+  interviewerDate: string
+  // 履歴書
+  resume: JSX.Element
+  // 職務経歴書
+  curriculumVitae: JSX.Element
+}
+
+// ユーザ一覧 table body
+export type UsersTableBody = {
+  // No
+  no: number
+  // ID
+  id: number
+  // 氏名
+  name: string
+  // メールアドレス
+  mail: string
+  // ロールID
+  role: number
+}
+
+// table head sort
+export type TableSort = {
+  target: boolean
+  isAsc: boolean
+}
+
+// table head
+export type TableHeader = {
+  id: number
+  name: string
+  sort?: TableSort
+}

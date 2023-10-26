@@ -1,5 +1,117 @@
 {
-  "test": {
-    "title": "これはテストです"
+  "common": {
+    "title": {
+      "login": "サインイン",
+      "applicant": {
+        "list": "応募者一覧"
+      },
+      "user": {
+        "list": "ユーザ一覧",
+        "create": "ユーザ作成"
+      },
+      "setting": {
+        "index": "個人設定"
+      },
+      "modal": {
+        "upload": "ファイルアップロード"
+      }
+    },
+    "table": {
+      "rowsPerPage": "ページあたりの行数"
+    },
+    "button": {
+      "cancel": "キャンセル"
+    },
+    "validate": {
+      "required": "は必須入力項目です",
+      "requiredRadio": "を選択してください",
+      "minLength": "文字以上",
+      "maxLength": "文字以内で入力してください",
+      "halfAlphaNum": "半角英数字で入力してください",
+      "pattern": {
+        "mail": "メールアドレス形式で入力してください"
+      },
+      "is": "は"
+    }
+  },
+  "management": {
+    "features": {
+      "login": {
+        "top": "CLINKS 採用",
+        "mail": "メールアドレス",
+        "password": "パスワード",
+        "login": "サインイン",
+        "forgotPassword": "パスワードを忘れた場合"
+      },
+      "applicant": {
+        "upload": "アップロード",
+        "search": "条件検索",
+        "site": {
+          "recruit": "リクナビ/Next",
+          "mynavi": "マイナビ",
+          "doda": "DODA"
+        },
+        "status": {
+          "scheduleUnanswered": "日程未回答",
+          "scheduleAnswered": "日程回答済み",
+          "documentsSubmitted": "書類提出済み",
+          "offer": "内定",
+          "internalCommitments": "内定承諾済み",
+          "calendarAnswerDeadlineExceeded": "日程回答期限超過",
+          "deadlineForSubmissionOfBooksExceeds": "書類提出期限超過",
+          "failingToPassThePhysicalExamination": "書類選考落ち",
+          "failingAnInterview": "面接落ち",
+          "withdrawal": "選考辞退",
+          "internalizedDismissal": "内定辞退",
+          "dismissalAfterInternalCommitment": "内定承諾後辞退"
+        },
+        "header": {
+          "name": "氏名",
+          "site": "媒体",
+          "mail": "メールアドレス",
+          "age": "年齢",
+          "status": "選考状況",
+          "interviewerDate": "面接予定日",
+          "resume": "履歴書",
+          "curriculumVitae": "職務経歴書"
+        },
+        "documents": {
+          "t": "あり",
+          "f": "なし"
+        }
+      },
+      "user": {
+        "create": "ユーザを作成",
+        "role": {
+          "admin": "最高責任者",
+          "interviewer": "面接官"
+        },
+        "header": {
+          "name": "氏名",
+          "mail": "メールアドレス",
+          "role": "ロール"
+        }
+      },
+      "setting": {
+        "name": "氏名",
+        "mail": "メールアドレス",
+        "role": "ロール",
+        "color": "テーマカラー"
+      }
+    },
+    "sidebar": {
+      "applicant": "応募者",
+      "reserver": "予約者",
+      "user": "ユーザ",
+      "mail": "メールテンプレート",
+      "analysis": "データ集計",
+      "history": "操作ログ",
+      "setting": "個人設定",
+      "logout": "サインアウト"
+    },
+    "toolbar": {
+      "setting": "個人設定",
+      "logout": "サインアウト"
+    }
   }
 }
