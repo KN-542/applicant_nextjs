@@ -19,6 +19,13 @@ export type Contents = {
   element: JSX.Element
 }
 
+// カラー
+export type Color = {
+  color: string
+  toastSuccessColor: string
+  toastErrorColor: string
+}
+
 // ログインユーザ model
 export type UserModel = {
   name: string
@@ -28,6 +35,8 @@ export type UserModel = {
 // 設定 model
 export type SettingModel = {
   color: string
+  toastSuccessColor: string
+  toastErrorColor: string
 }
 
 // 応募者一覧 table body

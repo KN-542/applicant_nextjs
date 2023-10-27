@@ -10,6 +10,8 @@ import { appWithTranslation } from 'next-i18next'
 import ToolBar from '@/components/ToolBar'
 import { NextIntlClientProvider } from 'next-intl'
 import store from '@/hooks/store/store'
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter()
@@ -34,6 +36,7 @@ const App = ({ Component, pageProps }) => {
               }}
             />
             <Component {...pageProps} />
+            <ToastContainer />
           </NextIntlClientProvider>
         </PersistGate>
       </Provider>
@@ -44,6 +47,7 @@ const App = ({ Component, pageProps }) => {
         <PersistGate persistor={persistStore(store)}>
           <NextIntlClientProvider messages={pageProps.messages}>
             <Component {...pageProps} />
+            <ToastContainer />
           </NextIntlClientProvider>
         </PersistGate>
       </Provider>
