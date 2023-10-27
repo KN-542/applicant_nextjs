@@ -1,4 +1,4 @@
-import { indigo } from '@mui/material/colors'
+import { green, indigo, red } from '@mui/material/colors'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { SettingModel, SideBarStoreModel, UserModel } from 'types/management'
 
@@ -14,6 +14,8 @@ const state = {
     } as SideBarStoreModel,
     setting: {
       color: indigo[500],
+      toastSuccessColor: green[500],
+      toastErrorColor: red[500],
     } as SettingModel,
   },
 }

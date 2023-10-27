@@ -40,6 +40,8 @@ import { FormValidation, FormValidationValue } from '@/hooks/validation'
 import { Pattern, ValidationType } from '@/enum/validation'
 import { RouterPath } from '@/enum/router'
 import { useState } from 'react'
+import { toast } from 'react-toastify'
+import ClearIcon from '@mui/icons-material/Clear'
 
 const UserCreate = () => {
   const router = useRouter()
@@ -120,6 +122,24 @@ const UserCreate = () => {
 
   const submit: SubmitHandler<Inputs> = async (d: Inputs) => {
     console.log(d)
+    toast('正常だよ', {
+      style: {
+        backgroundColor: setting.toastSuccessColor,
+        color: common.white,
+      },
+      position: 'bottom-right',
+      hideProgressBar: true,
+      closeButton: () => <ClearIcon />,
+    })
+    toast('エラーだよ～ん', {
+      style: {
+        backgroundColor: setting.toastErrorColor,
+        color: common.white,
+      },
+      position: 'bottom-right',
+      hideProgressBar: true,
+      closeButton: () => <ClearIcon />,
+    })
   }
 
   return (
