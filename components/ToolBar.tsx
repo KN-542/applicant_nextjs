@@ -13,6 +13,7 @@ import router from 'next/router'
 import SettingsIcon from '@mui/icons-material/Settings'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { RouterPath, decideTitle } from '@/enum/router'
+import { FlexGrow, Mr0_25, Mr1, Mr2, SpaceBetween } from '@/styles/index'
 
 type Props = {
   onToggleDrawer: () => void
@@ -39,14 +40,14 @@ const ToolBar = (props: Props) => {
         backgroundColor: setting.color,
       }}
     >
-      <Box sx={{ flexGrow: 1 }}>
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
+      <Box sx={FlexGrow}>
+        <Toolbar sx={SpaceBetween}>
           <IconButton
             aria-label="menu-button"
             size="large"
             edge="start"
             color="inherit"
-            sx={{ mr: 2 }}
+            sx={Mr2}
             onClick={props.onToggleDrawer}
           >
             <MenuIcon />
@@ -54,16 +55,16 @@ const ToolBar = (props: Props) => {
           <Typography variant="h6" sx={{ ml: 15 }}>
             {t(decideTitle(router.pathname))}
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Box sx={SpaceBetween}>
             <Button
-              sx={{ mr: 1 }}
+              sx={Mr1}
               color="inherit"
               onClick={(e) => {
                 e.preventDefault()
                 router.push(RouterPath.ManagementSetting)
               }}
             >
-              <SettingsIcon sx={{ mr: 0.25 }} />
+              <SettingsIcon sx={Mr0_25} />
               {t('management.toolbar.setting')}
             </Button>
             <Button
@@ -73,7 +74,7 @@ const ToolBar = (props: Props) => {
                 await logout()
               }}
             >
-              <LogoutIcon sx={{ mr: 0.25 }} />
+              <LogoutIcon sx={Mr0_25} />
               {t('management.toolbar.logout')}
             </Button>
             <Image

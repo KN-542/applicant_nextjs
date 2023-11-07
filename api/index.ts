@@ -9,8 +9,8 @@ const APICommonHeader = {
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    // TODO
-    console.dir(error)
+    // TODO スタータスによって分岐
+    return error
   },
 )
 

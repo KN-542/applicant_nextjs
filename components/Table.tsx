@@ -7,14 +7,26 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import TableHead from '@mui/material/TableHead'
-import TablePagination from '@mui/material/TablePagination'
 import TableRow from '@mui/material/TableRow'
 import Paper from '@mui/material/Paper'
 import Checkbox from '@mui/material/Checkbox'
 import { useTranslations } from 'next-intl'
 import { TableHeader } from '@/types/management'
 import { isEmpty, isEqual, keys, map, size } from 'lodash'
-import { common } from '@material-ui/core/colors'
+import {
+  Cell,
+  ColorWhite,
+  M0Auto,
+  Mb2,
+  MinW750,
+  Mt30,
+  TableHeaderSX,
+  TextCenter,
+  W100,
+  W75px,
+  W90,
+} from '@/styles/index'
+import { common } from '@mui/material/colors'
 
 type Props = {
   headers: TableHeader[]
@@ -34,27 +46,25 @@ const EnhancedTableHead = (props: EnhancedTableProps) => {
   const setting = useSelector((state: RootState) => state.management.setting)
 
   return (
-    <TableHead>
+    <TableHead sx={TableHeaderSX}>
       <TableRow>
         {props.isCheckbox && (
-          <TableCell padding="checkbox">
-            <Checkbox
-              style={{ color: setting.color }}
-              indeterminate={props.numSelected < props.rowCount}
-              checked={isEqual(props.numSelected, props.rowCount)}
-              onChange={props.onSelectAllClick}
-              inputProps={{
-                'aria-label': 'select all desserts',
-              }}
-            />
-          </TableCell>
+          <TableCell
+            sx={[
+              Cell,
+              {
+                backgroundColor: setting.color,
+              },
+            ]}
+          ></TableCell>
         )}
         <TableCell
-          sx={{
-            backgroundColor: setting.color,
-            color: common.white,
-            padding: 0.5,
-          }}
+          sx={[
+            Cell,
+            {
+              backgroundColor: setting.color,
+            },
+          ]}
         ></TableCell>
         {props.headers.map((header) => (
           <TableCell
@@ -64,7 +74,7 @@ const EnhancedTableHead = (props: EnhancedTableProps) => {
             sortDirection={
               header.sort ? (header.sort.isAsc ? 'asc' : 'desc') : false
             }
-            sx={{ bgcolor: setting.color, color: common.white }}
+            sx={[ColorWhite, { bgcolor: setting.color }]}
           >
             {header.name}
           </TableCell>
@@ -76,100 +86,86 @@ const EnhancedTableHead = (props: EnhancedTableProps) => {
 
 const EnhancedTable = (props: Props) => {
   const t = useTranslations()
+  const setting = useSelector((state: RootState) => state.management.setting)
 
   const [selected, setSelected] = React.useState<readonly string[]>([])
-  const [page, setPage] = React.useState(0)
-  const [rowsPerPage, setRowsPerPage] = React.useState(40)
 
   const handleSelectAllClick = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {}
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage)
-  }
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10))
-    setPage(0)
-  }
-
   const isSelected = (name: string) => selected.indexOf(name) !== -1
 
   return (
-    <Box sx={{ width: '90%', m: '0 auto' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size="medium"
-          >
-            <EnhancedTableHead
-              numSelected={size(selected)}
-              onSelectAllClick={handleSelectAllClick}
-              rowCount={size(props.bodies)}
-              headers={props.headers}
-              isCheckbox={props.isCheckbox}
-            />
-            <TableBody>
-              {props.bodies.map((row, index) => {
-                const isItemSelected = isSelected(String(row.name))
+    <>
+      {size(props.bodies) > 0 && (
+        <Box sx={[W90, M0Auto]}>
+          <Paper sx={[W100, Mb2]}>
+            <TableContainer sx={{ maxHeight: '75vh', overflowY: 'auto' }}>
+              <Table sx={MinW750} aria-labelledby="tableTitle" size="medium">
+                <EnhancedTableHead
+                  numSelected={size(selected)}
+                  onSelectAllClick={handleSelectAllClick}
+                  rowCount={size(props.bodies)}
+                  headers={props.headers}
+                  isCheckbox={props.isCheckbox}
+                />
+                <TableBody>
+                  {props.bodies.map((row, index) => {
+                    const isItemSelected = isSelected(String(row.name))
 
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={index}
-                    selected={isItemSelected}
-                  >
-                    {props.isCheckbox && (
-                      <TableCell padding="checkbox" sx={{ height: 75 }}>
-                        <Checkbox
-                          color="primary"
-                          checked={isItemSelected}
-                          inputProps={{
-                            'aria-labelledby': `enhanced-table-checkbox-${index}`,
-                          }}
-                        />
-                      </TableCell>
-                    )}
-                    <TableCell padding="none"></TableCell>
-                    {map(keys(row), (item, index2) => {
-                      return (
-                        <TableCell
-                          component="th"
-                          scope="row"
-                          padding="none"
-                          key={index2}
-                          sx={{ height: 75 }}
-                        >
-                          {isEmpty(row.item) && row[item]}
-                        </TableCell>
-                      )
-                    })}
-                  </TableRow>
-                )
-              })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[40, 200, 300]}
-          component="div"
-          count={size(props.bodies)}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage={t('common.table.rowsPerPage')}
-        />
-      </Paper>
-    </Box>
+                    return (
+                      <TableRow
+                        hover
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={index}
+                        selected={isItemSelected}
+                      >
+                        {props.isCheckbox && (
+                          <TableCell
+                            padding="checkbox"
+                            sx={[W75px, ColorWhite, { bgcolor: common.white }]}
+                          >
+                            <Checkbox
+                              style={{ color: setting.color }}
+                              checked={isItemSelected}
+                              inputProps={{
+                                'aria-labelledby': `enhanced-table-checkbox-${index}`,
+                              }}
+                            />
+                          </TableCell>
+                        )}
+                        <TableCell padding="none"></TableCell>
+                        {map(keys(row), (item, index2) => {
+                          return (
+                            <TableCell
+                              component="th"
+                              scope="row"
+                              padding="none"
+                              key={index2}
+                              sx={W75px}
+                            >
+                              {isEmpty(row.item) && row[item]}
+                            </TableCell>
+                          )
+                        })}
+                      </TableRow>
+                    )
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </Box>
+      )}
+      {isEqual(size(props.bodies), 0) && (
+        <Box fontSize={60} sx={[TextCenter, Mt30]}>
+          {t('common.table.none')}
+        </Box>
+      )}
+    </>
   )
 }
 

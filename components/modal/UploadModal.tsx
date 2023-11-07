@@ -13,6 +13,7 @@ import {
 import { useTranslations } from 'next-intl'
 import _ from 'lodash'
 import { common } from '@material-ui/core/colors'
+import { Bold, DragDropArea, Mb2, Mr2 } from '@/styles/index'
 
 type Props = {
   open: boolean
@@ -32,7 +33,7 @@ const UploadModal = (props: Props) => {
   return (
     <Dialog open={props.open} maxWidth="lg">
       <DialogTitle component="div">
-        <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+        <Typography variant="h4" sx={Bold}>
           {t('common.title.modal.upload')}
         </Typography>
       </DialogTitle>
@@ -41,36 +42,17 @@ const UploadModal = (props: Props) => {
 
       <DialogContent>
         <Typography variant="h6">
-          応募者情報のファイルアップロードを行ってください
+          {t('management.features.applicant.uploadMsg')}
         </Typography>
-        <Box
-          sx={{
-            m: '0 auto',
-            mt: 3,
-            mb: 3,
-            border: '2px dashed #ccc',
-            backgroundColor: '#eee',
-            color: '#bbb',
-            minWidth: 800,
-            minHeight: 200,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-            bgcolor: common.white,
-          }}
-          {...getRootProps()}
-        >
+        <Box sx={DragDropArea} {...getRootProps()}>
           <input {...getInputProps()} accept=".txt" />{' '}
-          <p>
-            ここにファイルをドラッグ＆ドロップ、またはここをクリックしてファイル選択
-          </p>
+          <p>{t('management.features.applicant.uploadMsg2')}</p>
         </Box>
       </DialogContent>
 
-      <Divider sx={{ mb: 2 }} />
+      <Divider sx={Mb2} />
 
-      <DialogActions sx={{ mr: 2, mb: 2 }}>
+      <DialogActions sx={[Mr2, Mb2]}>
         <Button variant="outlined" color="inherit" onClick={props.closeModal}>
           {t('common.button.cancel')}
         </Button>

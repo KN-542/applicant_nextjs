@@ -21,6 +21,8 @@ import { applicantsDownloadCSR, applicantsSearchSSR } from '@/api/repository'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import NextHead from '@/components/Header'
+import { Ml1, Mr0_25, Mt12, Resume, TableMenu } from '@/styles/index'
+import { RouterPath } from '@/enum/router'
 
 const Applicants = ({ list, baseUrl }) => {
   const router = useRouter()
@@ -74,7 +76,7 @@ const Applicants = ({ list, baseUrl }) => {
       }
       await applicantsDownloadCSR(baseUrl, req).then(() => {
         router.reload()
-        // router.push(RouterPath.ManagementApplicant) これだと画面が固まる…
+        // router.push(RouterPath.ManagementApplicant) // これだと画面が固まる…
       })
     } else {
       console.error('選択されたファイルはtxtファイルではありません。')
@@ -163,44 +165,40 @@ const Applicants = ({ list, baseUrl }) => {
   return (
     <>
       <NextHead></NextHead>
-      <Box sx={{ mt: 12 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            width: '90%',
-            m: '0 auto',
-            mb: 3,
-          }}
-        >
+      <Box sx={Mt12}>
+        <Box sx={TableMenu}>
           <Button
             variant="contained"
-            sx={{
-              ml: 1,
-              backgroundColor: setting.color,
-              '&:hover': {
-                backgroundColor: common.white,
-                color: setting.color,
+            sx={[
+              Ml1,
+              {
+                backgroundColor: setting.color,
+                '&:hover': {
+                  backgroundColor: common.white,
+                  color: setting.color,
+                },
               },
-            }}
+            ]}
             onClick={() => setBodies([])}
           >
-            <ManageSearchIcon sx={{ mr: 0.25 }} />
+            <ManageSearchIcon sx={Mr0_25} />
             {t('management.features.applicant.search')}
           </Button>
           <Button
             variant="contained"
-            sx={{
-              ml: 1,
-              backgroundColor: setting.color,
-              '&:hover': {
-                backgroundColor: common.white,
-                color: setting.color,
+            sx={[
+              Ml1,
+              {
+                backgroundColor: setting.color,
+                '&:hover': {
+                  backgroundColor: common.white,
+                  color: setting.color,
+                },
               },
-            }}
+            ]}
             onClick={() => setOpen(true)}
           >
-            <UploadFileIcon sx={{ mr: 0.25 }} />
+            <UploadFileIcon sx={Mr0_25} />
             {t('management.features.applicant.upload')}
           </Button>
         </Box>
@@ -218,15 +216,15 @@ const Applicants = ({ list, baseUrl }) => {
               resume: isEmpty(l.resume) ? (
                 <>{t('management.features.applicant.documents.f')}</>
               ) : (
-                <Button color="primary" sx={{ textTransform: 'none' }}>
+                <Button color="primary" sx={Resume}>
                   {t('management.features.applicant.documents.t')}
                 </Button>
               ),
               curriculumVitae: isEmpty(l.resume) ? (
                 <>{t('management.features.applicant.documents.f')}</>
               ) : (
-                <Button color="primary" sx={{ textTransform: 'none' }}>
-                  <UploadFileIcon sx={{ mr: 0.25 }} />
+                <Button color="primary" sx={Resume}>
+                  <UploadFileIcon sx={Mr0_25} />
                   {t('management.features.applicant.documents.t')}
                 </Button>
               ),

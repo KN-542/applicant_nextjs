@@ -22,12 +22,13 @@ import { loginCSR, loginSSR } from '@/api/repository'
 import { useRouter } from 'next/router'
 import {
   LoginMain,
-  MinWidth396,
+  M1,
+  MinW396,
   Mt1,
   Mt20,
   Mt3Mb1,
   Mt8Mb4,
-  SecondaryMainM1,
+  SecondaryMain,
 } from '@/styles/index'
 import store from '@/hooks/store/store'
 import { mgUserSignIn } from '@/hooks/store'
@@ -151,7 +152,7 @@ const Login = ({ baseUrl }) => {
       <Container component="main" maxWidth="xs" sx={Mt20}>
         <CssBaseline />
         <Box sx={LoginMain}>
-          <Avatar sx={SecondaryMainM1}>
+          <Avatar sx={[M1, SecondaryMain]}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -169,7 +170,7 @@ const Login = ({ baseUrl }) => {
               fullWidth
               label={t('management.features.login.mail')}
               autoFocus
-              sx={MinWidth396}
+              sx={MinW396}
               {...register('mail', {
                 required: true,
                 maxLength: formValidationValue.mail.max,
@@ -189,7 +190,7 @@ const Login = ({ baseUrl }) => {
               fullWidth
               label={t('management.features.login.password')}
               autoComplete="current-password"
-              sx={MinWidth396}
+              sx={MinW396}
               {...register('password', {
                 required: true,
                 minLength: formValidationValue.password.min,
