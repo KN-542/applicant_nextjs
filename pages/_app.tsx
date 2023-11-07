@@ -4,14 +4,14 @@ import { Provider } from 'react-redux'
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
 import SideBar from '@/components/SideBar'
-import '@/styles/globals.css'
+import '@/styles/index.css'
 import _ from 'lodash'
 import { appWithTranslation } from 'next-i18next'
 import ToolBar from '@/components/ToolBar'
 import { NextIntlClientProvider } from 'next-intl'
 import store from '@/hooks/store/store'
-import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer } from 'react-toastify'
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter()

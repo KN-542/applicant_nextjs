@@ -22,8 +22,13 @@ import {
   lime,
   pink,
   teal,
-  yellow,
 } from '@mui/material/colors'
+import {
+  ColorBox,
+  ColorBoxChild,
+  ColorBoxChildNowrap,
+  ColorButton,
+} from '@/styles/index'
 
 const Setting = () => {
   const router = useRouter()
@@ -270,36 +275,21 @@ const Setting = () => {
     {
       key: t('management.features.setting.color'),
       element: (
-        <Box
-          sx={{
-            p: 2,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+        <Box sx={ColorBox}>
+          <Box sx={ColorBoxChild}>
             {map(colorSet, (obj, index) => (
-              <Box
-                key={index}
-                sx={{
-                  display: 'flex',
-                  gap: 2,
-                  flexWrap: 'nowrap',
-                }}
-              >
+              <Box key={index} sx={ColorBoxChildNowrap}>
                 <Button
                   variant="contained"
-                  sx={{
-                    width: 100,
-                    height: 100,
-                    backgroundColor: obj.color,
-                    color: '#fff',
-                    textTransform: 'none',
-                    '&:hover': {
+                  sx={[
+                    ColorButton,
+                    {
                       backgroundColor: obj.color,
+                      '&:hover': {
+                        backgroundColor: obj.color,
+                      },
                     },
-                  }}
+                  ]}
                   onClick={(e) => {
                     e.preventDefault()
 

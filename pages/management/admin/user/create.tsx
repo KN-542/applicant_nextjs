@@ -5,41 +5,33 @@ import { useTranslations } from 'next-intl'
 import {
   Box,
   Button,
-  Container,
   CssBaseline,
   DialogContent,
   TextField,
-  Typography,
   FormLabel,
   Radio,
   RadioGroup,
   FormControlLabel,
-  FormControl,
-  FormHelperText,
 } from '@mui/material'
-import { LoginMain, MinWidth396, Mt1, Mt20 } from '@/styles/index'
-import { register } from 'module'
+import {
+  FormBox,
+  FormButtons,
+  DialogContentMain,
+  M0Auto,
+  Mr0_25,
+  W50,
+  W90,
+} from '@/styles/index'
 import ErrorHandler from '@/components/ErrorHandler'
 import { common } from '@material-ui/core/colors'
 import { RootState } from '@/hooks/store/store'
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
-import _, {
-  every,
-  filter,
-  isEmpty,
-  isNumber,
-  keys,
-  map,
-  min,
-  size,
-  trim,
-} from 'lodash'
+import _, { filter, keys, map, min, size, trim } from 'lodash'
 import { Role, dispRole } from '@/enum/user'
-import { SubmitHandler, useForm, Controller } from 'react-hook-form'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { FormValidation, FormValidationValue } from '@/hooks/validation'
 import { Pattern, ValidationType } from '@/enum/validation'
 import { RouterPath } from '@/enum/router'
-import { useState } from 'react'
 import { toast } from 'react-toastify'
 import ClearIcon from '@mui/icons-material/Clear'
 
@@ -145,24 +137,14 @@ const UserCreate = () => {
   return (
     <>
       <NextHead></NextHead>
-      <DialogContent
-        sx={{
-          backgroundColor: common.white,
-          width: '80%',
-          margin: '0 auto',
-          mt: 15,
-          boxShadow: '0 4px 8px',
-          p: 3,
-          borderRadius: 20,
-        }}
-      >
-        <Box sx={{ m: '0 auto', width: '90%' }}>
+      <DialogContent sx={DialogContentMain}>
+        <Box sx={[M0Auto, W90]}>
           <CssBaseline />
           <Box
             component="form"
             onSubmit={handleSubmit(submit)}
             noValidate
-            sx={{ mt: 4, display: 'flex', flexFlow: 'column' }}
+            sx={FormBox}
           >
             <FormLabel>
               {t('management.features.user.header.name') + '*'}
@@ -170,7 +152,7 @@ const UserCreate = () => {
             <TextField
               margin="normal"
               required
-              style={{ width: '50%' }}
+              style={W50}
               {...register('name', {
                 required: true,
                 maxLength: formValidationValue.name.max,
@@ -189,7 +171,7 @@ const UserCreate = () => {
             <TextField
               margin="normal"
               required
-              style={{ width: '50%' }}
+              style={W50}
               {...register('mail', {
                 required: true,
                 maxLength: formValidationValue.mail.max,
@@ -211,10 +193,8 @@ const UserCreate = () => {
               aria-label="position"
               name="role"
               value={watch('role') || ''}
+              className="form-radio"
               style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                flexDirection: 'row',
                 width: `${
                   min([4, size(filter(keys(Role), (r) => !isNaN(Number(r))))]) *
                   12.5
@@ -248,15 +228,7 @@ const UserCreate = () => {
               validations={formValidation.role}
               type={errors.role?.type}
             ></ErrorHandler>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                width: '33%',
-                m: '0 auto',
-                mt: 8,
-              }}
-            >
+            <Box sx={FormButtons}>
               <Button
                 size="large"
                 variant="outlined"
@@ -276,7 +248,7 @@ const UserCreate = () => {
                   },
                 }}
               >
-                <AddCircleOutlineIcon sx={{ mr: 0.25 }} />
+                <AddCircleOutlineIcon sx={Mr0_25} />
                 {t('management.features.user.create')}
               </Button>
             </Box>

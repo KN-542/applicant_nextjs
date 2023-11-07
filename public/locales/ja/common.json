@@ -17,7 +17,8 @@
       }
     },
     "table": {
-      "rowsPerPage": "ページあたりの行数"
+      "rowsPerPage": "ページあたりの行数",
+      "none": "該当データがありません"
     },
     "button": {
       "cancel": "キャンセル"
@@ -46,6 +47,8 @@
       "applicant": {
         "upload": "アップロード",
         "search": "条件検索",
+        "uploadMsg": "応募者情報のファイルアップロードを行ってください",
+        "uploadMsg2": "ここにファイルをドラッグ＆ドロップ、またはここをクリックしてファイル選択",
         "site": {
           "recruit": "リクナビ/Next",
           "mynavi": "マイナビ",

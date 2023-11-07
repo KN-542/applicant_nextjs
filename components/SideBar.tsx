@@ -24,6 +24,7 @@ import store, { RootState } from '@/hooks/store/store'
 import _ from 'lodash'
 import { mgSideBarChange, mgSignOut } from '@/hooks/store'
 import { RouterPath } from '@/enum/router'
+import { Mb2, Mt2, SideBarBody, SideBarName, W300px } from '@/styles/index'
 
 type Props = {
   drawerOpen: boolean
@@ -107,7 +108,7 @@ const SideBar = (props: Props) => {
 
   const renderRow = (row: SideBarModel): JSX.Element => {
     return (
-      <ListItem disablePadding key={row.name} sx={{ mt: '1rem', mb: '1rem' }}>
+      <ListItem disablePadding key={row.name} sx={[Mt2, Mb2]}>
         <ListItemButton
           onClick={
             row.button
@@ -119,15 +120,7 @@ const SideBar = (props: Props) => {
           }
         >
           {row.icon}
-          <Box
-            sx={{
-              textDecoration: 'none',
-              color: 'grey',
-              ml: '2rem',
-            }}
-          >
-            {row.name}
-          </Box>
+          <Box sx={SideBarName}>{row.name}</Box>
         </ListItemButton>
       </ListItem>
     )
@@ -139,25 +132,14 @@ const SideBar = (props: Props) => {
       open={props.drawerOpen}
       onClose={props.onToggleDrawer}
     >
-      <Box
-        sx={{ width: '250px' }}
-        role="presentation"
-        onClick={props.onToggleDrawer}
-      >
+      <Box sx={W300px} role="presentation" onClick={props.onToggleDrawer}>
         <Box
-          sx={{
-            height: 100,
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: '1em',
-            backgroundColor: useSelector(
-              (state: RootState) => state.management.setting,
-            ).color,
-            color: '#ffffff',
-            fontFamily: '-apple-system, BlinkMacSystemFont, Roboto, sans-serif',
-          }}
+          sx={[
+            SideBarBody,
+            {
+              backgroundColor: setting.color,
+            },
+          ]}
         >
           <IconButton
             aria-label="menu-button"
