@@ -18,9 +18,9 @@ import {
   FormButtons,
   DialogContentMain,
   M0Auto,
-  Mr0_25,
-  W50,
-  W90,
+  mr,
+  w,
+  mt,
 } from '@/styles/index'
 import ErrorHandler from '@/components/ErrorHandler'
 import { common } from '@material-ui/core/colors'
@@ -34,10 +34,18 @@ import { Pattern, ValidationType } from '@/enum/validation'
 import { RouterPath } from '@/enum/router'
 import { toast } from 'react-toastify'
 import ClearIcon from '@mui/icons-material/Clear'
+import { UserCreateCSR, UserRoleListSSR } from '@/api/repository'
+import { UserCreateRequest } from '@/api/model/management'
+import UserCreateModal from '@/components/modal/UserCreateModal'
+import { useState } from 'react'
+import { Contents } from '@/types/management'
 
-const UserCreate = () => {
+const UserCreate = ({ baseUrl, roleList }) => {
   const router = useRouter()
   const t = useTranslations()
+
+  const [open, setOpen] = useState(false)
+  const [userData, setUserData] = useState([])
 
   const setting = useSelector((state: RootState) => state.management.setting)
 
@@ -113,32 +121,49 @@ const UserCreate = () => {
   }
 
   const submit: SubmitHandler<Inputs> = async (d: Inputs) => {
-    console.log(d)
-    toast('正常だよ', {
-      style: {
-        backgroundColor: setting.toastSuccessColor,
-        color: common.white,
-      },
-      position: 'bottom-right',
-      hideProgressBar: true,
-      closeButton: () => <ClearIcon />,
+    await UserCreateCSR(baseUrl, {
+      name: d.name,
+      email: d.mail,
+      role_id: Number(d.role),
+    } as UserCreateRequest).then((res) => {
+      // モーダルへ
+      setUserData([
+        {
+          key: t('management.features.user.header.mail'),
+          element: <>{res.data.email}</>,
+        },
+        {
+          key: t('management.features.user.header.password'),
+          element: <>{res.data.init_password}</>,
+        },
+      ] as Contents[])
+      setOpen(true)
+      toast(t('management.features.user.user') + t('common.toast.create'), {
+        style: {
+          backgroundColor: setting.toastSuccessColor,
+          color: common.white,
+        },
+        position: 'bottom-right',
+        hideProgressBar: true,
+        closeButton: () => <ClearIcon />,
+      })
     })
-    toast('エラーだよ～ん', {
-      style: {
-        backgroundColor: setting.toastErrorColor,
-        color: common.white,
-      },
-      position: 'bottom-right',
-      hideProgressBar: true,
-      closeButton: () => <ClearIcon />,
-    })
+    // toast('エラーだよ～ん', {
+    //   style: {
+    //     backgroundColor: setting.toastErrorColor,
+    //     color: common.white,
+    //   },
+    //   position: 'bottom-right',
+    //   hideProgressBar: true,
+    //   closeButton: () => <ClearIcon />,
+    // })
   }
 
   return (
     <>
       <NextHead></NextHead>
-      <DialogContent sx={DialogContentMain}>
-        <Box sx={[M0Auto, W90]}>
+      <DialogContent sx={[DialogContentMain, mt(15)]}>
+        <Box sx={[M0Auto, w(90)]}>
           <CssBaseline />
           <Box
             component="form"
@@ -152,7 +177,7 @@ const UserCreate = () => {
             <TextField
               margin="normal"
               required
-              style={W50}
+              style={w(50)}
               {...register('name', {
                 required: true,
                 maxLength: formValidationValue.name.max,
@@ -171,7 +196,7 @@ const UserCreate = () => {
             <TextField
               margin="normal"
               required
-              style={W50}
+              style={w(50)}
               {...register('mail', {
                 required: true,
                 maxLength: formValidationValue.mail.max,
@@ -201,28 +226,25 @@ const UserCreate = () => {
                 }%`,
               }}
             >
-              {map(
-                filter(keys(Role), (r) => !isNaN(Number(r))),
-                (key) => {
-                  return (
-                    <FormControlLabel
-                      key={key}
-                      color={setting.color}
-                      value={Number(key)}
-                      control={
-                        <Radio
-                          {...register('role', {
-                            required: true,
-                          })}
-                          style={{ color: setting.color }}
-                          value={Number(key)}
-                        />
-                      }
-                      label={t(dispRole(Number(key)))}
-                    />
-                  )
-                },
-              )}
+              {map(roleList, (item) => {
+                return (
+                  <FormControlLabel
+                    key={item.id}
+                    color={setting.color}
+                    value={item.id}
+                    control={
+                      <Radio
+                        {...register('role', {
+                          required: true,
+                        })}
+                        style={{ color: setting.color }}
+                        value={item.id}
+                      />
+                    }
+                    label={t(dispRole(Number(item.id)))}
+                  />
+                )
+              })}
             </RadioGroup>
             <ErrorHandler
               validations={formValidation.role}
@@ -248,21 +270,37 @@ const UserCreate = () => {
                   },
                 }}
               >
-                <AddCircleOutlineIcon sx={Mr0_25} />
+                <AddCircleOutlineIcon sx={mr(0.25)} />
                 {t('management.features.user.create')}
               </Button>
             </Box>
           </Box>
         </Box>
       </DialogContent>
+      <UserCreateModal
+        open={open}
+        data={userData}
+        closeModal={() => router.push(RouterPath.ManagementUser)}
+      ></UserCreateModal>
     </>
   )
 }
 
 export const getServerSideProps = async ({ locale }) => {
+  const roleList = []
+  await UserRoleListSSR().then((res) => {
+    for (const r of res.data.roles) {
+      roleList.push({
+        id: r.id,
+        name: r[`name_${locale}`],
+      })
+    }
+  })
+
   return {
     props: {
       baseUrl: process.env.NEXT_CSR_URL,
+      roleList,
       messages: (
         await import(`../../../../public/locales/${locale}/common.json`)
       ).default,

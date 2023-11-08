@@ -24,7 +24,7 @@ import store, { RootState } from '@/hooks/store/store'
 import _ from 'lodash'
 import { mgSideBarChange, mgSignOut } from '@/hooks/store'
 import { RouterPath } from '@/enum/router'
-import { Mb2, Mt2, SideBarBody, SideBarName, W300px } from '@/styles/index'
+import { mb, mt, SideBarBody, SideBarName, wBlock } from '@/styles/index'
 
 type Props = {
   drawerOpen: boolean
@@ -108,7 +108,7 @@ const SideBar = (props: Props) => {
 
   const renderRow = (row: SideBarModel): JSX.Element => {
     return (
-      <ListItem disablePadding key={row.name} sx={[Mt2, Mb2]}>
+      <ListItem disablePadding key={row.name} sx={[mt(2), mb(2)]}>
         <ListItemButton
           onClick={
             row.button
@@ -132,7 +132,7 @@ const SideBar = (props: Props) => {
       open={props.drawerOpen}
       onClose={props.onToggleDrawer}
     >
-      <Box sx={W300px} role="presentation" onClick={props.onToggleDrawer}>
+      <Box sx={wBlock(300)} role="presentation" onClick={props.onToggleDrawer}>
         <Box
           sx={[
             SideBarBody,

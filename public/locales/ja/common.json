@@ -6,15 +6,19 @@
         "list": "応募者一覧"
       },
       "user": {
-        "list": "ユーザ一覧",
-        "create": "ユーザ作成"
+        "list": "ユーザー一覧",
+        "create": "ユーザー作成"
       },
       "setting": {
         "index": "個人設定"
       },
       "modal": {
-        "upload": "ファイルアップロード"
+        "upload": "ファイルアップロード",
+        "createUser": "ログイン情報"
       }
+    },
+    "toast": {
+      "create": "が正常に登録されました"
     },
     "table": {
       "rowsPerPage": "ページあたりの行数",
@@ -84,7 +88,12 @@
         }
       },
       "user": {
-        "create": "ユーザを作成",
+        "user": "ユーザー",
+        "create": "ユーザーを作成",
+        "backList": "ユーザー一覧へ戻る",
+        "createMsg": "ユーザーを作成しました。",
+        "createMsg2": "以下のログイン情報をご確認ください。",
+        "createMsg3": "※「ユーザーー一覧へ戻る」をクリックすると、これ以降初期パスワードの確認はできなくなります。",
         "role": {
           "admin": "最高責任者",
           "interviewer": "面接官"
@@ -92,6 +101,7 @@
         "header": {
           "name": "氏名",
           "mail": "メールアドレス",
+          "password": "パスワード",
           "role": "ロール"
         }
       },
@@ -105,7 +115,7 @@
     "sidebar": {
       "applicant": "応募者",
       "reserver": "予約者",
-      "user": "ユーザ",
+      "user": "ユーザー",
       "mail": "メールテンプレート",
       "analysis": "データ集計",
       "history": "操作ログ",

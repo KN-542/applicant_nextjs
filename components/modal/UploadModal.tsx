@@ -12,8 +12,7 @@ import {
 } from '@mui/material'
 import { useTranslations } from 'next-intl'
 import _ from 'lodash'
-import { common } from '@material-ui/core/colors'
-import { Bold, DragDropArea, Mb2, Mr2 } from '@/styles/index'
+import { Bold, DragDropArea, mb, mr } from '@/styles/index'
 
 type Props = {
   open: boolean
@@ -50,9 +49,9 @@ const UploadModal = (props: Props) => {
         </Box>
       </DialogContent>
 
-      <Divider sx={Mb2} />
+      <Divider sx={mb(2)} />
 
-      <DialogActions sx={[Mr2, Mb2]}>
+      <DialogActions sx={[mr(2), mb(2)]}>
         <Button variant="outlined" color="inherit" onClick={props.closeModal}>
           {t('common.button.cancel')}
         </Button>

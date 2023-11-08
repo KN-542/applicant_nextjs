@@ -20,16 +20,7 @@ import ErrorHandler from '@/components/ErrorHandler'
 import { trim } from 'lodash'
 import { loginCSR, loginSSR } from '@/api/repository'
 import { useRouter } from 'next/router'
-import {
-  LoginMain,
-  M1,
-  MinW396,
-  Mt1,
-  Mt20,
-  Mt3Mb1,
-  Mt8Mb4,
-  SecondaryMain,
-} from '@/styles/index'
+import { LoginMain, minW, mt, mb, SecondaryMain, m } from '@/styles/index'
 import store from '@/hooks/store/store'
 import { mgUserSignIn } from '@/hooks/store'
 import { UserModel } from 'types/management'
@@ -149,10 +140,10 @@ const Login = ({ baseUrl }) => {
   return (
     <>
       <NextHead></NextHead>
-      <Container component="main" maxWidth="xs" sx={Mt20}>
+      <Container component="main" maxWidth="xs" sx={mt(20)}>
         <CssBaseline />
         <Box sx={LoginMain}>
-          <Avatar sx={[M1, SecondaryMain]}>
+          <Avatar sx={[m(1), SecondaryMain]}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -162,7 +153,7 @@ const Login = ({ baseUrl }) => {
             component="form"
             onSubmit={handleSubmit(submit)}
             noValidate
-            sx={Mt1}
+            sx={mt(1)}
           >
             <TextField
               margin="normal"
@@ -170,7 +161,7 @@ const Login = ({ baseUrl }) => {
               fullWidth
               label={t('management.features.login.mail')}
               autoFocus
-              sx={MinW396}
+              sx={minW(396)}
               {...register('mail', {
                 required: true,
                 maxLength: formValidationValue.mail.max,
@@ -190,7 +181,7 @@ const Login = ({ baseUrl }) => {
               fullWidth
               label={t('management.features.login.password')}
               autoComplete="current-password"
-              sx={MinW396}
+              sx={minW(396)}
               {...register('password', {
                 required: true,
                 minLength: formValidationValue.password.min,
@@ -204,7 +195,7 @@ const Login = ({ baseUrl }) => {
               validations={formValidation.password}
               type={errors.password?.type}
             ></ErrorHandler>
-            <Grid container sx={Mt3Mb1}>
+            <Grid container sx={[mt(3), mb(1)]}>
               <Grid item>
                 <Link href="#" variant="body2">
                   {t('management.features.login.forgotPassword')}
@@ -216,7 +207,7 @@ const Login = ({ baseUrl }) => {
             </Button>
           </Box>
         </Box>
-        <Copyright sx={Mt8Mb4} />
+        <Copyright sx={[mt(8), mb(4)]} />
       </Container>
     </>
   )

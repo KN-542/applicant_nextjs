@@ -6,15 +6,17 @@ import {
   DialogContentMain,
   DialogValue,
   DialogKeyChild,
+  mt,
 } from '@/styles/index'
 
 type Props = {
   data: Contents[]
+  mt?: number
 }
 
 const Content = (props: Props) => {
   return (
-    <DialogContent sx={DialogContentMain}>
+    <DialogContent sx={[DialogContentMain, mt(props.mt ?? 15)]}>
       {map(props.data, (item, index) => {
         return (
           <Box key={index} sx={DialogKey}>
