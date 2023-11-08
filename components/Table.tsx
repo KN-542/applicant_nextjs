@@ -17,14 +17,13 @@ import {
   Cell,
   ColorWhite,
   M0Auto,
-  Mb2,
-  MinW750,
-  Mt30,
+  mb,
+  minW,
+  mt,
   TableHeaderSX,
   TextCenter,
-  W100,
-  W75px,
-  W90,
+  hBlock,
+  w,
 } from '@/styles/index'
 import { common } from '@mui/material/colors'
 
@@ -99,10 +98,10 @@ const EnhancedTable = (props: Props) => {
   return (
     <>
       {size(props.bodies) > 0 && (
-        <Box sx={[W90, M0Auto]}>
-          <Paper sx={[W100, Mb2]}>
+        <Box sx={[w(90), M0Auto]}>
+          <Paper sx={[mb(2)]}>
             <TableContainer sx={{ maxHeight: '75vh', overflowY: 'auto' }}>
-              <Table sx={MinW750} aria-labelledby="tableTitle" size="medium">
+              <Table sx={minW(750)} aria-labelledby="tableTitle" size="medium">
                 <EnhancedTableHead
                   numSelected={size(selected)}
                   onSelectAllClick={handleSelectAllClick}
@@ -126,7 +125,11 @@ const EnhancedTable = (props: Props) => {
                         {props.isCheckbox && (
                           <TableCell
                             padding="checkbox"
-                            sx={[W75px, ColorWhite, { bgcolor: common.white }]}
+                            sx={[
+                              hBlock(75),
+                              ColorWhite,
+                              { bgcolor: common.white },
+                            ]}
                           >
                             <Checkbox
                               style={{ color: setting.color }}
@@ -145,7 +148,7 @@ const EnhancedTable = (props: Props) => {
                               scope="row"
                               padding="none"
                               key={index2}
-                              sx={W75px}
+                              sx={hBlock(75)}
                             >
                               {isEmpty(row.item) && row[item]}
                             </TableCell>
@@ -161,7 +164,7 @@ const EnhancedTable = (props: Props) => {
         </Box>
       )}
       {isEqual(size(props.bodies), 0) && (
-        <Box fontSize={60} sx={[TextCenter, Mt30]}>
+        <Box fontSize={60} sx={[TextCenter, mt(30)]}>
           {t('common.table.none')}
         </Box>
       )}

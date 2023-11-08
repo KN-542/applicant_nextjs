@@ -26,7 +26,7 @@ export type Color = {
   toastErrorColor: string
 }
 
-// ログインユーザ model
+// ログインユーザー model
 export type UserModel = {
   name: string
   mail: string
@@ -63,7 +63,7 @@ export type ApplicantsTableBody = {
   curriculumVitae: JSX.Element
 }
 
-// ユーザ一覧 table body
+// ユーザー一覧 table body
 export type UsersTableBody = {
   // No
   no: number

@@ -14,7 +14,7 @@ import { useRouter } from 'next/router'
 import { RouterPath } from '@/enum/router'
 import { dispRole } from '@/enum/user'
 import NextHead from '@/components/Header'
-import { Ml1, Mr0_25, Mt12, TableMenu } from '@/styles/index'
+import { ml, mr, mt, TableMenu } from '@/styles/index'
 
 const Applicants = ({ list }) => {
   const router = useRouter()
@@ -46,12 +46,12 @@ const Applicants = ({ list }) => {
   return (
     <>
       <NextHead></NextHead>
-      <Box sx={Mt12}>
+      <Box sx={mt(12)}>
         <Box sx={TableMenu}>
           <Button
             variant="contained"
             sx={[
-              Ml1,
+              ml(1),
               {
                 backgroundColor: setting.color,
                 '&:hover': {
@@ -62,7 +62,7 @@ const Applicants = ({ list }) => {
             ]}
             onClick={() => router.push(RouterPath.ManagementUserCreate)}
           >
-            <AddCircleOutlineIcon sx={Mr0_25} />
+            <AddCircleOutlineIcon sx={mr(0.25)} />
             {t('management.features.user.create')}
           </Button>
         </Box>

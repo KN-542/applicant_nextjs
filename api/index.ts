@@ -9,7 +9,7 @@ const APICommonHeader = {
 axios.interceptors.response.use(
   (response) => response,
   (error) => {
-    // TODO スタータスによって分岐
+    // TODO 画面遷移
     return error
   },
 )

@@ -21,7 +21,7 @@ import { applicantsDownloadCSR, applicantsSearchSSR } from '@/api/repository'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import NextHead from '@/components/Header'
-import { Ml1, Mr0_25, Mt12, Resume, TableMenu } from '@/styles/index'
+import { ml, mr, mt, Resume, TableMenu } from '@/styles/index'
 import { RouterPath } from '@/enum/router'
 
 const Applicants = ({ list, baseUrl }) => {
@@ -165,12 +165,12 @@ const Applicants = ({ list, baseUrl }) => {
   return (
     <>
       <NextHead></NextHead>
-      <Box sx={Mt12}>
+      <Box sx={mt(12)}>
         <Box sx={TableMenu}>
           <Button
             variant="contained"
             sx={[
-              Ml1,
+              ml(1),
               {
                 backgroundColor: setting.color,
                 '&:hover': {
@@ -181,13 +181,13 @@ const Applicants = ({ list, baseUrl }) => {
             ]}
             onClick={() => setBodies([])}
           >
-            <ManageSearchIcon sx={Mr0_25} />
+            <ManageSearchIcon sx={mr(0.25)} />
             {t('management.features.applicant.search')}
           </Button>
           <Button
             variant="contained"
             sx={[
-              Ml1,
+              ml(1),
               {
                 backgroundColor: setting.color,
                 '&:hover': {
@@ -198,7 +198,7 @@ const Applicants = ({ list, baseUrl }) => {
             ]}
             onClick={() => setOpen(true)}
           >
-            <UploadFileIcon sx={Mr0_25} />
+            <UploadFileIcon sx={mr(0.25)} />
             {t('management.features.applicant.upload')}
           </Button>
         </Box>
@@ -224,7 +224,7 @@ const Applicants = ({ list, baseUrl }) => {
                 <>{t('management.features.applicant.documents.f')}</>
               ) : (
                 <Button color="primary" sx={Resume}>
-                  <UploadFileIcon sx={Mr0_25} />
+                  <UploadFileIcon sx={mr(0.25)} />
                   {t('management.features.applicant.documents.t')}
                 </Button>
               ),

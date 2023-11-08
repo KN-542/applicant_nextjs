@@ -13,7 +13,7 @@ import router from 'next/router'
 import SettingsIcon from '@mui/icons-material/Settings'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { RouterPath, decideTitle } from '@/enum/router'
-import { FlexGrow, Mr0_25, Mr1, Mr2, SpaceBetween } from '@/styles/index'
+import { FlexGrow, mr, SpaceBetween } from '@/styles/index'
 
 type Props = {
   onToggleDrawer: () => void
@@ -47,7 +47,7 @@ const ToolBar = (props: Props) => {
             size="large"
             edge="start"
             color="inherit"
-            sx={Mr2}
+            sx={mr(2)}
             onClick={props.onToggleDrawer}
           >
             <MenuIcon />
@@ -57,14 +57,14 @@ const ToolBar = (props: Props) => {
           </Typography>
           <Box sx={SpaceBetween}>
             <Button
-              sx={Mr1}
+              sx={mr(1)}
               color="inherit"
               onClick={(e) => {
                 e.preventDefault()
                 router.push(RouterPath.ManagementSetting)
               }}
             >
-              <SettingsIcon sx={Mr0_25} />
+              <SettingsIcon sx={mr(0.25)} />
               {t('management.toolbar.setting')}
             </Button>
             <Button
@@ -74,7 +74,7 @@ const ToolBar = (props: Props) => {
                 await logout()
               }}
             >
-              <LogoutIcon sx={Mr0_25} />
+              <LogoutIcon sx={mr(0.25)} />
               {t('management.toolbar.logout')}
             </Button>
             <Image

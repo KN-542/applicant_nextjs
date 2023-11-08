@@ -1,6 +1,9 @@
 import axios from 'axios'
 import { APICommonHeader } from '.'
-import { ApplicantsDownloadRequest } from './model/management'
+import {
+  ApplicantsDownloadRequest,
+  UserCreateRequest,
+} from './model/management'
 
 // ログインCSR
 export const loginCSR = async (baseUrl: string) => {
@@ -39,10 +42,28 @@ export const applicantsSearchSSR = async () => {
   return res
 }
 
-// ユーザ一覧 SSR
+// ユーザー一覧 SSR
 export const UserListSSR = async () => {
   const res = await axios.post(
-    `${process.env.NEXT_SSR_URL}/applicant/users`,
+    `${process.env.NEXT_SSR_URL}/user/list`,
+    APICommonHeader,
+  )
+  return res
+}
+
+// ユーザー登録 CSR
+export const UserCreateCSR = async (
+  baseUrl: string,
+  req: UserCreateRequest,
+) => {
+  const res = await axios.post(`${baseUrl}/user/create`, req, APICommonHeader)
+  return res
+}
+
+// ユーザーロール一覧 SSR
+export const UserRoleListSSR = async () => {
+  const res = await axios.post(
+    `${process.env.NEXT_SSR_URL}/user/role_list`,
     APICommonHeader,
   )
   return res
