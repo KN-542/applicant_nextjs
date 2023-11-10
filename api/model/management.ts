@@ -1,3 +1,9 @@
+// ログイン
+export type LoginRequest = {
+  email: string
+  password: string
+}
+
 // 応募者ダウンロード request
 export type ApplicantsDownloadRequest = {
   values: string[][]

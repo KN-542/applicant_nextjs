@@ -83,7 +83,7 @@ const Applicants = ({ list }) => {
   )
 }
 
-export const getServerSideProps = async ({ locale }) => {
+export const getStaticProps = async ({ locale }) => {
   const list: UsersTableBody[] = []
   await UserListSSR().then((res) => {
     _.forEach(res.data.users, (r, index) => {

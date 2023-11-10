@@ -43,7 +43,7 @@
     "features": {
       "login": {
         "top": "CLINKS 採用",
-        "mail": "メールアドレス",
+        "mail": "ユーザーID",
         "password": "パスワード",
         "login": "サインイン",
         "forgotPassword": "パスワードを忘れた場合"

@@ -316,7 +316,7 @@ const Setting = () => {
   )
 }
 
-export const getServerSideProps = async ({ locale }) => {
+export const getStaticProps = async ({ locale }) => {
   return {
     props: {
       baseUrl: process.env.NEXT_CSR_URL,
