@@ -286,7 +286,7 @@ const UserCreate = ({ baseUrl, roleList }) => {
   )
 }
 
-export const getServerSideProps = async ({ locale }) => {
+export const getStaticProps = async ({ locale }) => {
   const roleList = []
   await UserRoleListSSR().then((res) => {
     for (const r of res.data.roles) {

@@ -18,7 +18,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { Pattern, ValidationType } from '@/enum/validation'
 import ErrorHandler from '@/components/ErrorHandler'
 import { trim } from 'lodash'
-import { loginCSR, loginSSR } from '@/api/repository'
+import { loginCSR } from '@/api/repository'
 import { useRouter } from 'next/router'
 import { LoginMain, minW, mt, mb, SecondaryMain, m } from '@/styles/index'
 import store from '@/hooks/store/store'
@@ -26,6 +26,7 @@ import { mgUserSignIn } from '@/hooks/store'
 import { UserModel } from 'types/management'
 import { RouterPath } from '@/enum/router'
 import NextHead from '@/components/Header'
+import { LoginRequest } from '@/api/model/management'
 
 type Inputs = {
   mail: string
@@ -36,16 +37,6 @@ const Login = ({ baseUrl }) => {
   const router = useRouter()
 
   const [_dataCSR, setDataCSR] = useState('')
-
-  const testAPI = async () => {
-    await loginCSR(baseUrl).then((res) => {
-      setDataCSR(res.data)
-    })
-  }
-
-  useEffect(() => {
-    testAPI()
-  }, [])
 
   const t = useTranslations()
 
@@ -126,7 +117,10 @@ const Login = ({ baseUrl }) => {
 
   const submit: SubmitHandler<Inputs> = async (d: Inputs) => {
     // TODO API
-    await loginCSR(baseUrl).then(() => {
+    await loginCSR(baseUrl, {
+      email: d.mail,
+      password: d.password,
+    } as LoginRequest).then((response) => {
       store.dispatch(
         mgUserSignIn({
           name: '古家野 有栖',
@@ -213,13 +207,9 @@ const Login = ({ baseUrl }) => {
   )
 }
 
-export const getServerSideProps = async ({ locale }) => {
-  const data = await loginSSR().then((res) => {
-    return res.data
-  })
+export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      data,
       baseUrl: process.env.NEXT_CSR_URL,
       messages: (await import(`../../../public/locales/${locale}/common.json`))
         .default,

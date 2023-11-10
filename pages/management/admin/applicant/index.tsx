@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/hooks/store/store'
 import EnhancedTable from '@/components/Table'
@@ -17,7 +17,11 @@ import {
 } from '@/enum/applicant'
 import UploadModal from '@/components/modal/UploadModal'
 import { ApplicantsDownloadRequest } from '@/api/model/management'
-import { applicantsDownloadCSR, applicantsSearchSSR } from '@/api/repository'
+import {
+  applicantsDownloadCSR,
+  applicantsSearchCSR,
+  applicantsSearchSSR,
+} from '@/api/repository'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import NextHead from '@/components/Header'
@@ -30,7 +34,27 @@ const Applicants = ({ list, baseUrl }) => {
 
   const setting = useSelector((state: RootState) => state.management.setting)
 
-  const [bodies, setBodies] = useState(list)
+  const [bodies, setBodies] = useState([])
+  useEffect(() => {
+    const list: ApplicantsTableBody[] = []
+    applicantsSearchCSR(baseUrl).then((res) => {
+      _.forEach(res.data.applicants, (r, index) => {
+        list.push({
+          no: Number(index) + 1,
+          id: Number(r.id),
+          name: r.name,
+          site: Number(r.site_id),
+          mail: r.email,
+          age: Number(r.age),
+          status: ApplicantStatus.ScheduleUnanswered, // TODO
+          interviewerDate: '-', // TODO
+          resume: null,
+          curriculumVitae: null,
+        })
+      })
+    })
+    setBodies(list)
+  }, [])
 
   const [open, setOpen] = useState(false)
 
@@ -242,28 +266,9 @@ const Applicants = ({ list, baseUrl }) => {
   )
 }
 
-export const getServerSideProps = async ({ locale }) => {
-  const list: ApplicantsTableBody[] = []
-  await applicantsSearchSSR().then((res) => {
-    _.forEach(res.data.applicants, (r, index) => {
-      list.push({
-        no: Number(index) + 1,
-        id: Number(r.id),
-        name: r.name,
-        site: Number(r.site_id),
-        mail: r.email,
-        age: Number(r.age),
-        status: ApplicantStatus.ScheduleUnanswered, // TODO
-        interviewerDate: '-', // TODO
-        resume: null,
-        curriculumVitae: null,
-      })
-    })
-  })
-
+export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      list,
       baseUrl: process.env.NEXT_CSR_URL,
       messages: (
         await import(`../../../../public/locales/${locale}/common.json`)
