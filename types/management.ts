@@ -28,8 +28,10 @@ export type Color = {
 
 // ログインユーザー model
 export type UserModel = {
+  hashKey: string
   name: string
   mail: string
+  role: number
 }
 
 // 設定 model

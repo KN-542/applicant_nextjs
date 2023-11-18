@@ -1,7 +1,12 @@
 {
   "common": {
     "title": {
-      "login": "サインイン",
+      "login": {
+        "login": "サインイン"
+      },
+      "error": {
+        "500": "サーバーエラー"
+      },
       "applicant": {
         "list": "応募者一覧"
       },
@@ -25,10 +30,14 @@
       "none": "該当データがありません"
     },
     "button": {
-      "cancel": "キャンセル"
+      "cancel": "キャンセル",
+      "back": "戻る",
+      "change": "変更",
+      "auth": "認証する"
     },
     "validate": {
       "required": "は必須入力項目です",
+      "required2": "必須入力項目です",
       "requiredRadio": "を選択してください",
       "minLength": "文字以上",
       "maxLength": "文字以内で入力してください",
@@ -37,6 +46,18 @@
         "mail": "メールアドレス形式で入力してください"
       },
       "is": "は"
+    },
+    "api": {
+      "code": {
+        "101": "不正なリクエストです",
+        "login1": "ユーザーIDまたはパスワードが違います",
+        "expired1": "ログイントークンの有効期限が切れました",
+        "mfa1": "認証コードが違います",
+        "mfa2": "認証コードの有効期限が切れたため、再度メールを送信しました"
+      },
+      "header": {
+        "500": "サーバーエラーです。管理者にお問い合わせください"
+      }
     }
   },
   "management": {
@@ -45,8 +66,20 @@
         "top": "CLINKS 採用",
         "mail": "ユーザーID",
         "password": "パスワード",
+        "passwordChangeMsg": "※初回ログインのため、パスワードの変更が必須となります。",
+        "passwordButton": "パスワードを変更",
+        "currentPassword": "現在のパスワード",
+        "newPassword": "新しいパスワード",
+        "newPasswordConfirm": "新しいパスワード(確認)",
+        "newPasswordMsg": "「新しいパスワード」と「新しいパスワード(確認)」が一致しません",
         "login": "サインイン",
-        "forgotPassword": "パスワードを忘れた場合"
+        "forgotPassword": "パスワードを忘れた場合",
+        "mfaMsg1": "入力したメールアドレス宛に認証コードを送信しました。",
+        "mfaMsg2": "認証コードを入力してください。",
+        "errorButton": "ログイン画面へ",
+        "errorMsg1": "サーバーで問題が発生しているためページを表示できません。",
+        "errorMsg2": "しばらく時間を置いてからやり直してください。",
+        "errorMsg3": "または、管理者にお問い合わせください。"
       },
       "applicant": {
         "upload": "アップロード",

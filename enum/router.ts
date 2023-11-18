@@ -1,5 +1,8 @@
 export enum RouterPath {
   ManagementLogin = '/management/login',
+  ManagementError = '/management/error',
+  ManagementLoginMFA = '/management/login/mfa',
+  ManagementLoginPasswordChange = '/management/login/password',
   ManagementApplicant = '/management/admin/applicant',
   ManagementReserver = '/management/admin/reserver',
   ManagementUser = '/management/admin/user',
@@ -13,7 +16,13 @@ export enum RouterPath {
 export const decideTitle = (path: string) => {
   switch (path) {
     case RouterPath.ManagementLogin:
-      return 'common.title.login'
+      return 'common.title.login.login'
+    case RouterPath.ManagementError:
+      return 'common.title.error.500'
+    case RouterPath.ManagementLoginMFA:
+      return 'common.title.login.login'
+    case RouterPath.ManagementLoginPasswordChange:
+      return 'common.title.login.login'
     case RouterPath.ManagementUser:
       return 'common.title.user.list'
     case RouterPath.ManagementUserCreate:

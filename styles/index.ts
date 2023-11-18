@@ -72,7 +72,7 @@ export const LoginMain = {
 
 export const DialogContentMain = {
   backgroundColor: common.white,
-  width: '80%',
+  width: '90%',
   margin: '0 auto',
   boxShadow: '0 4px 8px',
   p: 3,
@@ -94,9 +94,23 @@ export const FormRadio = {
 export const FormButtons = {
   display: 'flex',
   justifyContent: 'space-between',
-  width: '33%',
+  width: '90%',
   m: '0 auto',
+  alignItems: 'center',
+  gap: '16px',
   mt: 8,
+  flexWrap: 'wrap',
+}
+export const useResponsiveStyles = () => {
+  return {
+    formButtons: {
+      '@media (min-width:950px)': {
+        flexDirection: 'row',
+        width: '33%',
+        justifyContent: 'space-between',
+      },
+    },
+  }
 }
 
 export const TableMenu = {

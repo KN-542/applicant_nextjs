@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import {
   Avatar,
   Button,
   CssBaseline,
   TextField,
-  Link,
-  Grid,
   Box,
   Typography,
   Container,
@@ -17,16 +15,22 @@ import { useTranslations } from 'next-intl'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Pattern, ValidationType } from '@/enum/validation'
 import ErrorHandler from '@/components/ErrorHandler'
-import { trim } from 'lodash'
+import { every, isEmpty, isEqual, trim } from 'lodash'
 import { loginCSR } from '@/api/repository'
 import { useRouter } from 'next/router'
 import { LoginMain, minW, mt, mb, SecondaryMain, m } from '@/styles/index'
-import store from '@/hooks/store/store'
+import store, { RootState } from '@/hooks/store/store'
 import { mgUserSignIn } from '@/hooks/store'
 import { UserModel } from 'types/management'
 import { RouterPath } from '@/enum/router'
 import NextHead from '@/components/Header'
 import { LoginRequest } from '@/api/model/management'
+import { APICommonCode, APILoginCode } from '@/enum/apiError'
+import { toast } from 'react-toastify'
+import { useSelector } from 'react-redux'
+import { common } from '@mui/material/colors'
+import ClearIcon from '@mui/icons-material/Clear'
+import { MFAStatus, PasswordChangeStatus } from '@/enum/login'
 
 type Inputs = {
   mail: string
@@ -35,10 +39,11 @@ type Inputs = {
 
 const Login = ({ baseUrl }) => {
   const router = useRouter()
+  const t = useTranslations()
+
+  const setting = useSelector((state: RootState) => state.management.setting)
 
   const [_dataCSR, setDataCSR] = useState('')
-
-  const t = useTranslations()
 
   const formValidationValue: FormValidationValue = {
     mail: {
@@ -116,25 +121,65 @@ const Login = ({ baseUrl }) => {
   } = useForm<Inputs>()
 
   const submit: SubmitHandler<Inputs> = async (d: Inputs) => {
-    // TODO API
+    // API ログイン
     await loginCSR(baseUrl, {
       email: d.mail,
       password: d.password,
-    } as LoginRequest).then((response) => {
-      store.dispatch(
-        mgUserSignIn({
-          name: '古家野 有栖',
-          mail: d.mail,
-        } as UserModel),
-      )
-      router.push(RouterPath.ManagementApplicant)
-    })
+    } as LoginRequest)
+      .then((res) => {
+        store.dispatch(
+          mgUserSignIn({
+            hashKey: res.data.hash_key,
+            name: res.data.name,
+            mail: d.mail,
+            role: res.data.role_id,
+          } as UserModel),
+        )
+
+        if (isEqual(res.data.mfa, MFAStatus.UnAuthenticated)) {
+          router.push(RouterPath.ManagementLoginMFA)
+          return
+        }
+
+        isEqual(res.data.password_change, PasswordChangeStatus.UnRequired)
+          ? router.push(RouterPath.ManagementApplicant)
+          : router.push(RouterPath.ManagementLoginPasswordChange)
+      })
+      .catch((error) => {
+        let msg = ''
+
+        if (error.response.data.code > 0) {
+          if (isEqual(error.response.data.code, APICommonCode.BadRequest)) {
+            msg = t(`common.api.code.${error.response.data.code}`)
+          } else if (isEqual(error.response.data.code, APILoginCode.LoinAuth)) {
+            msg = t(`common.api.code.login${error.response.data.code}`)
+          }
+
+          toast(msg, {
+            style: {
+              backgroundColor: setting.toastErrorColor,
+              color: common.white,
+              width: 500,
+            },
+            position: 'bottom-left',
+            hideProgressBar: true,
+            closeButton: () => <ClearIcon />,
+          })
+          return
+        }
+
+        if (
+          every([500 <= error.response.status, error.response.status < 600])
+        ) {
+          router.push(RouterPath.ManagementError)
+        }
+      })
   }
 
   return (
     <>
       <NextHead></NextHead>
-      <Container component="main" maxWidth="xs" sx={mt(20)}>
+      <Container component="main" maxWidth="xs" sx={mt(30)}>
         <CssBaseline />
         <Box sx={LoginMain}>
           <Avatar sx={[m(1), SecondaryMain]}>
@@ -189,14 +234,21 @@ const Login = ({ baseUrl }) => {
               validations={formValidation.password}
               type={errors.password?.type}
             ></ErrorHandler>
-            <Grid container sx={[mt(3), mb(1)]}>
-              <Grid item>
-                <Link href="#" variant="body2">
-                  {t('management.features.login.forgotPassword')}
-                </Link>
-              </Grid>
-            </Grid>
-            <Button type="submit" fullWidth variant="contained">
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={[
+                mt(3),
+                mb(1),
+                {
+                  backgroundColor: setting.color,
+                  '&:hover': {
+                    backgroundColor: setting.color,
+                  },
+                },
+              ]}
+            >
               {t('management.features.login.login')}
             </Button>
           </Box>
