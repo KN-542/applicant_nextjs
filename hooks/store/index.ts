@@ -5,8 +5,10 @@ import { SettingModel, SideBarStoreModel, UserModel } from 'types/management'
 const state = {
   management: {
     user: {
+      hashKey: '',
       name: '',
       mail: '',
+      role: 0,
     } as UserModel,
     sidebar: {
       targetId: 0,

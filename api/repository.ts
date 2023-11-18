@@ -2,13 +2,40 @@ import axios from 'axios'
 import { APICommonHeader } from '.'
 import {
   ApplicantsDownloadRequest,
+  HashKeyRequest,
   LoginRequest,
+  MFARequest,
   UserCreateRequest,
 } from './model/management'
 
-// ログインCSR
+// Login CSR
 export const loginCSR = async (baseUrl: string, req: LoginRequest) => {
   const res = await axios.post(`${baseUrl}/login`, req, APICommonHeader)
+  return res
+}
+
+// MFA CSR
+export const MFACSR = async (baseUrl: string, req: MFARequest) => {
+  const res = await axios.post(`${baseUrl}/mfa`, req, APICommonHeader)
+  return res
+}
+
+// MFA create CSR
+export const MFACreateCSR = async (baseUrl: string, req: HashKeyRequest) => {
+  const res = await axios.post(`${baseUrl}/code_gen`, req, APICommonHeader)
+  return res
+}
+
+// Session Confirm CSR
+export const SessionConfirmCSR = async (
+  baseUrl: string,
+  req: HashKeyRequest,
+) => {
+  const res = await axios.post(
+    `${baseUrl}/session_confirm`,
+    req,
+    APICommonHeader,
+  )
   return res
 }
 

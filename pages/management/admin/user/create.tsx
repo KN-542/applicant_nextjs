@@ -190,7 +190,7 @@ const UserCreate = ({ baseUrl, roleList }) => {
               type={errors.name?.type}
             ></ErrorHandler>
 
-            <FormLabel sx={{ mt: 6 }}>
+            <FormLabel sx={mt(6)}>
               {t('management.features.user.header.mail') + '*'}
             </FormLabel>
             <TextField
@@ -209,7 +209,7 @@ const UserCreate = ({ baseUrl, roleList }) => {
               validations={formValidation.mail}
               type={errors.mail?.type}
             ></ErrorHandler>
-            <FormLabel sx={{ mt: 6 }}>
+            <FormLabel sx={mt(6)}>
               {t('management.features.user.header.role') + '*'}
             </FormLabel>
             <RadioGroup
