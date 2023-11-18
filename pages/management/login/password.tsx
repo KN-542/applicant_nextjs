@@ -1,5 +1,5 @@
-import { HashKeyRequest } from '@/api/model/management'
-import { SessionConfirmCSR } from '@/api/repository'
+import { HashKeyRequest, PasswordChangeRequest } from '@/api/model/management'
+import { PasswordChangeCSR, SessionConfirmCSR } from '@/api/repository'
 import NextHead from '@/components/Header'
 import PasswordChangeContent, {
   InputsPassword,
@@ -16,7 +16,7 @@ import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import ClearIcon from '@mui/icons-material/Clear'
 
-const Password = ({ baseUrl }) => {
+const Password = () => {
   const router = useRouter()
   const t = useTranslations()
 
@@ -24,7 +24,7 @@ const Password = ({ baseUrl }) => {
   const user = useSelector((state: RootState) => state.management.user)
 
   useEffect(() => {
-    SessionConfirmCSR(baseUrl, {
+    SessionConfirmCSR({
       hash_key: user.hashKey,
     } as HashKeyRequest).catch((error) => {
       if (every([500 <= error.response.status, error.response.status < 600])) {
@@ -45,7 +45,7 @@ const Password = ({ baseUrl }) => {
         style: {
           backgroundColor: setting.toastErrorColor,
           color: common.white,
-          width: 500,
+          width: 600,
         },
         position: 'bottom-left',
         hideProgressBar: true,
@@ -79,7 +79,55 @@ const Password = ({ baseUrl }) => {
       })
       return
     }
-    router.push(RouterPath.ManagementApplicant)
+
+    if (isEqual(inputs.newPassword, inputs.password)) {
+      toast(t('management.features.login.newPasswordMsg2'), {
+        style: {
+          backgroundColor: setting.toastErrorColor,
+          color: common.white,
+          width: 600,
+        },
+        position: 'bottom-left',
+        hideProgressBar: true,
+        closeButton: () => <ClearIcon />,
+      })
+      return
+    }
+
+    await PasswordChangeCSR({
+      hash_key: user.hashKey,
+      password: inputs.newPassword,
+      init_password: inputs.password,
+    } as PasswordChangeRequest)
+      .then(() => {
+        router.push(RouterPath.ManagementApplicant)
+      })
+      .catch((error) => {
+        if (
+          every([500 <= error.response.status, error.response.status < 600])
+        ) {
+          router.push(RouterPath.ManagementError)
+          return
+        }
+
+        let msg = ''
+        if (isEqual(error.response.data.code, APICommonCode.BadRequest)) {
+          msg = t(`common.api.code.${error.response.data.code}`)
+        } else {
+          msg = t(`common.api.code.passwordChange${error.response.data.code}`)
+        }
+
+        toast(msg, {
+          style: {
+            backgroundColor: setting.toastErrorColor,
+            color: common.white,
+            width: 600,
+          },
+          position: 'bottom-left',
+          hideProgressBar: true,
+          closeButton: () => <ClearIcon />,
+        })
+      })
   }
 
   return (
@@ -98,7 +146,6 @@ const Password = ({ baseUrl }) => {
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      baseUrl: process.env.NEXT_CSR_URL,
       messages: (await import(`../../../public/locales/${locale}/common.json`))
         .default,
     },

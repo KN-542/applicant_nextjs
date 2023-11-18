@@ -8,7 +8,7 @@ import { useTranslations } from 'next-intl'
 import { Box, Button } from '@mui/material'
 import { common } from '@mui/material/colors'
 import { map } from 'lodash'
-import { UserListSSR } from '@/api/repository'
+import { UserListSSG } from '@/api/repository'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import { RouterPath } from '@/enum/router'
@@ -85,7 +85,7 @@ const Applicants = ({ list }) => {
 
 export const getStaticProps = async ({ locale }) => {
   const list: UsersTableBody[] = []
-  await UserListSSR().then((res) => {
+  await UserListSSG().then((res) => {
     _.forEach(res.data.users, (r, index) => {
       list.push({
         no: Number(index) + 1,
@@ -100,7 +100,6 @@ export const getStaticProps = async ({ locale }) => {
   return {
     props: {
       list,
-      baseUrl: process.env.NEXT_CSR_URL,
       messages: (
         await import(`../../../../public/locales/${locale}/common.json`)
       ).default,

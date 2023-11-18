@@ -13,6 +13,12 @@ export type MFARequest = {
   email: string
   code: string
 }
+// パスワード変更
+export type PasswordChangeRequest = {
+  hash_key: string
+  password: string
+  init_password: string
+}
 
 // 応募者ダウンロード request
 export type ApplicantsDownloadRequest = {

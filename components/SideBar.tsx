@@ -25,10 +25,12 @@ import _ from 'lodash'
 import { mgSideBarChange, mgSignOut } from '@/hooks/store'
 import { RouterPath } from '@/enum/router'
 import { mb, mt, SideBarBody, SideBarName, wBlock } from '@/styles/index'
+import { HashKeyRequest } from '@/api/model/management'
 
 type Props = {
   drawerOpen: boolean
   onToggleDrawer: () => void
+  logout: (req: HashKeyRequest) => void
 }
 
 const SideBar = (props: Props) => {
@@ -89,9 +91,9 @@ const SideBar = (props: Props) => {
       href: '',
       icon: <LogoutIcon />,
       button: async () => {
-        // TODO API
-        store.dispatch(mgSignOut())
-        router.push(RouterPath.ManagementLogin)
+        await props.logout({
+          hash_key: user.hashKey,
+        } as HashKeyRequest)
       },
     },
   ]

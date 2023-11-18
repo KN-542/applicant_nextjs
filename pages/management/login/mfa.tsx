@@ -21,10 +21,11 @@ import { common } from '@mui/material/colors'
 import ClearIcon from '@mui/icons-material/Clear'
 import { HashKeyRequest, MFARequest } from '@/api/model/management'
 import { APICommonCode, APIMFACode, APISessionCheckCode } from '@/enum/apiError'
+import { PasswordChangeStatus } from '@/enum/login'
 
 const CODE_SIZE = 6
 
-const MFA = ({ baseUrl }) => {
+const MFA = () => {
   const router = useRouter()
   const t = useTranslations()
 
@@ -34,7 +35,7 @@ const MFA = ({ baseUrl }) => {
   const [computed, setComputed] = useState(false)
 
   useEffect(() => {
-    MFACreateCSR(baseUrl, {
+    MFACreateCSR({
       hash_key: user.hashKey,
     } as HashKeyRequest).catch((error) => {
       if (every([500 <= error.response.status, error.response.status < 600])) {
@@ -55,7 +56,7 @@ const MFA = ({ baseUrl }) => {
         style: {
           backgroundColor: setting.toastErrorColor,
           color: common.white,
-          width: 500,
+          width: 600,
         },
         position: 'bottom-left',
         hideProgressBar: true,
@@ -146,13 +147,15 @@ const MFA = ({ baseUrl }) => {
   const submit = async () => {
     const codeString = code.join('')
 
-    await MFACSR(baseUrl, {
+    await MFACSR({
       hash_key: user.hashKey,
       email: user.mail,
       code: codeString,
     } as MFARequest)
-      .then(() => {
-        router.push(RouterPath.ManagementLoginPasswordChange)
+      .then((res) => {
+        isEqual(res.data.password_change, PasswordChangeStatus.UnRequired)
+          ? router.push(RouterPath.ManagementApplicant)
+          : router.push(RouterPath.ManagementLoginPasswordChange)
       })
       .catch((error) => {
         if (
@@ -183,7 +186,6 @@ const MFA = ({ baseUrl }) => {
         if (isEqual(error.response.data.code, APIMFACode.Expired)) {
           setComputed((prev) => !prev)
           setCode(new Array(CODE_SIZE).fill(''))
-          // router.push(RouterPath.ManagementLoginMFA)
         }
       })
   }
@@ -252,7 +254,6 @@ const MFA = ({ baseUrl }) => {
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      baseUrl: process.env.NEXT_CSR_URL,
       messages: (await import(`../../../public/locales/${locale}/common.json`))
         .default,
     },
