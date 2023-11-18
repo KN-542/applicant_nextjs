@@ -319,7 +319,6 @@ const Setting = () => {
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      baseUrl: process.env.NEXT_CSR_URL,
       messages: (
         await import(`../../../../public/locales/${locale}/common.json`)
       ).default,

@@ -37,7 +37,7 @@ type Inputs = {
   password: string
 }
 
-const Login = ({ baseUrl }) => {
+const Login = () => {
   const router = useRouter()
   const t = useTranslations()
 
@@ -122,7 +122,7 @@ const Login = ({ baseUrl }) => {
 
   const submit: SubmitHandler<Inputs> = async (d: Inputs) => {
     // API ログイン
-    await loginCSR(baseUrl, {
+    await loginCSR({
       email: d.mail,
       password: d.password,
     } as LoginRequest)
@@ -262,7 +262,6 @@ const Login = ({ baseUrl }) => {
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      baseUrl: process.env.NEXT_CSR_URL,
       messages: (await import(`../../../public/locales/${locale}/common.json`))
         .default,
     },

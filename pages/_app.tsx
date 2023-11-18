@@ -12,9 +12,26 @@ import { NextIntlClientProvider } from 'next-intl'
 import store from '@/hooks/store/store'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
+import { HashKeyRequest } from '@/api/model/management'
+import { LogoutCSR } from '@/api/repository'
+import { RouterPath } from '@/enum/router'
+import { mgSignOut } from '@/hooks/store'
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter()
+
+  // ログアウト
+  const logout = async (req: HashKeyRequest) => {
+    await LogoutCSR(req)
+      .then(() => {
+        store.dispatch(mgSignOut())
+        router.push(RouterPath.ManagementLogin)
+      })
+      .catch(() => {
+        router.push(RouterPath.ManagementError)
+        return
+      })
+  }
 
   // management/admin 配下の場合
   if (_.includes(router.pathname, 'management/admin')) {
@@ -34,6 +51,7 @@ const App = ({ Component, pageProps }) => {
               onToggleDrawer={() => {
                 setDrawerOpen((b) => !b)
               }}
+              logout={logout}
             />
             <Component {...pageProps} />
             <ToastContainer />

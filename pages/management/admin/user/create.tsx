@@ -34,13 +34,13 @@ import { Pattern, ValidationType } from '@/enum/validation'
 import { RouterPath } from '@/enum/router'
 import { toast } from 'react-toastify'
 import ClearIcon from '@mui/icons-material/Clear'
-import { UserCreateCSR, UserRoleListSSR } from '@/api/repository'
+import { UserCreateCSR, UserRoleListSSG } from '@/api/repository'
 import { UserCreateRequest } from '@/api/model/management'
 import UserCreateModal from '@/components/modal/UserCreateModal'
 import { useState } from 'react'
 import { Contents } from '@/types/management'
 
-const UserCreate = ({ baseUrl, roleList }) => {
+const UserCreate = ({ roleList }) => {
   const router = useRouter()
   const t = useTranslations()
 
@@ -121,7 +121,7 @@ const UserCreate = ({ baseUrl, roleList }) => {
   }
 
   const submit: SubmitHandler<Inputs> = async (d: Inputs) => {
-    await UserCreateCSR(baseUrl, {
+    await UserCreateCSR({
       name: d.name,
       email: d.mail,
       role_id: Number(d.role),
@@ -288,7 +288,7 @@ const UserCreate = ({ baseUrl, roleList }) => {
 
 export const getStaticProps = async ({ locale }) => {
   const roleList = []
-  await UserRoleListSSR().then((res) => {
+  await UserRoleListSSG().then((res) => {
     for (const r of res.data.roles) {
       roleList.push({
         id: r.id,
@@ -299,7 +299,6 @@ export const getStaticProps = async ({ locale }) => {
 
   return {
     props: {
-      baseUrl: process.env.NEXT_CSR_URL,
       roleList,
       messages: (
         await import(`../../../../public/locales/${locale}/common.json`)
