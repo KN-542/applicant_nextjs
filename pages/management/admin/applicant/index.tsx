@@ -8,7 +8,7 @@ import { ApplicantsTableBody, TableHeader } from '@/types/management'
 import { useTranslations } from 'next-intl'
 import { Box, Button } from '@mui/material'
 import { common } from '@mui/material/colors'
-import { every, isEmpty, isEqual, map } from 'lodash'
+import { isEmpty, map } from 'lodash'
 import {
   ApplicantStatus,
   Site,
@@ -16,80 +16,22 @@ import {
   dispApplicantStatus,
 } from '@/enum/applicant'
 import UploadModal from '@/components/modal/UploadModal'
-import {
-  ApplicantsDownloadRequest,
-  HashKeyRequest,
-} from '@/api/model/management'
-import {
-  JWTDecodeCSR,
-  applicantsDownloadCSR,
-  applicantsSearchCSR,
-} from '@/api/repository'
+import { ApplicantsDownloadRequest } from '@/api/model/management'
+import { applicantsDownloadCSR, applicantsSearchCSR } from '@/api/repository'
 import _ from 'lodash'
 import { useRouter } from 'next/router'
 import NextHead from '@/components/Header'
 import { ml, mr, mt, Resume, TableMenu } from '@/styles/index'
-import { RouterPath } from '@/enum/router'
-import { APICommonCode, APISessionCheckCode } from '@/enum/apiError'
-import { toast } from 'react-toastify'
-import ClearIcon from '@mui/icons-material/Clear'
-import { MFAStatus } from '@/enum/login'
 
 const Applicants = () => {
   const router = useRouter()
   const t = useTranslations()
 
   const setting = useSelector((state: RootState) => state.management.setting)
-  const user = useSelector((state: RootState) => state.management.user)
 
   const [bodies, setBodies] = useState([])
+
   useEffect(() => {
-    // JWT検証
-    JWTDecodeCSR({
-      hash_key: user.hashKey,
-    } as HashKeyRequest)
-      .then((res) => {
-        if (isEqual(res.data.mfa, MFAStatus.UnAuthenticated)) {
-          router.push(RouterPath.ManagementLoginMFA)
-          return
-        }
-      })
-      .catch((error) => {
-        if (
-          every([500 <= error.response.status, error.response.status < 600])
-        ) {
-          router.push(RouterPath.ManagementError)
-          return
-        }
-
-        let msg = ''
-        if (isEqual(error.response.data.code, APICommonCode.BadRequest)) {
-          msg = t(`common.api.code.${error.response.data.code}`)
-        } else if (
-          isEqual(error.response.data.code, APISessionCheckCode.LoginRequired)
-        ) {
-          msg = t(`common.api.code.expired${error.response.data.code}`)
-        }
-
-        toast(msg, {
-          style: {
-            backgroundColor: setting.toastErrorColor,
-            color: common.white,
-            width: 600,
-          },
-          position: 'bottom-left',
-          hideProgressBar: true,
-          closeButton: () => <ClearIcon />,
-        })
-
-        if (
-          isEqual(error.response.data.code, APISessionCheckCode.LoginRequired)
-        ) {
-          router.push(RouterPath.ManagementLogin)
-          return
-        }
-      })
-
     // 応募者一覧
     const list: ApplicantsTableBody[] = []
     applicantsSearchCSR().then((res) => {
@@ -107,8 +49,9 @@ const Applicants = () => {
           curriculumVitae: null,
         })
       })
+
+      setBodies(list)
     })
-    setBodies(list)
   }, [])
 
   const [open, setOpen] = useState(false)

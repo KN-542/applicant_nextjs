@@ -1,13 +1,10 @@
-import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { Provider } from 'react-redux'
 import { persistStore } from 'redux-persist'
 import { PersistGate } from 'redux-persist/integration/react'
-import SideBar from '@/components/SideBar'
 import '@/styles/index.css'
-import _ from 'lodash'
+import _, { isEqual } from 'lodash'
 import { appWithTranslation } from 'next-i18next'
-import ToolBar from '@/components/ToolBar'
 import { NextIntlClientProvider } from 'next-intl'
 import store from '@/hooks/store/store'
 import 'react-toastify/dist/ReactToastify.css'
@@ -16,6 +13,9 @@ import { HashKeyRequest } from '@/api/model/management'
 import { LogoutCSR } from '@/api/repository'
 import { RouterPath } from '@/enum/router'
 import { mgSignOut } from '@/hooks/store'
+import Admin from '@/components/Admin'
+import AppMFA from '@/components/AppMFA'
+import AppPasswordChange from '@/components/AppPasswordChange'
 
 const App = ({ Component, pageProps }) => {
   const router = useRouter()
@@ -35,31 +35,50 @@ const App = ({ Component, pageProps }) => {
 
   // management/admin 配下の場合
   if (_.includes(router.pathname, 'management/admin')) {
-    const [drawerOpen, setDrawerOpen] = useState(false)
-
     return (
       <Provider store={store}>
         <PersistGate persistor={persistStore(store)}>
           <NextIntlClientProvider messages={pageProps.messages}>
-            <ToolBar
-              onToggleDrawer={() => {
-                setDrawerOpen((b) => !b)
-              }}
-            />
-            <SideBar
-              drawerOpen={drawerOpen}
-              onToggleDrawer={() => {
-                setDrawerOpen((b) => !b)
-              }}
+            <Admin
+              Component={Component}
+              pageProps={pageProps}
               logout={logout}
             />
-            <Component {...pageProps} />
-            <ToastContainer />
           </NextIntlClientProvider>
         </PersistGate>
       </Provider>
     )
   } else {
+    if (isEqual(router.pathname, RouterPath.ManagementLoginMFA)) {
+      return (
+        <Provider store={store}>
+          <PersistGate persistor={persistStore(store)}>
+            <NextIntlClientProvider messages={pageProps.messages}>
+              <AppMFA
+                Component={Component}
+                pageProps={pageProps}
+                logout={logout}
+              />
+            </NextIntlClientProvider>
+          </PersistGate>
+        </Provider>
+      )
+    }
+    if (isEqual(router.pathname, RouterPath.ManagementLoginPasswordChange)) {
+      return (
+        <Provider store={store}>
+          <PersistGate persistor={persistStore(store)}>
+            <NextIntlClientProvider messages={pageProps.messages}>
+              <AppPasswordChange
+                Component={Component}
+                pageProps={pageProps}
+                logout={logout}
+              />
+            </NextIntlClientProvider>
+          </PersistGate>
+        </Provider>
+      )
+    }
     return (
       <Provider store={store}>
         <PersistGate persistor={persistStore(store)}>

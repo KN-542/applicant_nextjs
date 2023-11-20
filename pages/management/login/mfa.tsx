@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef } from 'react'
 import {
   Container,
   TextField,
@@ -15,13 +15,15 @@ import { RouterPath } from '@/enum/router'
 import { useTranslations } from 'next-intl'
 import { MFACSR, MFACreateCSR } from '@/api/repository'
 import { toast } from 'react-toastify'
-import { RootState } from '@/hooks/store/store'
+import store, { RootState } from '@/hooks/store/store'
 import { useSelector } from 'react-redux'
 import { common } from '@mui/material/colors'
 import ClearIcon from '@mui/icons-material/Clear'
 import { HashKeyRequest, MFARequest } from '@/api/model/management'
 import { APICommonCode, APIMFACode, APISessionCheckCode } from '@/enum/apiError'
 import { PasswordChangeStatus } from '@/enum/login'
+import { mgChangeSetting } from '@/hooks/store'
+import { SettingModel } from '@/types/management'
 
 const CODE_SIZE = 6
 
@@ -31,46 +33,6 @@ const MFA = () => {
 
   const setting = useSelector((state: RootState) => state.management.setting)
   const user = useSelector((state: RootState) => state.management.user)
-
-  const [computed, setComputed] = useState(false)
-
-  useEffect(() => {
-    MFACreateCSR({
-      hash_key: user.hashKey,
-    } as HashKeyRequest).catch((error) => {
-      if (every([500 <= error.response.status, error.response.status < 600])) {
-        router.push(RouterPath.ManagementError)
-        return
-      }
-
-      let msg = ''
-      if (isEqual(error.response.data.code, APICommonCode.BadRequest)) {
-        msg = t(`common.api.code.${error.response.data.code}`)
-      } else if (
-        isEqual(error.response.data.code, APISessionCheckCode.LoginRequired)
-      ) {
-        msg = t(`common.api.code.expired${error.response.data.code}`)
-      }
-
-      toast(msg, {
-        style: {
-          backgroundColor: setting.toastErrorColor,
-          color: common.white,
-          width: 600,
-        },
-        position: 'bottom-left',
-        hideProgressBar: true,
-        closeButton: () => <ClearIcon />,
-      })
-
-      if (
-        isEqual(error.response.data.code, APISessionCheckCode.LoginRequired)
-      ) {
-        router.push(RouterPath.ManagementLogin)
-        return
-      }
-    })
-  }, [computed])
 
   // @material-ui/coreなのでやむなく個別のstyle定義
   const useStyles = makeStyles((theme) => ({
@@ -157,7 +119,7 @@ const MFA = () => {
           ? router.push(RouterPath.ManagementApplicant)
           : router.push(RouterPath.ManagementLoginPasswordChange)
       })
-      .catch((error) => {
+      .catch(async (error) => {
         if (
           every([500 <= error.response.status, error.response.status < 600])
         ) {
@@ -184,8 +146,43 @@ const MFA = () => {
         })
 
         if (isEqual(error.response.data.code, APIMFACode.Expired)) {
-          setComputed((prev) => !prev)
-          setCode(new Array(CODE_SIZE).fill(''))
+          await MFACreateCSR({
+            hash_key: user.hashKey,
+          } as HashKeyRequest)
+            .then(() => {
+              setCode(new Array(CODE_SIZE).fill(''))
+            })
+            .catch((error) => {
+              if (
+                every([
+                  500 <= error.response.status,
+                  error.response.status < 600,
+                ])
+              ) {
+                router.push(RouterPath.ManagementError)
+                return
+              }
+
+              let msg = ''
+              if (isEqual(error.response.data.code, APICommonCode.BadRequest)) {
+                msg = t(`common.api.code.${error.response.data.code}`)
+              } else if (
+                isEqual(
+                  error.response.data.code,
+                  APISessionCheckCode.LoginRequired,
+                )
+              ) {
+                msg = t(`common.api.code.expired${error.response.data.code}`)
+              }
+
+              store.dispatch(
+                mgChangeSetting({
+                  errorMsg: msg,
+                } as SettingModel),
+              )
+
+              router.push(RouterPath.ManagementLogin)
+            })
         }
       })
   }
