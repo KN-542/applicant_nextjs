@@ -39,6 +39,7 @@ export type SettingModel = {
   color: string
   toastSuccessColor: string
   toastErrorColor: string
+  errorMsg: string
 }
 
 // 応募者一覧 table body

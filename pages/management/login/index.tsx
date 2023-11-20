@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Avatar,
   Button,
@@ -20,8 +20,8 @@ import { loginCSR } from '@/api/repository'
 import { useRouter } from 'next/router'
 import { LoginMain, minW, mt, mb, SecondaryMain, m } from '@/styles/index'
 import store, { RootState } from '@/hooks/store/store'
-import { mgUserSignIn } from '@/hooks/store'
-import { UserModel } from 'types/management'
+import { mgChangeSetting, mgSignOut, mgUserSignIn } from '@/hooks/store'
+import { SettingModel, UserModel } from '@/types/management'
 import { RouterPath } from '@/enum/router'
 import NextHead from '@/components/Header'
 import { LoginRequest } from '@/api/model/management'
@@ -42,6 +42,30 @@ const Login = () => {
   const t = useTranslations()
 
   const setting = useSelector((state: RootState) => state.management.setting)
+
+  useEffect(() => {
+    if (!isEmpty(setting.errorMsg)) {
+      setTimeout(() => {
+        toast(setting.errorMsg, {
+          style: {
+            backgroundColor: setting.toastErrorColor,
+            color: common.white,
+            width: 630,
+          },
+          position: 'bottom-left',
+          hideProgressBar: true,
+          closeButton: () => <ClearIcon />,
+        })
+      }, 0.1 * 1000)
+
+      store.dispatch(
+        mgChangeSetting({
+          errorMsg: '',
+        } as SettingModel),
+      )
+      store.dispatch(mgSignOut())
+    }
+  }, [])
 
   const [_dataCSR, setDataCSR] = useState('')
 

@@ -18,6 +18,7 @@ const state = {
       color: indigo[500],
       toastSuccessColor: green[500],
       toastErrorColor: red[500],
+      errorMsg: '',
     } as SettingModel,
   },
 }

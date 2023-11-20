@@ -1,17 +1,16 @@
-import { HashKeyRequest, PasswordChangeRequest } from '@/api/model/management'
-import { PasswordChangeCSR, SessionConfirmCSR } from '@/api/repository'
+import { PasswordChangeRequest } from '@/api/model/management'
+import { PasswordChangeCSR } from '@/api/repository'
 import NextHead from '@/components/Header'
 import PasswordChangeContent, {
   InputsPassword,
 } from '@/components/PasswordChangeContent'
-import { APICommonCode, APISessionCheckCode } from '@/enum/apiError'
+import { APICommonCode } from '@/enum/apiError'
 import { RouterPath } from '@/enum/router'
 import { RootState } from '@/hooks/store/store'
 import { common } from '@mui/material/colors'
 import { every, isEqual } from 'lodash'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import ClearIcon from '@mui/icons-material/Clear'
@@ -22,44 +21,6 @@ const Password = () => {
 
   const setting = useSelector((state: RootState) => state.management.setting)
   const user = useSelector((state: RootState) => state.management.user)
-
-  useEffect(() => {
-    SessionConfirmCSR({
-      hash_key: user.hashKey,
-    } as HashKeyRequest).catch((error) => {
-      if (every([500 <= error.response.status, error.response.status < 600])) {
-        router.push(RouterPath.ManagementError)
-        return
-      }
-
-      let msg = ''
-      if (isEqual(error.response.data.code, APICommonCode.BadRequest)) {
-        msg = t(`common.api.code.${error.response.data.code}`)
-      } else if (
-        isEqual(error.response.data.code, APISessionCheckCode.LoginRequired)
-      ) {
-        msg = t(`common.api.code.expired${error.response.data.code}`)
-      }
-
-      toast(msg, {
-        style: {
-          backgroundColor: setting.toastErrorColor,
-          color: common.white,
-          width: 600,
-        },
-        position: 'bottom-left',
-        hideProgressBar: true,
-        closeButton: () => <ClearIcon />,
-      })
-
-      if (
-        isEqual(error.response.data.code, APISessionCheckCode.LoginRequired)
-      ) {
-        router.push(RouterPath.ManagementLogin)
-        return
-      }
-    })
-  }, [])
 
   const back = () => {
     router.push(RouterPath.ManagementLogin)
