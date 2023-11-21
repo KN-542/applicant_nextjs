@@ -25,10 +25,10 @@ const App = ({ Component, pageProps }) => {
     await LogoutCSR(req)
       .then(() => {
         store.dispatch(mgSignOut())
-        router.push(RouterPath.ManagementLogin)
+        router.push(RouterPath.Login)
       })
       .catch(() => {
-        router.push(RouterPath.ManagementError)
+        router.push(RouterPath.Error)
         return
       })
   }
@@ -49,7 +49,7 @@ const App = ({ Component, pageProps }) => {
       </Provider>
     )
   } else {
-    if (isEqual(router.pathname, RouterPath.ManagementLoginMFA)) {
+    if (isEqual(router.pathname, RouterPath.LoginMFA)) {
       return (
         <Provider store={store}>
           <PersistGate persistor={persistStore(store)}>
@@ -64,7 +64,7 @@ const App = ({ Component, pageProps }) => {
         </Provider>
       )
     }
-    if (isEqual(router.pathname, RouterPath.ManagementLoginPasswordChange)) {
+    if (isEqual(router.pathname, RouterPath.LoginPasswordChange)) {
       return (
         <Provider store={store}>
           <PersistGate persistor={persistStore(store)}>

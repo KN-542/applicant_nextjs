@@ -35,13 +35,13 @@ const UserCreateModal = (props: Props) => {
 
       <DialogContent>
         <Typography variant="h6">
-          {t('management.features.user.createMsg')}
+          {t('features.user.createMsg')}
         </Typography>
         <Typography variant="h6">
-          {t('management.features.user.createMsg2')}
+          {t('features.user.createMsg2')}
         </Typography>
         <Typography variant="h6" sx={[mt(4), ColorRed]}>
-          {t('management.features.user.createMsg3')}
+          {t('features.user.createMsg3')}
         </Typography>
         <Content data={props.data} mt={5}></Content>
       </DialogContent>
@@ -50,7 +50,7 @@ const UserCreateModal = (props: Props) => {
 
       <DialogActions sx={[mr(2), mb(2)]}>
         <Button variant="outlined" color="inherit" onClick={props.closeModal}>
-          {t('management.features.user.backList')}
+          {t('features.user.backList')}
         </Button>
       </DialogActions>
     </Dialog>

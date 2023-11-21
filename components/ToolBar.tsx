@@ -68,11 +68,11 @@ const ToolBar = (props: Props) => {
               color="inherit"
               onClick={(e) => {
                 e.preventDefault()
-                router.push(RouterPath.ManagementSetting)
+                router.push(RouterPath.Setting)
               }}
             >
               <SettingsIcon sx={mr(0.25)} />
-              {t('management.toolbar.setting')}
+              {t('toolbar.setting')}
             </Button>
             <Button
               color="inherit"
@@ -82,7 +82,7 @@ const ToolBar = (props: Props) => {
               }}
             >
               <LogoutIcon sx={mr(0.25)} />
-              {t('management.toolbar.logout')}
+              {t('toolbar.logout')}
             </Button>
             <Image
               src="/logo.png"

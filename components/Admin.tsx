@@ -32,7 +32,7 @@ const Admin = ({ Component, pageProps, logout }) => {
     } as HashKeyRequest)
       .then((res) => {
         if (isEqual(res.data.mfa, MFAStatus.UnAuthenticated)) {
-          router.push(RouterPath.ManagementLoginMFA)
+          router.push(RouterPath.LoginMFA)
           return
         }
 
@@ -51,7 +51,7 @@ const Admin = ({ Component, pageProps, logout }) => {
         if (
           every([500 <= error.response.status, error.response.status < 600])
         ) {
-          router.push(RouterPath.ManagementError)
+          router.push(RouterPath.Error)
           return
         }
 
@@ -70,7 +70,7 @@ const Admin = ({ Component, pageProps, logout }) => {
           } as SettingModel),
         )
 
-        router.push(RouterPath.ManagementLogin)
+        router.push(RouterPath.Login)
         return
       })
   }, [])

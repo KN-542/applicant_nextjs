@@ -1,35 +1,35 @@
 export enum RouterPath {
-  ManagementLogin = '/management/login',
-  ManagementError = '/management/error',
-  ManagementLoginMFA = '/management/login/mfa',
-  ManagementLoginPasswordChange = '/management/login/password',
-  ManagementApplicant = '/management/admin/applicant',
-  ManagementReserver = '/management/admin/reserver',
-  ManagementUser = '/management/admin/user',
-  ManagementUserCreate = '/management/admin/user/create',
-  ManagementMailTemplate = '/management/admin/mail',
-  ManagementAnalysis = '/management/admin/analysis',
-  ManagementHistory = '/management/admin/history',
-  ManagementSetting = '/management/admin/setting',
+  Login = '/login',
+  Error = '/error',
+  LoginMFA = '/login/mfa',
+  LoginPasswordChange = '/login/password',
+  Applicant = '/admin/applicant',
+  Reserver = '/admin/reserver',
+  User = '/admin/user',
+  UserCreate = '/admin/user/create',
+  MailTemplate = '/admin/mail',
+  Analysis = '/admin/analysis',
+  History = '/admin/history',
+  Setting = '/admin/setting',
 }
 
 export const decideTitle = (path: string) => {
   switch (path) {
-    case RouterPath.ManagementLogin:
+    case RouterPath.Login:
       return 'common.title.login.login'
-    case RouterPath.ManagementError:
+    case RouterPath.Error:
       return 'common.title.error.500'
-    case RouterPath.ManagementLoginMFA:
+    case RouterPath.LoginMFA:
       return 'common.title.login.login'
-    case RouterPath.ManagementLoginPasswordChange:
+    case RouterPath.LoginPasswordChange:
       return 'common.title.login.login'
-    case RouterPath.ManagementUser:
+    case RouterPath.User:
       return 'common.title.user.list'
-    case RouterPath.ManagementUserCreate:
+    case RouterPath.UserCreate:
       return 'common.title.user.create'
-    case RouterPath.ManagementApplicant:
+    case RouterPath.Applicant:
       return 'common.title.applicant.list'
-    case RouterPath.ManagementSetting:
+    case RouterPath.Setting:
       return 'common.title.setting.index'
     default:
       return '404' // TODO
