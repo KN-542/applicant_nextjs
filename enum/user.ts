@@ -6,9 +6,9 @@ export enum Role {
 export const dispRole = (n: number): string => {
   switch (n) {
     case Role.Admin:
-      return 'management.features.user.role.admin'
+      return 'features.user.role.admin'
     case Role.Interviewer:
-      return 'management.features.user.role.interviewer'
+      return 'features.user.role.interviewer'
     default:
       return 'TODO'
   }

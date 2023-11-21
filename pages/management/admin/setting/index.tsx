@@ -261,19 +261,19 @@ const Setting = () => {
 
   const data: Contents[] = [
     {
-      key: t('management.features.setting.name'),
+      key: t('features.setting.name'),
       element: <>{'面接官1'}</>,
     },
     {
-      key: t('management.features.setting.mail'),
+      key: t('features.setting.mail'),
       element: <>{'a@au.com'}</>,
     },
     {
-      key: t('management.features.setting.role'),
+      key: t('features.setting.role'),
       element: <>{'面接官'}</>,
     },
     {
-      key: t('management.features.setting.color'),
+      key: t('features.setting.color'),
       element: (
         <Box sx={ColorBox}>
           <Box sx={ColorBoxChild}>
@@ -295,7 +295,7 @@ const Setting = () => {
 
                     store.dispatch(mgChangeSetting(obj))
 
-                    router.push(RouterPath.ManagementSetting)
+                    router.push(RouterPath.Setting)
                   }}
                 >
                   <Typography variant="body2">{obj.color}</Typography>

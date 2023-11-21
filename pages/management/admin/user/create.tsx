@@ -51,7 +51,7 @@ const UserCreate = ({ roleList, isError }) => {
   const setting = useSelector((state: RootState) => state.management.setting)
 
   useEffect(() => {
-    if (isError) router.push(RouterPath.ManagementError)
+    if (isError) router.push(RouterPath.Error)
   }, [])
 
   type Inputs = {
@@ -82,12 +82,12 @@ const UserCreate = ({ roleList, isError }) => {
       {
         type: ValidationType.Required,
         message:
-          t('management.features.login.mail') + t('common.validate.required'),
+          t('features.login.mail') + t('common.validate.required'),
       },
       {
         type: ValidationType.MaxLength,
         message:
-          t('management.features.login.mail') +
+          t('features.login.mail') +
           t('common.validate.is') +
           String(formValidationValue.mail.max) +
           t('common.validate.maxLength'),
@@ -101,13 +101,13 @@ const UserCreate = ({ roleList, isError }) => {
       {
         type: ValidationType.Required,
         message:
-          t('management.features.user.header.name') +
+          t('features.user.header.name') +
           t('common.validate.required'),
       },
       {
         type: ValidationType.MaxLength,
         message:
-          t('management.features.user.header.name') +
+          t('features.user.header.name') +
           t('common.validate.is') +
           String(formValidationValue.name.min) +
           t('common.validate.minLength') +
@@ -119,7 +119,7 @@ const UserCreate = ({ roleList, isError }) => {
       {
         type: ValidationType.Required,
         message:
-          t('management.features.user.header.role') +
+          t('features.user.header.role') +
           t('common.validate.requiredRadio'),
       },
     ],
@@ -135,16 +135,16 @@ const UserCreate = ({ roleList, isError }) => {
         // モーダルへ
         setUserData([
           {
-            key: t('management.features.user.header.mail'),
+            key: t('features.user.header.mail'),
             element: <>{res.data.email}</>,
           },
           {
-            key: t('management.features.user.header.password'),
+            key: t('features.user.header.password'),
             element: <>{res.data.init_password}</>,
           },
         ] as Contents[])
         setOpen(true)
-        toast(t('management.features.user.user') + t('common.toast.create'), {
+        toast(t('features.user.user') + t('common.toast.create'), {
           style: {
             backgroundColor: setting.toastSuccessColor,
             color: common.white,
@@ -156,7 +156,7 @@ const UserCreate = ({ roleList, isError }) => {
         })
       })
       .catch(() => {
-        router.push(RouterPath.ManagementError)
+        router.push(RouterPath.Error)
       })
   }
 
@@ -173,7 +173,7 @@ const UserCreate = ({ roleList, isError }) => {
             sx={FormBox}
           >
             <FormLabel>
-              {t('management.features.user.header.name') + '*'}
+              {t('features.user.header.name') + '*'}
             </FormLabel>
             <TextField
               margin="normal"
@@ -192,7 +192,7 @@ const UserCreate = ({ roleList, isError }) => {
             ></ErrorHandler>
 
             <FormLabel sx={mt(6)}>
-              {t('management.features.user.header.mail') + '*'}
+              {t('features.user.header.mail') + '*'}
             </FormLabel>
             <TextField
               margin="normal"
@@ -211,7 +211,7 @@ const UserCreate = ({ roleList, isError }) => {
               type={errors.mail?.type}
             ></ErrorHandler>
             <FormLabel sx={mt(6)}>
-              {t('management.features.user.header.role') + '*'}
+              {t('features.user.header.role') + '*'}
             </FormLabel>
             <RadioGroup
               aria-invalid={errors.role ? 'true' : 'false'}
@@ -252,7 +252,7 @@ const UserCreate = ({ roleList, isError }) => {
                 variant="outlined"
                 color="inherit"
                 sx={minW(180)}
-                onClick={() => router.push(RouterPath.ManagementUser)}
+                onClick={() => router.push(RouterPath.User)}
               >
                 {t('common.button.cancel')}
               </Button>
@@ -271,7 +271,7 @@ const UserCreate = ({ roleList, isError }) => {
                 ]}
               >
                 <AddCircleOutlineIcon sx={mr(0.25)} />
-                {t('management.features.user.create')}
+                {t('features.user.create')}
               </Button>
             </Box>
           </Box>
@@ -280,7 +280,7 @@ const UserCreate = ({ roleList, isError }) => {
       <UserCreateModal
         open={open}
         data={userData}
-        closeModal={() => router.push(RouterPath.ManagementUser)}
+        closeModal={() => router.push(RouterPath.User)}
       ></UserCreateModal>
     </>
   )
