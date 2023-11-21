@@ -28,13 +28,12 @@ import { LoginRequest } from '@/api/model/management'
 import { APICommonCode, APILoginCode } from '@/enum/apiError'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
-import { common } from '@mui/material/colors'
+import { common, indigo, red } from '@mui/material/colors'
 import ClearIcon from '@mui/icons-material/Clear'
 import { MFAStatus, PasswordChangeStatus } from '@/enum/login'
 
 type Inputs = {
   mail: string
-  password: string
 }
 
 const Login = () => {
@@ -48,7 +47,7 @@ const Login = () => {
       setTimeout(() => {
         toast(setting.errorMsg, {
           style: {
-            backgroundColor: setting.toastErrorColor,
+            backgroundColor: red[500],
             color: common.white,
             width: 630,
           },
@@ -74,19 +73,13 @@ const Login = () => {
       max: 30,
       pattern: new RegExp(Pattern.Mail),
     },
-    password: {
-      min: 8,
-      max: 16,
-      pattern: new RegExp(Pattern.HalfAlphaNum),
-    },
   }
 
   const formValidation: FormValidation = {
     mail: [
       {
         type: ValidationType.Required,
-        message:
-          t('features.login.mail') + t('common.validate.required'),
+        message: t('features.login.mail') + t('common.validate.required'),
       },
       {
         type: ValidationType.MaxLength,
@@ -101,41 +94,6 @@ const Login = () => {
         message: t('common.validate.pattern.mail'),
       },
     ],
-    password: [
-      {
-        type: ValidationType.Required,
-        message:
-          t('features.login.password') +
-          t('common.validate.required'),
-      },
-      {
-        type: ValidationType.MinLength,
-        message:
-          t('features.login.password') +
-          t('common.validate.is') +
-          String(formValidationValue.password.min) +
-          t('common.validate.minLength') +
-          String(formValidationValue.password.max) +
-          t('common.validate.maxLength'),
-      },
-      {
-        type: ValidationType.MaxLength,
-        message:
-          t('features.login.password') +
-          t('common.validate.is') +
-          String(formValidationValue.password.min) +
-          t('common.validate.minLength') +
-          String(formValidationValue.password.max) +
-          t('common.validate.maxLength'),
-      },
-      {
-        type: ValidationType.Pattern,
-        message:
-          t('features.login.password') +
-          t('common.validate.is') +
-          t('common.validate.halfAlphaNum'),
-      },
-    ],
   }
 
   const {
@@ -145,59 +103,61 @@ const Login = () => {
   } = useForm<Inputs>()
 
   const submit: SubmitHandler<Inputs> = async (d: Inputs) => {
-    // API ログイン
-    await loginCSR({
-      email: d.mail,
-      password: d.password,
-    } as LoginRequest)
-      .then((res) => {
-        store.dispatch(
-          mgUserSignIn({
-            hashKey: res.data.hash_key,
-            name: res.data.name,
-            mail: d.mail,
-            role: res.data.role_id,
-          } as UserModel),
-        )
+    router.push(RouterPath.LoginMFA)
 
-        if (isEqual(res.data.mfa, MFAStatus.UnAuthenticated)) {
-          router.push(RouterPath.LoginMFA)
-          return
-        }
+    // TODO API ログイン
+    // await loginCSR({
+    //   email: d.mail,
+    //   password: d.password,
+    // } as LoginRequest)
+    //   .then((res) => {
+    //     store.dispatch(
+    //       mgUserSignIn({
+    //         hashKey: res.data.hash_key,
+    //         name: res.data.name,
+    //         mail: d.mail,
+    //         role: res.data.role_id,
+    //       } as UserModel),
+    //     )
 
-        isEqual(res.data.password_change, PasswordChangeStatus.UnRequired)
-          ? router.push(RouterPath.Applicant)
-          : router.push(RouterPath.LoginPasswordChange)
-      })
-      .catch((error) => {
-        let msg = ''
+    //     if (isEqual(res.data.mfa, MFAStatus.UnAuthenticated)) {
+    //       router.push(RouterPath.LoginMFA)
+    //       return
+    //     }
 
-        if (error.response.data.code > 0) {
-          if (isEqual(error.response.data.code, APICommonCode.BadRequest)) {
-            msg = t(`common.api.code.${error.response.data.code}`)
-          } else if (isEqual(error.response.data.code, APILoginCode.LoinAuth)) {
-            msg = t(`common.api.code.login${error.response.data.code}`)
-          }
+    //     isEqual(res.data.password_change, PasswordChangeStatus.UnRequired)
+    //       ? router.push(RouterPath.Applicant)
+    //       : router.push(RouterPath.LoginPasswordChange)
+    //   })
+    //   .catch((error) => {
+    //     let msg = ''
 
-          toast(msg, {
-            style: {
-              backgroundColor: setting.toastErrorColor,
-              color: common.white,
-              width: 500,
-            },
-            position: 'bottom-left',
-            hideProgressBar: true,
-            closeButton: () => <ClearIcon />,
-          })
-          return
-        }
+    //     if (error.response.data.code > 0) {
+    //       if (isEqual(error.response.data.code, APICommonCode.BadRequest)) {
+    //         msg = t(`common.api.code.${error.response.data.code}`)
+    //       } else if (isEqual(error.response.data.code, APILoginCode.LoinAuth)) {
+    //         msg = t(`common.api.code.login${error.response.data.code}`)
+    //       }
 
-        if (
-          every([500 <= error.response.status, error.response.status < 600])
-        ) {
-          router.push(RouterPath.Error)
-        }
-      })
+    //       toast(msg, {
+    //         style: {
+    //           backgroundColor: setting.toastErrorColor,
+    //           color: common.white,
+    //           width: 500,
+    //         },
+    //         position: 'bottom-left',
+    //         hideProgressBar: true,
+    //         closeButton: () => <ClearIcon />,
+    //       })
+    //       return
+    //     }
+
+    //     if (
+    //       every([500 <= error.response.status, error.response.status < 600])
+    //     ) {
+    //       router.push(RouterPath.Error)
+    //     }
+    //   })
   }
 
   return (
@@ -237,27 +197,7 @@ const Login = () => {
               validations={formValidation.mail}
               type={errors.mail?.type}
             ></ErrorHandler>
-            <TextField
-              margin="normal"
-              type="password"
-              required
-              fullWidth
-              label={t('features.login.password')}
-              autoComplete="current-password"
-              sx={minW(396)}
-              {...register('password', {
-                required: true,
-                minLength: formValidationValue.password.min,
-                maxLength: formValidationValue.password.max,
-                pattern: formValidationValue.password.pattern,
-                setValueAs: (value) => trim(value),
-              })}
-              aria-invalid={errors.password ? 'true' : 'false'}
-            />
-            <ErrorHandler
-              validations={formValidation.password}
-              type={errors.password?.type}
-            ></ErrorHandler>
+
             <Button
               type="submit"
               fullWidth
@@ -266,9 +206,9 @@ const Login = () => {
                 mt(3),
                 mb(1),
                 {
-                  backgroundColor: setting.color,
+                  backgroundColor: indigo[500],
                   '&:hover': {
-                    backgroundColor: setting.color,
+                    backgroundColor: indigo[500],
                   },
                 },
               ]}
@@ -286,7 +226,7 @@ const Login = () => {
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      messages: (await import(`../../../public/locales/${locale}/common.json`))
+      messages: (await import(`../../public/locales/${locale}/common.json`))
         .default,
     },
   }

@@ -31,7 +31,7 @@ const AppMFA = ({ Component, pageProps, logout }) => {
         if (
           every([500 <= error.response.status, error.response.status < 600])
         ) {
-          router.push(RouterPath.ManagementError)
+          router.push(RouterPath.Error)
           return
         }
 
@@ -50,7 +50,7 @@ const AppMFA = ({ Component, pageProps, logout }) => {
           } as SettingModel),
         )
 
-        router.push(RouterPath.ManagementLogin)
+        router.push(RouterPath.Login)
         return
       })
   }, [])

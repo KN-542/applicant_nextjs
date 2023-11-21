@@ -23,12 +23,12 @@ const Password = () => {
   const user = useSelector((state: RootState) => state.management.user)
 
   const back = () => {
-    router.push(RouterPath.ManagementLogin)
+    router.push(RouterPath.Login)
   }
 
   const submit = async (inputs: InputsPassword) => {
     if (!isEqual(inputs.newPassword, inputs.newPasswordConfirm)) {
-      toast(t('management.features.login.newPasswordMsg'), {
+      toast(t('features.login.newPasswordMsg'), {
         style: {
           backgroundColor: setting.toastErrorColor,
           color: common.white,
@@ -42,7 +42,7 @@ const Password = () => {
     }
 
     if (isEqual(inputs.newPassword, inputs.password)) {
-      toast(t('management.features.login.newPasswordMsg2'), {
+      toast(t('features.login.newPasswordMsg2'), {
         style: {
           backgroundColor: setting.toastErrorColor,
           color: common.white,
@@ -61,13 +61,13 @@ const Password = () => {
       init_password: inputs.password,
     } as PasswordChangeRequest)
       .then(() => {
-        router.push(RouterPath.ManagementApplicant)
+        router.push(RouterPath.Applicant)
       })
       .catch((error) => {
         if (
           every([500 <= error.response.status, error.response.status < 600])
         ) {
-          router.push(RouterPath.ManagementError)
+          router.push(RouterPath.Error)
           return
         }
 
@@ -95,7 +95,7 @@ const Password = () => {
     <>
       <NextHead></NextHead>
       <PasswordChangeContent
-        msg={t('management.features.login.passwordChangeMsg')}
+        msg={t('features.login.passwordChangeMsg')}
         buttonMsg="back"
         buttonFunc={back}
         asyncFunc={submit}

@@ -25,7 +25,7 @@ const Applicants = ({ list, isError }) => {
   const [bodies, setBodies] = useState(list)
 
   useEffect(() => {
-    if (isError) router.push(RouterPath.ManagementError)
+    if (isError) router.push(RouterPath.Error)
   }, [])
 
   const tableHeader: TableHeader[] = [
@@ -35,15 +35,15 @@ const Applicants = ({ list, isError }) => {
     },
     {
       id: 2,
-      name: t('management.features.user.header.name'),
+      name: t('features.user.header.name'),
     },
     {
       id: 3,
-      name: t('management.features.user.header.mail'),
+      name: t('features.user.header.mail'),
     },
     {
       id: 4,
-      name: t('management.features.user.header.role'),
+      name: t('features.user.header.role'),
     },
   ]
 
@@ -64,10 +64,10 @@ const Applicants = ({ list, isError }) => {
                 },
               },
             ]}
-            onClick={() => router.push(RouterPath.ManagementUserCreate)}
+            onClick={() => router.push(RouterPath.UserCreate)}
           >
             <AddCircleOutlineIcon sx={mr(0.25)} />
-            {t('management.features.user.create')}
+            {t('features.user.create')}
           </Button>
         </Box>
         <EnhancedTable

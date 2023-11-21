@@ -114,7 +114,7 @@ const PasswordChangeContent = (props: Props) => {
             sx={FormBox}
           >
             <FormLabel>
-              {t('management.features.login.currentPassword') + '*'}
+              {t('features.login.currentPassword') + '*'}
             </FormLabel>
             <TextField
               margin="normal"
@@ -135,7 +135,7 @@ const PasswordChangeContent = (props: Props) => {
             ></ErrorHandler>
 
             <FormLabel sx={mt(6)}>
-              {t('management.features.login.newPassword') + '*'}
+              {t('features.login.newPassword') + '*'}
             </FormLabel>
             <TextField
               margin="normal"
@@ -156,7 +156,7 @@ const PasswordChangeContent = (props: Props) => {
             ></ErrorHandler>
 
             <FormLabel sx={mt(6)}>
-              {t('management.features.login.newPasswordConfirm') + '*'}
+              {t('features.login.newPasswordConfirm') + '*'}
             </FormLabel>
             <TextField
               margin="normal"
@@ -200,7 +200,7 @@ const PasswordChangeContent = (props: Props) => {
                   },
                 ]}
               >
-                {t('management.features.login.passwordButton')}
+                {t('features.login.passwordButton')}
               </Button>
             </Box>
           </Box>
