@@ -21,11 +21,12 @@ import LogoutIcon from '@mui/icons-material/Logout'
 import { SideBarModel, SideBarStoreModel } from 'types/management'
 import { useTranslations } from 'next-intl'
 import store, { RootState } from '@/hooks/store/store'
-import _ from 'lodash'
+import _, { isEqual } from 'lodash'
 import { mgSideBarChange, mgSignOut } from '@/hooks/store'
 import { RouterPath } from '@/enum/router'
 import { mb, mt, SideBarBody, SideBarName, wBlock } from '@/styles/index'
 import { HashKeyRequest } from '@/api/model/management'
+import { Role } from '@/enum/user'
 
 type Props = {
   drawerOpen: boolean
@@ -46,36 +47,42 @@ const SideBar = (props: Props) => {
       name: t('management.sidebar.applicant'),
       href: RouterPath.ManagementApplicant,
       icon: <PersonIcon />,
+      role: true,
     },
     {
       id: 2,
       name: t('management.sidebar.reserver'),
       href: RouterPath.ManagementReserver,
       icon: <CalendarMonthIcon />,
+      role: true,
     },
     {
       id: 3,
       name: t('management.sidebar.user'),
       href: RouterPath.ManagementUser,
       icon: <CoPresentIcon />,
+      role: true,
     },
     {
       id: 4,
       name: t('management.sidebar.mail'),
       href: RouterPath.ManagementMailTemplate,
       icon: <MailIcon />,
+      role: isEqual(user.role, Role.Admin),
     },
     {
       id: 5,
       name: t('management.sidebar.analysis'),
       href: RouterPath.ManagementAnalysis,
       icon: <EqualizerIcon />,
+      role: isEqual(user.role, Role.Admin),
     },
     {
       id: 6,
       name: t('management.sidebar.history'),
       href: RouterPath.ManagementHistory,
       icon: <HistoryIcon />,
+      role: isEqual(user.role, Role.Admin),
     },
   ]
   const subData: SideBarModel[] = [
@@ -84,12 +91,14 @@ const SideBar = (props: Props) => {
       name: t('management.sidebar.setting'),
       href: RouterPath.ManagementSetting,
       icon: <SettingsIcon />,
+      role: true,
     },
     {
       id: 8,
       name: t('management.sidebar.logout'),
       href: '',
       icon: <LogoutIcon />,
+      role: true,
       button: async () => {
         await props.logout({
           hash_key: user.hashKey,
@@ -110,21 +119,25 @@ const SideBar = (props: Props) => {
 
   const renderRow = (row: SideBarModel): JSX.Element => {
     return (
-      <ListItem disablePadding key={row.name} sx={[mt(2), mb(2)]}>
-        <ListItemButton
-          onClick={
-            row.button
-              ? row.button
-              : (e) => {
-                  e.preventDefault()
-                  sideEvent(row)
-                }
-          }
-        >
-          {row.icon}
-          <Box sx={SideBarName}>{row.name}</Box>
-        </ListItemButton>
-      </ListItem>
+      <>
+        {row.role && (
+          <ListItem disablePadding key={row.name} sx={[mt(2), mb(2)]}>
+            <ListItemButton
+              onClick={
+                row.button
+                  ? row.button
+                  : (e) => {
+                      e.preventDefault()
+                      sideEvent(row)
+                    }
+              }
+            >
+              {row.icon}
+              <Box sx={SideBarName}>{row.name}</Box>
+            </ListItemButton>
+          </ListItem>
+        )}
+      </>
     )
   }
 

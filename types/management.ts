@@ -4,6 +4,7 @@ export type SideBarModel = {
   name: string
   href: string
   icon: JSX.Element
+  role: boolean
   button?: () => void
 }
 
@@ -39,7 +40,7 @@ export type SettingModel = {
   color: string
   toastSuccessColor: string
   toastErrorColor: string
-  errorMsg: string
+  errorMsg?: string
 }
 
 // 応募者一覧 table body

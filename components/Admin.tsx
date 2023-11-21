@@ -5,15 +5,15 @@ import { useRouter } from 'next/router'
 import ToolBar from '@/components/ToolBar'
 import SideBar from '@/components/SideBar'
 import store, { RootState } from '@/hooks/store/store'
-import { JWTDecodeCSR, LogoutCSR } from '@/api/repository'
+import { JWTDecodeCSR } from '@/api/repository'
 import { RouterPath } from '@/enum/router'
 import { MFAStatus } from '@/enum/login'
 import { APICommonCode, APISessionCheckCode } from '@/enum/apiError'
 import _, { every, isEqual } from 'lodash'
 import { ToastContainer } from 'react-toastify'
 import { HashKeyRequest } from '@/api/model/management'
-import { mgChangeSetting } from '@/hooks/store'
-import { SettingModel } from '@/types/management'
+import { mgChangeSetting, mgUserSignIn } from '@/hooks/store'
+import { SettingModel, UserModel } from '@/types/management'
 import { useTranslations } from 'next-intl'
 
 const Admin = ({ Component, pageProps, logout }) => {
@@ -35,6 +35,15 @@ const Admin = ({ Component, pageProps, logout }) => {
           router.push(RouterPath.ManagementLoginMFA)
           return
         }
+
+        store.dispatch(
+          mgUserSignIn({
+            hashKey: res.data.hash_key,
+            name: res.data.name,
+            mail: res.data.email,
+            role: res.data.role_id,
+          } as UserModel),
+        )
 
         setDisp(true)
       })
@@ -74,6 +83,7 @@ const Admin = ({ Component, pageProps, logout }) => {
             onToggleDrawer={() => {
               setDrawerOpen((b) => !b)
             }}
+            logout={logout}
           />
           <SideBar
             drawerOpen={drawerOpen}

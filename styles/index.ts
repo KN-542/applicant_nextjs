@@ -39,6 +39,20 @@ export const FlexGrow = { flexGrow: 1 }
 
 export const SpaceBetween = { display: 'flex', justifyContent: 'space-between' }
 
+export const SpaceBetweenContent = {
+  display: 'none',
+  '@media (min-width:950px)': {
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+}
+
+export const ToolBarMlMedia = {
+  '@media (min-width:950px)': {
+    ml: 15,
+  },
+}
+
 export const ColorRed = { color: 'red' }
 export const ColorWhite = { color: common.white }
 export const SecondaryMain = { bgcolor: 'secondary.main' }
@@ -100,17 +114,11 @@ export const FormButtons = {
   gap: '16px',
   mt: 8,
   flexWrap: 'wrap',
-}
-export const useResponsiveStyles = () => {
-  return {
-    formButtons: {
-      '@media (min-width:950px)': {
-        flexDirection: 'row',
-        width: '33%',
-        justifyContent: 'space-between',
-      },
-    },
-  }
+  '@media (min-width:950px)': {
+    flexDirection: 'row',
+    width: '33%',
+    justifyContent: 'space-between',
+  },
 }
 
 export const TableMenu = {
