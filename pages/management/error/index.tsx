@@ -37,9 +37,9 @@ const Error = () => {
             gutterBottom
             textAlign="center"
           >
-            <Box>{t('management.features.login.errorMsg1')}</Box>
-            <Box>{t('management.features.login.errorMsg2')}</Box>
-            <Box>{t('management.features.login.errorMsg3')}</Box>
+            <Box>{t('features.login.errorMsg1')}</Box>
+            <Box>{t('features.login.errorMsg2')}</Box>
+            <Box>{t('features.login.errorMsg3')}</Box>
           </Typography>
           <Button
             type="submit"
@@ -56,9 +56,9 @@ const Error = () => {
                 },
               },
             ]}
-            onClick={() => router.push(RouterPath.ManagementLogin)}
+            onClick={() => router.push(RouterPath.Login)}
           >
-            {t('management.features.login.errorButton')}
+            {t('features.login.errorButton')}
           </Button>
 
           <Copyright sx={[mt(3)]} />

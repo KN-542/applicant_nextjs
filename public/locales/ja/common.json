@@ -61,105 +61,103 @@
       }
     }
   },
-  "management": {
-    "features": {
-      "login": {
-        "top": "CLINKS 採用",
-        "mail": "ユーザーID",
-        "password": "パスワード",
-        "passwordChangeMsg": "※初回ログインのため、パスワードの変更が必須となります。",
-        "passwordButton": "パスワードを変更",
-        "currentPassword": "現在のパスワード",
-        "newPassword": "新しいパスワード",
-        "newPasswordConfirm": "新しいパスワード(確認)",
-        "newPasswordMsg": "「新しいパスワード」と「新しいパスワード(確認)」が一致しません",
-        "newPasswordMsg2": "「パスワード」と「新しいパスワード」は異なるものを入力してください",
-        "login": "サインイン",
-        "forgotPassword": "パスワードを忘れた場合",
-        "mfaMsg1": "入力したメールアドレス宛に認証コードを送信しました。",
-        "mfaMsg2": "認証コードを入力してください。",
-        "errorButton": "ログイン画面へ",
-        "errorMsg1": "サーバーで問題が発生しているためページを表示できません。",
-        "errorMsg2": "しばらく時間を置いてからやり直してください。",
-        "errorMsg3": "または、管理者にお問い合わせください。"
+  "features": {
+    "login": {
+      "top": "CLINKS 採用",
+      "mail": "メールアドレス",
+      "password": "パスワード",
+      "passwordChangeMsg": "※初回ログインのため、パスワードの変更が必須となります。",
+      "passwordButton": "パスワードを変更",
+      "currentPassword": "現在のパスワード",
+      "newPassword": "新しいパスワード",
+      "newPasswordConfirm": "新しいパスワード(確認)",
+      "newPasswordMsg": "「新しいパスワード」と「新しいパスワード(確認)」が一致しません",
+      "newPasswordMsg2": "「パスワード」と「新しいパスワード」は異なるものを入力してください",
+      "login": "サインイン",
+      "forgotPassword": "パスワードを忘れた場合",
+      "mfaMsg1": "入力したメールアドレス宛に認証コードを送信しました。",
+      "mfaMsg2": "認証コードを入力してください。",
+      "errorButton": "ログイン画面へ",
+      "errorMsg1": "サーバーで問題が発生しているためページを表示できません。",
+      "errorMsg2": "しばらく時間を置いてからやり直してください。",
+      "errorMsg3": "または、管理者にお問い合わせください。"
       },
-      "applicant": {
-        "upload": "アップロード",
-        "search": "条件検索",
-        "uploadMsg": "応募者情報のファイルアップロードを行ってください",
-        "uploadMsg2": "ここにファイルをドラッグ＆ドロップ、またはここをクリックしてファイル選択",
-        "site": {
-          "recruit": "リクナビ/Next",
-          "mynavi": "マイナビ",
-          "doda": "DODA"
-        },
-        "status": {
-          "scheduleUnanswered": "日程未回答",
-          "scheduleAnswered": "日程回答済み",
-          "documentsSubmitted": "書類提出済み",
-          "offer": "内定",
-          "internalCommitments": "内定承諾済み",
-          "calendarAnswerDeadlineExceeded": "日程回答期限超過",
-          "deadlineForSubmissionOfBooksExceeds": "書類提出期限超過",
-          "failingToPassThePhysicalExamination": "書類選考落ち",
-          "failingAnInterview": "面接落ち",
-          "withdrawal": "選考辞退",
-          "internalizedDismissal": "内定辞退",
-          "dismissalAfterInternalCommitment": "内定承諾後辞退"
-        },
-        "header": {
-          "name": "氏名",
-          "site": "媒体",
-          "mail": "メールアドレス",
-          "age": "年齢",
-          "status": "選考状況",
-          "interviewerDate": "面接予定日",
-          "resume": "履歴書",
-          "curriculumVitae": "職務経歴書"
-        },
-        "documents": {
-          "t": "あり",
-          "f": "なし"
-        }
+    "applicant": {
+      "upload": "アップロード",
+      "search": "条件検索",
+      "uploadMsg": "応募者情報のファイルアップロードを行ってください",
+      "uploadMsg2": "ここにファイルをドラッグ＆ドロップ、またはここをクリックしてファイル選択",
+      "site": {
+        "recruit": "リクナビ/Next",
+        "mynavi": "マイナビ",
+        "doda": "DODA"
       },
-      "user": {
-        "user": "ユーザー",
-        "create": "ユーザーを作成",
-        "backList": "ユーザー一覧へ戻る",
-        "createMsg": "ユーザーを作成しました。",
-        "createMsg2": "以下のログイン情報をご確認ください。",
-        "createMsg3": "※「ユーザーー一覧へ戻る」をクリックすると、これ以降初期パスワードの確認はできなくなります。",
-        "role": {
-          "admin": "最高責任者",
-          "interviewer": "面接官"
-        },
-        "header": {
-          "name": "氏名",
-          "mail": "メールアドレス",
-          "password": "パスワード",
-          "role": "ロール"
-        }
+      "status": {
+        "scheduleUnanswered": "日程未回答",
+        "scheduleAnswered": "日程回答済み",
+        "documentsSubmitted": "書類提出済み",
+        "offer": "内定",
+        "internalCommitments": "内定承諾済み",
+        "calendarAnswerDeadlineExceeded": "日程回答期限超過",
+        "deadlineForSubmissionOfBooksExceeds": "書類提出期限超過",
+        "failingToPassThePhysicalExamination": "書類選考落ち",
+        "failingAnInterview": "面接落ち",
+        "withdrawal": "選考辞退",
+        "internalizedDismissal": "内定辞退",
+        "dismissalAfterInternalCommitment": "内定承諾後辞退"
       },
-      "setting": {
+      "header": {
         "name": "氏名",
+        "site": "媒体",
         "mail": "メールアドレス",
-        "role": "ロール",
-        "color": "テーマカラー"
+        "age": "年齢",
+        "status": "選考状況",
+        "interviewerDate": "面接予定日",
+        "resume": "履歴書",
+        "curriculumVitae": "職務経歴書"
+      },
+      "documents": {
+        "t": "あり",
+        "f": "なし"
       }
     },
-    "sidebar": {
-      "applicant": "応募者",
-      "reserver": "予約者",
+    "user": {
       "user": "ユーザー",
-      "mail": "メールテンプレート",
-      "analysis": "データ集計",
-      "history": "操作ログ",
-      "setting": "個人設定",
-      "logout": "サインアウト"
+      "create": "ユーザーを作成",
+      "backList": "ユーザー一覧へ戻る",
+      "createMsg": "ユーザーを作成しました。",
+      "createMsg2": "以下のログイン情報をご確認ください。",
+      "createMsg3": "※「ユーザーー一覧へ戻る」をクリックすると、これ以降初期パスワードの確認はできなくなります。",
+      "role": {
+        "admin": "最高責任者",
+        "interviewer": "面接官"
+      },
+      "header": {
+        "name": "氏名",
+        "mail": "メールアドレス",
+        "password": "パスワード",
+        "role": "ロール"
+      }
     },
-    "toolbar": {
-      "setting": "個人設定",
-      "logout": "サインアウト"
+    "setting": {
+      "name": "氏名",
+      "mail": "メールアドレス",
+      "role": "ロール",
+      "color": "テーマカラー"
     }
+  },
+  "sidebar": {
+    "applicant": "応募者",
+    "reserver": "予約者",
+    "user": "ユーザー",
+    "mail": "メールテンプレート",
+    "analysis": "データ集計",
+    "history": "操作ログ",
+    "setting": "個人設定",
+    "logout": "サインアウト"
+  },
+  "toolbar": {
+    "setting": "個人設定",
+    "logout": "サインアウト"
   }
 }

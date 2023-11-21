@@ -57,7 +57,7 @@ const Applicants = () => {
         setBodies(list)
       })
       .catch(() => {
-        router.push(RouterPath.ManagementError)
+        router.push(RouterPath.Error)
       })
   }
 
@@ -110,10 +110,10 @@ const Applicants = () => {
       await applicantsDownloadCSR(req)
         .then(() => {
           router.reload()
-          // router.push(RouterPath.ManagementApplicant) // これだと画面が固まる…
+          // router.push(RouterPath.Applicant) // これだと画面が固まる…
         })
         .catch(() => {
-          router.push(RouterPath.ManagementError)
+          router.push(RouterPath.Error)
         })
     } else {
       console.error('選択されたファイルはtxtファイルではありません。')
@@ -131,7 +131,7 @@ const Applicants = () => {
     },
     {
       id: 2,
-      name: t('management.features.applicant.header.name'),
+      name: t('features.applicant.header.name'),
       sort: {
         target: false,
         isAsc: false,
@@ -139,7 +139,7 @@ const Applicants = () => {
     },
     {
       id: 3,
-      name: t('management.features.applicant.header.site'),
+      name: t('features.applicant.header.site'),
       sort: {
         target: false,
         isAsc: false,
@@ -147,7 +147,7 @@ const Applicants = () => {
     },
     {
       id: 4,
-      name: t('management.features.applicant.header.mail'),
+      name: t('features.applicant.header.mail'),
       sort: {
         target: false,
         isAsc: false,
@@ -155,7 +155,7 @@ const Applicants = () => {
     },
     {
       id: 5,
-      name: t('management.features.applicant.header.age'),
+      name: t('features.applicant.header.age'),
       sort: {
         target: false,
         isAsc: false,
@@ -163,7 +163,7 @@ const Applicants = () => {
     },
     {
       id: 6,
-      name: t('management.features.applicant.header.status'),
+      name: t('features.applicant.header.status'),
       sort: {
         target: false,
         isAsc: false,
@@ -171,7 +171,7 @@ const Applicants = () => {
     },
     {
       id: 7,
-      name: t('management.features.applicant.header.interviewerDate'),
+      name: t('features.applicant.header.interviewerDate'),
       sort: {
         target: false,
         isAsc: false,
@@ -179,7 +179,7 @@ const Applicants = () => {
     },
     {
       id: 8,
-      name: t('management.features.applicant.header.resume'),
+      name: t('features.applicant.header.resume'),
       sort: {
         target: false,
         isAsc: false,
@@ -187,7 +187,7 @@ const Applicants = () => {
     },
     {
       id: 9,
-      name: t('management.features.applicant.header.curriculumVitae'),
+      name: t('features.applicant.header.curriculumVitae'),
       sort: {
         target: false,
         isAsc: false,
@@ -215,7 +215,7 @@ const Applicants = () => {
             onClick={() => setBodies([])}
           >
             <ManageSearchIcon sx={mr(0.25)} />
-            {t('management.features.applicant.search')}
+            {t('features.applicant.search')}
           </Button>
           {isEqual(user.role, Role.Admin) && (
             <Button
@@ -233,7 +233,7 @@ const Applicants = () => {
               onClick={() => setOpen(true)}
             >
               <UploadFileIcon sx={mr(0.25)} />
-              {t('management.features.applicant.upload')}
+              {t('features.applicant.upload')}
             </Button>
           )}
         </Box>
@@ -249,18 +249,18 @@ const Applicants = () => {
               status: t(dispApplicantStatus(Number(l.status))),
               interviewerDate: l.interviewerDate,
               resume: isEmpty(l.resume) ? (
-                <>{t('management.features.applicant.documents.f')}</>
+                <>{t('features.applicant.documents.f')}</>
               ) : (
                 <Button color="primary" sx={Resume}>
-                  {t('management.features.applicant.documents.t')}
+                  {t('features.applicant.documents.t')}
                 </Button>
               ),
               curriculumVitae: isEmpty(l.resume) ? (
-                <>{t('management.features.applicant.documents.f')}</>
+                <>{t('features.applicant.documents.f')}</>
               ) : (
                 <Button color="primary" sx={Resume}>
                   <UploadFileIcon sx={mr(0.25)} />
-                  {t('management.features.applicant.documents.t')}
+                  {t('features.applicant.documents.t')}
                 </Button>
               ),
             }

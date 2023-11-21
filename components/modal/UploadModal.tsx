@@ -41,11 +41,11 @@ const UploadModal = (props: Props) => {
 
       <DialogContent>
         <Typography variant="h6">
-          {t('management.features.applicant.uploadMsg')}
+          {t('features.applicant.uploadMsg')}
         </Typography>
         <Box sx={DragDropArea} {...getRootProps()}>
           <input {...getInputProps()} accept=".txt" />{' '}
-          <p>{t('management.features.applicant.uploadMsg2')}</p>
+          <p>{t('features.applicant.uploadMsg2')}</p>
         </Box>
       </DialogContent>
 
