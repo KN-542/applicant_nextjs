@@ -12,8 +12,8 @@ import {
   FormBox,
   FormButtons,
   M0Auto,
+  minW,
   mt,
-  useResponsiveStyles,
   w,
 } from '@/styles/index'
 import { useTranslations } from 'next-intl'
@@ -98,8 +98,6 @@ const PasswordChangeContent = (props: Props) => {
     await props.asyncFunc(inputs)
   }
 
-  const responsiveStyles = useResponsiveStyles()
-
   return (
     <>
       <DialogContent sx={[DialogContentMain, mt(15)]}>
@@ -178,11 +176,12 @@ const PasswordChangeContent = (props: Props) => {
               type={errors.newPasswordConfirm?.type}
             ></ErrorHandler>
 
-            <Box sx={[FormButtons, responsiveStyles.formButtons]}>
+            <Box sx={FormButtons}>
               <Button
                 size="large"
                 variant="outlined"
                 color="inherit"
+                sx={minW(180)}
                 onClick={props.buttonFunc}
               >
                 {t(`common.button.${props.buttonMsg}`)}
@@ -191,12 +190,15 @@ const PasswordChangeContent = (props: Props) => {
                 size="large"
                 type="submit"
                 variant="contained"
-                sx={{
-                  backgroundColor: setting.color,
-                  '&:hover': {
+                sx={[
+                  minW(180),
+                  {
                     backgroundColor: setting.color,
+                    '&:hover': {
+                      backgroundColor: setting.color,
+                    },
                   },
-                }}
+                ]}
               >
                 {t('management.features.login.passwordButton')}
               </Button>

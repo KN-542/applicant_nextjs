@@ -21,6 +21,7 @@ import {
   mr,
   w,
   mt,
+  minW,
 } from '@/styles/index'
 import ErrorHandler from '@/components/ErrorHandler'
 import { common } from '@material-ui/core/colors'
@@ -37,10 +38,10 @@ import ClearIcon from '@mui/icons-material/Clear'
 import { UserCreateCSR, UserRoleListSSG } from '@/api/repository'
 import { UserCreateRequest } from '@/api/model/management'
 import UserCreateModal from '@/components/modal/UserCreateModal'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Contents } from '@/types/management'
 
-const UserCreate = ({ roleList }) => {
+const UserCreate = ({ roleList, isError }) => {
   const router = useRouter()
   const t = useTranslations()
 
@@ -48,6 +49,10 @@ const UserCreate = ({ roleList }) => {
   const [userData, setUserData] = useState([])
 
   const setting = useSelector((state: RootState) => state.management.setting)
+
+  useEffect(() => {
+    if (isError) router.push(RouterPath.ManagementError)
+  }, [])
 
   type Inputs = {
     name: string
@@ -125,38 +130,34 @@ const UserCreate = ({ roleList }) => {
       name: d.name,
       email: d.mail,
       role_id: Number(d.role),
-    } as UserCreateRequest).then((res) => {
-      // モーダルへ
-      setUserData([
-        {
-          key: t('management.features.user.header.mail'),
-          element: <>{res.data.email}</>,
-        },
-        {
-          key: t('management.features.user.header.password'),
-          element: <>{res.data.init_password}</>,
-        },
-      ] as Contents[])
-      setOpen(true)
-      toast(t('management.features.user.user') + t('common.toast.create'), {
-        style: {
-          backgroundColor: setting.toastSuccessColor,
-          color: common.white,
-        },
-        position: 'bottom-right',
-        hideProgressBar: true,
-        closeButton: () => <ClearIcon />,
+    } as UserCreateRequest)
+      .then((res) => {
+        // モーダルへ
+        setUserData([
+          {
+            key: t('management.features.user.header.mail'),
+            element: <>{res.data.email}</>,
+          },
+          {
+            key: t('management.features.user.header.password'),
+            element: <>{res.data.init_password}</>,
+          },
+        ] as Contents[])
+        setOpen(true)
+        toast(t('management.features.user.user') + t('common.toast.create'), {
+          style: {
+            backgroundColor: setting.toastSuccessColor,
+            color: common.white,
+            width: 500,
+          },
+          position: 'bottom-left',
+          hideProgressBar: true,
+          closeButton: () => <ClearIcon />,
+        })
       })
-    })
-    // toast('エラーだよ～ん', {
-    //   style: {
-    //     backgroundColor: setting.toastErrorColor,
-    //     color: common.white,
-    //   },
-    //   position: 'bottom-right',
-    //   hideProgressBar: true,
-    //   closeButton: () => <ClearIcon />,
-    // })
+      .catch(() => {
+        router.push(RouterPath.ManagementError)
+      })
   }
 
   return (
@@ -177,7 +178,7 @@ const UserCreate = ({ roleList }) => {
             <TextField
               margin="normal"
               required
-              style={w(50)}
+              style={w(100)}
               {...register('name', {
                 required: true,
                 maxLength: formValidationValue.name.max,
@@ -196,7 +197,7 @@ const UserCreate = ({ roleList }) => {
             <TextField
               margin="normal"
               required
-              style={w(50)}
+              style={w(100)}
               {...register('mail', {
                 required: true,
                 maxLength: formValidationValue.mail.max,
@@ -219,12 +220,7 @@ const UserCreate = ({ roleList }) => {
               name="role"
               value={watch('role') || ''}
               className="form-radio"
-              style={{
-                width: `${
-                  min([4, size(filter(keys(Role), (r) => !isNaN(Number(r))))]) *
-                  12.5
-                }%`,
-              }}
+              style={w(100)}
             >
               {map(roleList, (item) => {
                 return (
@@ -255,6 +251,7 @@ const UserCreate = ({ roleList }) => {
                 size="large"
                 variant="outlined"
                 color="inherit"
+                sx={minW(180)}
                 onClick={() => router.push(RouterPath.ManagementUser)}
               >
                 {t('common.button.cancel')}
@@ -263,12 +260,15 @@ const UserCreate = ({ roleList }) => {
                 size="large"
                 type="submit"
                 variant="contained"
-                sx={{
-                  backgroundColor: setting.color,
-                  '&:hover': {
+                sx={[
+                  minW(180),
+                  {
                     backgroundColor: setting.color,
+                    '&:hover': {
+                      backgroundColor: setting.color,
+                    },
                   },
-                }}
+                ]}
               >
                 <AddCircleOutlineIcon sx={mr(0.25)} />
                 {t('management.features.user.create')}
@@ -287,19 +287,25 @@ const UserCreate = ({ roleList }) => {
 }
 
 export const getStaticProps = async ({ locale }) => {
+  let isError = false
   const roleList = []
-  await UserRoleListSSG().then((res) => {
-    for (const r of res.data.roles) {
-      roleList.push({
-        id: r.id,
-        name: r[`name_${locale}`],
-      })
-    }
-  })
+  await UserRoleListSSG()
+    .then((res) => {
+      for (const r of res.data.roles) {
+        roleList.push({
+          id: r.id,
+          name: r[`name_${locale}`],
+        })
+      }
+    })
+    .catch(() => {
+      isError = true
+    })
 
   return {
     props: {
       roleList,
+      isError,
       messages: (
         await import(`../../../../public/locales/${locale}/common.json`)
       ).default,

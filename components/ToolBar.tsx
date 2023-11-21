@@ -7,16 +7,23 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { AppBar } from '@material-ui/core'
 import { Button, Typography } from '@mui/material'
 import { useTranslations } from 'next-intl'
-import store, { RootState } from '@/hooks/store/store'
-import { mgSignOut } from '@/hooks/store'
+import { RootState } from '@/hooks/store/store'
 import router from 'next/router'
 import SettingsIcon from '@mui/icons-material/Settings'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { RouterPath, decideTitle } from '@/enum/router'
-import { FlexGrow, mr, SpaceBetween } from '@/styles/index'
+import {
+  FlexGrow,
+  mr,
+  SpaceBetween,
+  SpaceBetweenContent,
+  ToolBarMlMedia,
+} from '@/styles/index'
+import { HashKeyRequest } from '@/api/model/management'
 
 type Props = {
   onToggleDrawer: () => void
+  logout: (req: HashKeyRequest) => void
 }
 
 const ToolBar = (props: Props) => {
@@ -26,9 +33,9 @@ const ToolBar = (props: Props) => {
   const setting = useSelector((state: RootState) => state.management.setting)
 
   const logout = async () => {
-    // TODO API
-    store.dispatch(mgSignOut())
-    router.push(RouterPath.ManagementLogin)
+    await props.logout({
+      hash_key: user.hashKey,
+    } as HashKeyRequest)
   }
 
   return (
@@ -52,10 +59,10 @@ const ToolBar = (props: Props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" sx={{ ml: 15 }}>
+          <Typography variant="h6" sx={ToolBarMlMedia}>
             {t(decideTitle(router.pathname))}
           </Typography>
-          <Box sx={SpaceBetween}>
+          <Box sx={SpaceBetweenContent}>
             <Button
               sx={mr(1)}
               color="inherit"

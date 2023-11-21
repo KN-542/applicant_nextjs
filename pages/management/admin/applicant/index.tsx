@@ -8,7 +8,7 @@ import { ApplicantsTableBody, TableHeader } from '@/types/management'
 import { useTranslations } from 'next-intl'
 import { Box, Button } from '@mui/material'
 import { common } from '@mui/material/colors'
-import { isEmpty, map } from 'lodash'
+import { isEmpty, isEqual, map } from 'lodash'
 import {
   ApplicantStatus,
   Site,
@@ -22,36 +22,47 @@ import _ from 'lodash'
 import { useRouter } from 'next/router'
 import NextHead from '@/components/Header'
 import { ml, mr, mt, Resume, TableMenu } from '@/styles/index'
+import { RouterPath } from '@/enum/router'
+import { Role } from '@/enum/user'
 
 const Applicants = () => {
   const router = useRouter()
   const t = useTranslations()
 
+  const user = useSelector((state: RootState) => state.management.user)
   const setting = useSelector((state: RootState) => state.management.setting)
 
   const [bodies, setBodies] = useState([])
 
-  useEffect(() => {
-    // 応募者一覧
+  const search = () => {
+    // API 応募者一覧
     const list: ApplicantsTableBody[] = []
-    applicantsSearchCSR().then((res) => {
-      _.forEach(res.data.applicants, (r, index) => {
-        list.push({
-          no: Number(index) + 1,
-          id: Number(r.id),
-          name: r.name,
-          site: Number(r.site_id),
-          mail: r.email,
-          age: Number(r.age),
-          status: ApplicantStatus.ScheduleUnanswered, // TODO
-          interviewerDate: '-', // TODO
-          resume: null,
-          curriculumVitae: null,
+    applicantsSearchCSR()
+      .then((res) => {
+        _.forEach(res.data.applicants, (r, index) => {
+          list.push({
+            no: Number(index) + 1,
+            id: Number(r.id),
+            name: r.name,
+            site: Number(r.site_id),
+            mail: r.email,
+            age: Number(r.age),
+            status: ApplicantStatus.ScheduleUnanswered, // TODO
+            interviewerDate: '-', // TODO
+            resume: null,
+            curriculumVitae: null,
+          })
         })
-      })
 
-      setBodies(list)
-    })
+        setBodies(list)
+      })
+      .catch(() => {
+        router.push(RouterPath.ManagementError)
+      })
+  }
+
+  useEffect(() => {
+    search()
   }, [])
 
   const [open, setOpen] = useState(false)
@@ -96,10 +107,14 @@ const Applicants = () => {
         values: body,
         site: Site.Recruit,
       }
-      await applicantsDownloadCSR(req).then(() => {
-        router.reload()
-        // router.push(RouterPath.ManagementApplicant) // これだと画面が固まる…
-      })
+      await applicantsDownloadCSR(req)
+        .then(() => {
+          router.reload()
+          // router.push(RouterPath.ManagementApplicant) // これだと画面が固まる…
+        })
+        .catch(() => {
+          router.push(RouterPath.ManagementError)
+        })
     } else {
       console.error('選択されたファイルはtxtファイルではありません。')
     }
@@ -180,10 +195,6 @@ const Applicants = () => {
     },
   ]
 
-  const search = (value) => {
-    // TODO API
-    console.log(value)
-  }
   return (
     <>
       <NextHead></NextHead>
@@ -206,23 +217,25 @@ const Applicants = () => {
             <ManageSearchIcon sx={mr(0.25)} />
             {t('management.features.applicant.search')}
           </Button>
-          <Button
-            variant="contained"
-            sx={[
-              ml(1),
-              {
-                backgroundColor: setting.color,
-                '&:hover': {
-                  backgroundColor: common.white,
-                  color: setting.color,
+          {isEqual(user.role, Role.Admin) && (
+            <Button
+              variant="contained"
+              sx={[
+                ml(1),
+                {
+                  backgroundColor: setting.color,
+                  '&:hover': {
+                    backgroundColor: common.white,
+                    color: setting.color,
+                  },
                 },
-              },
-            ]}
-            onClick={() => setOpen(true)}
-          >
-            <UploadFileIcon sx={mr(0.25)} />
-            {t('management.features.applicant.upload')}
-          </Button>
+              ]}
+              onClick={() => setOpen(true)}
+            >
+              <UploadFileIcon sx={mr(0.25)} />
+              {t('management.features.applicant.upload')}
+            </Button>
+          )}
         </Box>
         <EnhancedTable
           headers={tableHeader}

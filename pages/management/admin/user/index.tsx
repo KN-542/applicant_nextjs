@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from '@/hooks/store/store'
 import EnhancedTable from '@/components/Table'
@@ -16,13 +16,17 @@ import { dispRole } from '@/enum/user'
 import NextHead from '@/components/Header'
 import { ml, mr, mt, TableMenu } from '@/styles/index'
 
-const Applicants = ({ list }) => {
+const Applicants = ({ list, isError }) => {
   const router = useRouter()
   const t = useTranslations()
 
   const setting = useSelector((state: RootState) => state.management.setting)
 
   const [bodies, setBodies] = useState(list)
+
+  useEffect(() => {
+    if (isError) router.push(RouterPath.ManagementError)
+  }, [])
 
   const tableHeader: TableHeader[] = [
     {
@@ -84,22 +88,28 @@ const Applicants = ({ list }) => {
 }
 
 export const getStaticProps = async ({ locale }) => {
+  let isError = false
   const list: UsersTableBody[] = []
-  await UserListSSG().then((res) => {
-    _.forEach(res.data.users, (r, index) => {
-      list.push({
-        no: Number(index) + 1,
-        id: Number(r.id),
-        name: r.name,
-        mail: r.email,
-        role: Number(r.role_id),
+  await UserListSSG()
+    .then((res) => {
+      _.forEach(res.data.users, (r, index) => {
+        list.push({
+          no: Number(index) + 1,
+          id: Number(r.id),
+          name: r.name,
+          mail: r.email,
+          role: Number(r.role_id),
+        })
       })
     })
-  })
+    .catch(() => {
+      isError = true
+    })
 
   return {
     props: {
       list,
+      isError,
       messages: (
         await import(`../../../../public/locales/${locale}/common.json`)
       ).default,
