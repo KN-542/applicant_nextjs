@@ -17,13 +17,12 @@ import { MFACSR, MFACreateCSR } from '@/api/repository'
 import { toast } from 'react-toastify'
 import store, { RootState } from '@/hooks/store/store'
 import { useSelector } from 'react-redux'
-import { common } from '@mui/material/colors'
+import { common, indigo, red } from '@mui/material/colors'
 import ClearIcon from '@mui/icons-material/Clear'
 import { HashKeyRequest, MFARequest } from '@/api/model/management'
 import { APICommonCode, APIMFACode, APISessionCheckCode } from '@/enum/apiError'
-import { PasswordChangeStatus } from '@/enum/login'
-import { mgChangeSetting } from '@/hooks/store'
-import { SettingModel } from '@/types/management'
+import { commonDispatch, userDispatch } from '@/hooks/store'
+import { CommonModel, UserModel } from '@/types/management'
 
 const CODE_SIZE = 6
 
@@ -31,8 +30,7 @@ const MFA = () => {
   const router = useRouter()
   const t = useTranslations()
 
-  const setting = useSelector((state: RootState) => state.management.setting)
-  const user = useSelector((state: RootState) => state.management.user)
+  const user = useSelector((state: RootState) => state.user)
 
   // @material-ui/coreなのでやむなく個別のstyle定義
   const useStyles = makeStyles((theme) => ({
@@ -77,10 +75,10 @@ const MFA = () => {
     },
     button: {
       margin: theme.spacing(1),
-      backgroundColor: setting.color,
+      backgroundColor: indigo[500],
       color: common.white,
       '&:hover': {
-        backgroundColor: setting.color,
+        backgroundColor: indigo[500],
         color: common.white,
       },
     },
@@ -111,13 +109,10 @@ const MFA = () => {
 
     await MFACSR({
       hash_key: user.hashKey,
-      email: user.mail,
       code: codeString,
     } as MFARequest)
-      .then((res) => {
-        isEqual(res.data.password_change, PasswordChangeStatus.UnRequired)
-          ? router.push(RouterPath.Applicant)
-          : router.push(RouterPath.LoginPasswordChange)
+      .then(() => {
+        router.push(RouterPath.Applicant)
       })
       .catch(async (error) => {
         if (
@@ -136,7 +131,7 @@ const MFA = () => {
 
         toast(msg, {
           style: {
-            backgroundColor: setting.toastErrorColor,
+            backgroundColor: red[500],
             color: common.white,
             width: 600,
           },
@@ -176,9 +171,9 @@ const MFA = () => {
               }
 
               store.dispatch(
-                mgChangeSetting({
+                commonDispatch({
                   errorMsg: msg,
-                } as SettingModel),
+                } as CommonModel),
               )
 
               router.push(RouterPath.Login)
@@ -230,7 +225,16 @@ const MFA = () => {
             variant="outlined"
             color="inherit"
             className={classes.buttonBack}
-            onClick={() => router.push(RouterPath.Login)}
+            onClick={() => {
+              store.dispatch(
+                userDispatch({
+                  hashKey: '',
+                  name: '',
+                  mail: '',
+                } as UserModel),
+              )
+              router.push(RouterPath.Login)
+            }}
           >
             {t('common.button.back')}
           </Button>
@@ -251,7 +255,7 @@ const MFA = () => {
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      messages: (await import(`../../../public/locales/${locale}/common.json`))
+      messages: (await import(`../../public/locales/${locale}/common.json`))
         .default,
     },
   }

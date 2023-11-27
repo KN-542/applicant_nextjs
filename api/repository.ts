@@ -12,7 +12,7 @@ import {
 // Login CSR
 export const loginCSR = async (req: LoginRequest) => {
   const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_CSR_URL}/login`,
+    `${process.env.NEXT_PUBLIC_CSR_URL}/login_applicant`,
     req,
     APICommonHeader,
   )
@@ -22,7 +22,7 @@ export const loginCSR = async (req: LoginRequest) => {
 // Logout CSR
 export const LogoutCSR = async (req: HashKeyRequest) => {
   const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_CSR_URL}/logout`,
+    `${process.env.NEXT_PUBLIC_CSR_URL}/logout_applicant`,
     req,
     APICommonHeader,
   )
@@ -32,7 +32,7 @@ export const LogoutCSR = async (req: HashKeyRequest) => {
 // MFA CSR
 export const MFACSR = async (req: MFARequest) => {
   const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_CSR_URL}/mfa`,
+    `${process.env.NEXT_PUBLIC_CSR_URL}/mfa_applicant`,
     req,
     APICommonHeader,
   )
@@ -42,7 +42,7 @@ export const MFACSR = async (req: MFARequest) => {
 // MFA create CSR
 export const MFACreateCSR = async (req: HashKeyRequest) => {
   const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_CSR_URL}/code_gen`,
+    `${process.env.NEXT_PUBLIC_CSR_URL}/code_gen_applicant`,
     req,
     APICommonHeader,
   )
@@ -52,7 +52,7 @@ export const MFACreateCSR = async (req: HashKeyRequest) => {
 // JWT Decode CSR
 export const JWTDecodeCSR = async (req: HashKeyRequest) => {
   const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_CSR_URL}/decode`,
+    `${process.env.NEXT_PUBLIC_CSR_URL}/decode_applicant`,
     req,
     APICommonHeader,
   )

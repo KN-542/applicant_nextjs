@@ -3,7 +3,7 @@ export enum RouterPath {
   Error = '/error',
   LoginMFA = '/login/mfa',
   LoginPasswordChange = '/login/password',
-  Applicant = '/admin/applicant',
+  Applicant = '/admin',
   Reserver = '/admin/reserver',
   User = '/admin/user',
   UserCreate = '/admin/user/create',

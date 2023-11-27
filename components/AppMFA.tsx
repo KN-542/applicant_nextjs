@@ -9,14 +9,14 @@ import { HashKeyRequest } from '@/api/model/management'
 import { every, isEqual } from 'lodash'
 import { RouterPath } from '@/enum/router'
 import { APICommonCode, APISessionCheckCode } from '@/enum/apiError'
-import { mgChangeSetting } from '@/hooks/store'
-import { SettingModel } from '@/types/management'
+import { commonDispatch } from '@/hooks/store'
+import { CommonModel } from '@/types/management'
 
-const AppMFA = ({ Component, pageProps, logout }) => {
+const AppMFA = ({ Component, pageProps }) => {
   const router = useRouter()
   const t = useTranslations()
 
-  const user = useSelector((state: RootState) => state.management.user)
+  const user = useSelector((state: RootState) => state.user)
 
   const [disp, setDisp] = useState(false)
 
@@ -45,9 +45,9 @@ const AppMFA = ({ Component, pageProps, logout }) => {
         }
 
         store.dispatch(
-          mgChangeSetting({
+          commonDispatch({
             errorMsg: msg,
-          } as SettingModel),
+          } as CommonModel),
         )
 
         router.push(RouterPath.Login)

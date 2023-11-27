@@ -8,12 +8,6 @@ export type SideBarModel = {
   button?: () => void
 }
 
-// レフトメニュー store用model
-export type SideBarStoreModel = {
-  targetId: number
-  targetName: string
-}
-
 // コンテンツ
 export type Contents = {
   key: string
@@ -32,14 +26,10 @@ export type UserModel = {
   hashKey: string
   name: string
   mail: string
-  role: number
 }
 
 // 設定 model
-export type SettingModel = {
-  color: string
-  toastSuccessColor: string
-  toastErrorColor: string
+export type CommonModel = {
   errorMsg?: string
 }
 

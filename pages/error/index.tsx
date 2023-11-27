@@ -71,7 +71,7 @@ const Error = () => {
 export const getStaticProps = async ({ locale }) => {
   return {
     props: {
-      messages: (await import(`../../../public/locales/${locale}/common.json`))
+      messages: (await import(`../../public/locales/${locale}/common.json`))
         .default,
     },
   }

@@ -1,7 +1,6 @@
 // ログイン
 export type LoginRequest = {
   email: string
-  password: string
 }
 // hashKey only
 export type HashKeyRequest = {
@@ -10,7 +9,6 @@ export type HashKeyRequest = {
 // MFA
 export type MFARequest = {
   hash_key: string
-  email: string
   code: string
 }
 // パスワード変更
