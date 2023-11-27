@@ -9,8 +9,8 @@ import { HashKeyRequest } from '@/api/model/management'
 import { every, isEqual } from 'lodash'
 import { RouterPath } from '@/enum/router'
 import { APICommonCode, APISessionCheckCode } from '@/enum/apiError'
-import { mgChangeSetting } from '@/hooks/store'
-import { SettingModel } from '@/types/management'
+import { common } from '@/hooks/store'
+import { CommonModel } from '@/types/management'
 
 const AppPasswordChange = ({ Component, pageProps, logout }) => {
   const router = useRouter()
@@ -45,9 +45,9 @@ const AppPasswordChange = ({ Component, pageProps, logout }) => {
         }
 
         store.dispatch(
-          mgChangeSetting({
+          common({
             errorMsg: msg,
-          } as SettingModel),
+          } as CommonModel),
         )
 
         router.push(RouterPath.Login)

@@ -86,7 +86,6 @@ export const LoginMain = {
 
 export const DialogContentMain = {
   backgroundColor: common.white,
-  width: '90%',
   margin: '0 auto',
   boxShadow: '0 4px 8px',
   p: 3,
@@ -94,7 +93,7 @@ export const DialogContentMain = {
 }
 
 export const FormBox = {
-  mt: 4,
+  mt: 8,
   display: 'flex',
   flexFlow: 'column',
 }
@@ -107,17 +106,19 @@ export const FormRadio = {
 
 export const FormButtons = {
   display: 'flex',
+  flexDirection: 'column',
   justifyContent: 'space-between',
-  width: '90%',
-  m: '0 auto',
-  alignItems: 'center',
-  gap: '16px',
-  mt: 8,
-  flexWrap: 'wrap',
+  alignItems: 'flex-start',
   '@media (min-width:950px)': {
+    display: 'flex',
     flexDirection: 'row',
-    width: '33%',
     justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  '> *': {
+    flex: '1',
+    ml: 1,
+    mr: 1,
   },
 }
 
