@@ -1,6 +1,6 @@
 import { green, indigo, red } from '@mui/material/colors'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { CommonModel, UserModel } from 'types/management'
+import { CommonModel, UserModel } from 'types/index'
 
 const state = {
   user: {

@@ -1,4 +1,4 @@
-import { common } from '@mui/material/colors'
+import { blue, common, indigo } from '@mui/material/colors'
 
 export const m = (m: number) => {
   return { m: m }
@@ -29,6 +29,49 @@ export const minW = (w: number) => {
 }
 export const hBlock = (h: number) => {
   return { height: h }
+}
+
+export const ErrorDisp = {
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '100vh',
+}
+
+export const Title = {
+  position: 'fixed',
+  zIndex: 1,
+  top: 0,
+  width: '100%',
+  textAlign: 'center',
+  fontSize: 40,
+  fontWeight: 'bold',
+  backgroundColor: indigo[500],
+  color: common.white,
+  p: 3,
+}
+
+export const SubTitle = {
+  display: 'flex',
+  m: '0 auto',
+  fontSize: 25,
+  fontWeight: 'bold',
+  borderBottom: '2px solid',
+}
+
+export const SubTitleMsg = {
+  display: 'flex',
+  flexDirection: 'column',
+  m: '0 auto',
+  width: '90%',
+}
+
+export const modalContent = {
+  display: 'flex',
+  width: '90%',
+  m: '0 auto',
+  flexDirection: 'column',
 }
 
 export const TextCenter = {
@@ -63,18 +106,30 @@ export const Bold = {
 
 export const DragDropArea = {
   m: '0 auto',
+  width: '90%',
   mt: 3,
   mb: 3,
   border: '2px dashed #ccc',
   backgroundColor: '#eee',
   color: '#bbb',
-  minWidth: 800,
   minHeight: 200,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   cursor: 'pointer',
   bgcolor: common.white,
+}
+
+export const confirmButton = {
+  display: 'flex',
+  m: '0 auto',
+  minHeight: 48,
+  minWidth: 190,
+  width: '10%',
+  mb: 10,
+  mt: 2,
+  bgcolor: indigo[500],
+  '&:hover': { bgcolor: indigo[500] },
 }
 
 export const LoginMain = {
@@ -106,6 +161,22 @@ export const FormRadio = {
 
 export const FormButtons = {
   display: 'flex',
+  justifyContent: 'space-between',
+  width: '90%',
+  m: '0 auto',
+  alignItems: 'center',
+  gap: '16px',
+  mt: 3,
+  flexWrap: 'wrap',
+  '@media (min-width:950px)': {
+    flexDirection: 'row',
+    width: '33%',
+    justifyContent: 'space-between',
+  },
+}
+
+export const FormContent = {
+  display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
   alignItems: 'flex-start',
@@ -120,6 +191,12 @@ export const FormButtons = {
     ml: 1,
     mr: 1,
   },
+}
+
+export const FileDisp = {
+  borderBottom: '1px solid',
+  borderColor: blue[300],
+  color: blue[300],
 }
 
 export const TableMenu = {

@@ -1,39 +1,21 @@
 {
   "common": {
     "title": {
-      "login": {
-        "login": "サインイン"
-      },
+      "login": "サインイン",
+      "main": "フォーム入力",
+      "complete": "フォーム入力完了",
       "error": {
         "500": "サーバーエラー"
       },
-      "applicant": {
-        "list": "応募者一覧"
-      },
-      "user": {
-        "list": "ユーザー一覧",
-        "create": "ユーザー作成"
-      },
-      "setting": {
-        "index": "個人設定"
-      },
-      "modal": {
-        "upload": "ファイルアップロード",
-        "createUser": "ログイン情報"
-      }
-    },
-    "toast": {
-      "create": "が正常に登録されました"
-    },
-    "table": {
-      "rowsPerPage": "ページあたりの行数",
-      "none": "該当データがありません"
+      "modal": "入力内容確認"
     },
     "button": {
       "cancel": "キャンセル",
       "back": "戻る",
-      "change": "変更",
-      "auth": "認証する"
+      "submit": "送信",
+      "auth": "認証する",
+      "delete": "削除",
+      "confirm": "確認して次へ"
     },
     "validate": {
       "required": "は必須入力項目です",
@@ -43,7 +25,8 @@
       "maxLength": "文字以内で入力してください",
       "halfAlphaNum": "半角英数字で入力してください",
       "pattern": {
-        "mail": "メールアドレス形式で入力してください"
+        "mail": "メールアドレス形式で入力してください",
+        "file": "エクセル、ワード、パワーポイント、PDFのファイルのみアップロード可能です"
       },
       "is": "は"
     },
@@ -81,82 +64,36 @@
       "errorMsg2": "しばらく時間を置いてからやり直してください。",
       "errorMsg3": "または、管理者にお問い合わせください。"
     },
-    "applicant": {
-      "upload": "アップロード",
-      "search": "条件検索",
-      "uploadMsg": "応募者情報のファイルアップロードを行ってください",
-      "uploadMsg2": "ここにファイルをドラッグ＆ドロップ、またはここをクリックしてファイル選択",
-      "site": {
-        "recruit": "リクナビ/Next",
-        "mynavi": "マイナビ",
-        "doda": "DODA"
-      },
-      "status": {
-        "scheduleUnanswered": "日程未回答",
-        "scheduleAnswered": "日程回答済み",
-        "documentsSubmitted": "書類提出済み",
-        "offer": "内定",
-        "internalCommitments": "内定承諾済み",
-        "calendarAnswerDeadlineExceeded": "日程回答期限超過",
-        "deadlineForSubmissionOfBooksExceeds": "書類提出期限超過",
-        "failingToPassThePhysicalExamination": "書類選考落ち",
-        "failingAnInterview": "面接落ち",
-        "withdrawal": "選考辞退",
-        "internalizedDismissal": "内定辞退",
-        "dismissalAfterInternalCommitment": "内定承諾後辞退"
-      },
-      "header": {
-        "name": "氏名",
-        "site": "媒体",
-        "mail": "メールアドレス",
-        "age": "年齢",
-        "status": "選考状況",
-        "interviewerDate": "面接予定日",
-        "resume": "履歴書",
-        "curriculumVitae": "職務経歴書"
-      },
-      "documents": {
-        "t": "あり",
-        "f": "なし"
-      }
-    },
-    "user": {
-      "user": "ユーザー",
-      "create": "ユーザーを作成",
-      "backList": "ユーザー一覧へ戻る",
-      "createMsg": "ユーザーを作成しました。",
-      "createMsg2": "以下のログイン情報をご確認ください。",
-      "createMsg3": "※「ユーザーー一覧へ戻る」をクリックすると、これ以降初期パスワードの確認はできなくなります。",
-      "role": {
-        "admin": "最高責任者",
-        "interviewer": "面接官"
-      },
-      "header": {
-        "name": "氏名",
-        "mail": "メールアドレス",
-        "password": "パスワード",
-        "role": "ロール"
-      }
-    },
-    "setting": {
-      "name": "氏名",
-      "mail": "メールアドレス",
-      "role": "ロール",
-      "color": "テーマカラー"
+    "main": {
+      "title": "面接日程調整",
+      "subTitle": "日程調整",
+      "subTitle2": "書類添付",
+      "subTitleMsg": "ご希望の面接日、面接時間帯をご記入ください。",
+      "subTitleMsg2": "なお、第1希望は必須入力項目となります。",
+      "subTitle2Msg": "履歴書および職務経歴書の添付が可能です。",
+      "subTitle2Msg2": "現時点で提出は必須ではありません。",
+      "subTitle2Msg3": "面接日程調整完了後、改めて履歴書および職務経歴書の提出のお願いのご案内をさせていただきます。",
+      "1st": "第一希望",
+      "2nd": "第二希望",
+      "3rd": "第三希望",
+      "4th": "第四希望",
+      "5th": "第五希望",
+      "required": "必須入力",
+      "date": "ご希望日",
+      "time": "開始時刻",
+      "uploadMsg": "こちらにファイルをドラッグ＆ドロップ、またはこちらをクリックしてファイル選択",
+      "resume": "履歴書　　",
+      "curriculumVitae": "職務経歴書",
+      "priority": "をスキップして",
+      "priority2": "に入力があります",
+      "duplication": "と",
+      "duplication2": "が重複しています",
+      "confirmMsg": "以下の内容で送信いたします。よろしいですか？",
+      "complete": "登録完了",
+      "completeMsg": "ありがとうございます。",
+      "completeMsg2": "入力された内容が正常に登録されました。",
+      "completeMsg3": "ご登録のメールアドレスにメールを送信しました。",
+      "editButton": "回答を編集する"
     }
-  },
-  "sidebar": {
-    "applicant": "応募者",
-    "reserver": "予約者",
-    "user": "ユーザー",
-    "mail": "メールテンプレート",
-    "analysis": "データ集計",
-    "history": "操作ログ",
-    "setting": "個人設定",
-    "logout": "サインアウト"
-  },
-  "toolbar": {
-    "setting": "個人設定",
-    "logout": "サインアウト"
   }
 }

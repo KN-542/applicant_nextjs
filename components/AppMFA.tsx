@@ -5,12 +5,12 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { ToastContainer } from 'react-toastify'
 import { useSelector } from 'react-redux'
-import { HashKeyRequest } from '@/api/model/management'
+import { HashKeyRequest } from '@/api/model/index'
 import { every, isEqual } from 'lodash'
 import { RouterPath } from '@/enum/router'
 import { APICommonCode, APISessionCheckCode } from '@/enum/apiError'
 import { commonDispatch } from '@/hooks/store'
-import { CommonModel } from '@/types/management'
+import { CommonModel } from '@/types/index'
 
 const AppMFA = ({ Component, pageProps }) => {
   const router = useRouter()

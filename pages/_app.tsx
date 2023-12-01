@@ -9,13 +9,13 @@ import { NextIntlClientProvider } from 'next-intl'
 import store from '@/hooks/store/store'
 import 'react-toastify/dist/ReactToastify.css'
 import { ToastContainer } from 'react-toastify'
-import { HashKeyRequest } from '@/api/model/management'
+import { HashKeyRequest } from '@/api/model/index'
 import { LogoutCSR } from '@/api/repository'
 import { RouterPath } from '@/enum/router'
 import { commonDispatch, userDispatch } from '@/hooks/store'
 import Admin from '@/components/Admin'
 import AppMFA from '@/components/AppMFA'
-import { CommonModel, UserModel } from '@/types/management'
+import { CommonModel, UserModel } from '@/types/index'
 import { APICommonCode } from '@/enum/apiError'
 
 const App = ({ Component, pageProps }) => {
@@ -47,7 +47,7 @@ const App = ({ Component, pageProps }) => {
       })
   }
 
-  // management/admin 配下の場合
+  // admin 配下の場合
   if (_.includes(router.pathname, 'admin')) {
     return (
       <Provider store={store}>
