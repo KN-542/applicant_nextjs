@@ -19,10 +19,10 @@ import store, { RootState } from '@/hooks/store/store'
 import { useSelector } from 'react-redux'
 import { common, indigo, red } from '@mui/material/colors'
 import ClearIcon from '@mui/icons-material/Clear'
-import { HashKeyRequest, MFARequest } from '@/api/model/management'
+import { HashKeyRequest, MFARequest } from '@/api/model/index'
 import { APICommonCode, APIMFACode, APISessionCheckCode } from '@/enum/apiError'
 import { commonDispatch, userDispatch } from '@/hooks/store'
-import { CommonModel, UserModel } from '@/types/management'
+import { CommonModel, UserModel } from '@/types/index'
 
 const CODE_SIZE = 6
 
@@ -112,7 +112,7 @@ const MFA = () => {
       code: codeString,
     } as MFARequest)
       .then(() => {
-        router.push(RouterPath.Applicant)
+        router.push(RouterPath.Main)
       })
       .catch(async (error) => {
         if (
@@ -186,7 +186,7 @@ const MFA = () => {
     <>
       <NextHead></NextHead>
       <Container maxWidth="sm" className={classes.root}>
-        <Typography variant="body1" className={classes.message}>
+        <Typography component="div" variant="body1" className={classes.message}>
           <p>{t('features.login.mfaMsg1')}</p>
           <p>{t('features.login.mfaMsg2')}</p>
         </Typography>

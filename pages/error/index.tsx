@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Button } from '@mui/material'
 import { common } from '@mui/material/colors'
-import { mt, mb, w } from '@/styles/index'
+import { mt, mb, w, ErrorDisp } from '@/styles/index'
 import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
 import Copyright from '@/components/Copyright'
@@ -19,15 +19,7 @@ const Error = () => {
     <>
       <NextHead></NextHead>
       <Container component="main" maxWidth="sm">
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: '100vh',
-          }}
-        >
+        <Box sx={ErrorDisp}>
           <Typography variant="h3" component="h1" gutterBottom sx={mb(4)}>
             Server Error
           </Typography>

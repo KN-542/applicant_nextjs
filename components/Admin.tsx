@@ -9,9 +9,9 @@ import { MFAStatus } from '@/enum/login'
 import { APICommonCode, APISessionCheckCode } from '@/enum/apiError'
 import _, { every, isEqual } from 'lodash'
 import { ToastContainer } from 'react-toastify'
-import { HashKeyRequest } from '@/api/model/management'
+import { HashKeyRequest } from '@/api/model/index'
 import { commonDispatch, userDispatch } from '@/hooks/store'
-import { CommonModel, UserModel } from '@/types/management'
+import { CommonModel, UserModel } from '@/types/index'
 import { useTranslations } from 'next-intl'
 
 const Admin = ({ Component, pageProps, logout }) => {

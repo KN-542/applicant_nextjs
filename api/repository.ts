@@ -1,13 +1,6 @@
 import axios from 'axios'
 import { APICommonHeader } from '.'
-import {
-  ApplicantsDownloadRequest,
-  HashKeyRequest,
-  LoginRequest,
-  MFARequest,
-  PasswordChangeRequest,
-  UserCreateRequest,
-} from './model/management'
+import { HashKeyRequest, LoginRequest, MFARequest } from './model'
 
 // Login CSR
 export const loginCSR = async (req: LoginRequest) => {
@@ -59,80 +52,23 @@ export const JWTDecodeCSR = async (req: HashKeyRequest) => {
   return res
 }
 
-// JWT Decode CSR
-export const PasswordChangeCSR = async (req: PasswordChangeRequest) => {
+// Documents CSR
+export const DocumentsCSR = async (req: FormData) => {
   const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_CSR_URL}/password_change`,
+    `${process.env.NEXT_PUBLIC_CSR_URL}/applicant/documents`,
     req,
-    APICommonHeader,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      withCredentials: true,
+    },
   )
   return res
 }
 
-// Session Confirm CSR
-export const SessionConfirmCSR = async (req: HashKeyRequest) => {
-  const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_CSR_URL}/session_confirm`,
-    req,
-    APICommonHeader,
-  )
-  return res
-}
-
-// 応募者ダウンロード CSR
-export const applicantsDownloadCSR = async (req: ApplicantsDownloadRequest) => {
-  const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_CSR_URL}/applicant/download`,
-    req,
-    APICommonHeader,
-  )
-  return res
-}
-
-// 応募者ダウンロード CSR
-export const applicantsSearchCSR = async () => {
-  const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_CSR_URL}/applicant/search`,
-    {},
-    APICommonHeader,
-  )
-  return res
-}
-
-// 応募者検索 SSG
-export const applicantsSearchSSG = async () => {
-  const res = await axios.post(
-    `${process.env.NEXT_SSG_URL}/applicant/search`,
-    {},
-    APICommonHeader,
-  )
-  return res
-}
-
-// ユーザー一覧 SSG
-export const UserListSSG = async () => {
-  const res = await axios.post(
-    `${process.env.NEXT_SSG_URL}/user/list`,
-    APICommonHeader,
-  )
-  return res
-}
-
-// ユーザー登録 CSR
-export const UserCreateCSR = async (req: UserCreateRequest) => {
-  const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_CSR_URL}/user/create`,
-    req,
-    APICommonHeader,
-  )
-  return res
-}
-
-// ユーザーロール一覧 SSG
-export const UserRoleListSSG = async () => {
-  const res = await axios.post(
-    `${process.env.NEXT_SSG_URL}/user/role_list`,
-    APICommonHeader,
-  )
+// 日本の祝日取得
+export const HolidaysJp = async () => {
+  const res = await axios.get('https://holidays-jp.github.io/api/v1/date.json')
   return res
 }
