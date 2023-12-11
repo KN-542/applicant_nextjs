@@ -10,6 +10,14 @@ import {
   CssBaseline,
   Grid,
   Typography,
+  Container,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
 } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
@@ -111,6 +119,456 @@ const Applicant = () => {
     '14:00 ~ 16:00',
     '18:00 ~ 20:00',
   ]
+  const scheduleData = [
+    {
+      time: '9:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '9:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '10:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '10:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '11:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '11:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '12:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '12:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '13:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '13:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '14:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '14:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '15:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '15:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '16:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '16:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '17:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '17:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '18:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '18:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '19:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '19:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '20:00',
+      dates: [
+        false,
+        true,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+      ],
+    },
+    {
+      time: '20:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        true,
+        true,
+        true,
+      ],
+    },
+    {
+      time: '21:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '21:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '22:00',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+    {
+      time: '22:30',
+      dates: [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+      ],
+    },
+  ]
 
   type MakeInputs<T extends number> = Record<`date${T}` | `time${T}`, string>
 
@@ -157,6 +615,11 @@ const Applicant = () => {
       required: false,
     },
   ]
+
+  const handleReservationClick = (time, date) => {
+    // 予約処理をここに書く
+    console.log(`Reserved time ${time} on date ${date}.`)
+  }
 
   const onSubmit = (data: Inputs) => {
     if (some([isEmpty(data.date1), isEmpty(data.time1)])) {
@@ -402,6 +865,57 @@ const Applicant = () => {
         </Box>
         <DialogContent sx={[DialogContentMain, w(90), mb(10)]}>
           <CssBaseline />
+
+          <Container sx={{ maxWidth: '80%' }}>
+            <TableContainer
+              component={Paper}
+              sx={{
+                maxHeight: '80vh',
+                overflow: 'auto',
+                mt: 4, // 上のマージンをテーマのスペーシングに基づいて設定
+                // その他のスタイル
+              }}
+            >
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>時間/日付</TableCell>
+                    {dateOptions.map((date, index) => (
+                      <TableCell key={index} align="center">
+                        {date}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {scheduleData.map((row, index) => (
+                    <TableRow key={index}>
+                      <TableCell component="th" scope="row">
+                        {row.time}
+                      </TableCell>
+                      {row.dates.map((available, i) => (
+                        <TableCell key={i} align="center">
+                          {available ? (
+                            <Button
+                              variant="outlined"
+                              onClick={() =>
+                                handleReservationClick(row.time, dateOptions[i])
+                              }
+                            >
+                              予約
+                            </Button>
+                          ) : (
+                            'ー'
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Container>
+
           <Box sx={[M0Auto, w(90)]}>
             <Box sx={FormBox}>
               {map(daysFormList, (form, index) => (
