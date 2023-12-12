@@ -18,7 +18,15 @@ import ErrorHandler from '@/components/ErrorHandler'
 import { every, isEmpty, isEqual, trim } from 'lodash'
 import { loginCSR } from '@/api/repository'
 import { useRouter } from 'next/router'
-import { LoginMain, minW, mt, mb, SecondaryMain, m } from '@/styles/index'
+import {
+  LoginMain,
+  minW,
+  mt,
+  mb,
+  SecondaryMain,
+  m,
+  ButtonColor,
+} from '@/styles/index'
 import store, { RootState } from '@/hooks/store/store'
 import { commonDispatch, userDispatch } from '@/hooks/store'
 import { CommonModel, UserModel } from '@/types/index'
@@ -195,16 +203,7 @@ const Login = () => {
               type="submit"
               fullWidth
               variant="contained"
-              sx={[
-                mt(3),
-                mb(1),
-                {
-                  backgroundColor: indigo[500],
-                  '&:hover': {
-                    backgroundColor: indigo[500],
-                  },
-                },
-              ]}
+              sx={[mt(3), mb(1), ButtonColor(common.white, indigo[500])]}
             >
               {t('features.login.login')}
             </Button>

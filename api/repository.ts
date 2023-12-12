@@ -1,6 +1,11 @@
 import axios from 'axios'
 import { APICommonHeader } from '.'
-import { HashKeyRequest, LoginRequest, MFARequest } from './model'
+import {
+  DesiredAtRequest,
+  HashKeyRequest,
+  LoginRequest,
+  MFARequest,
+} from './model'
 
 // Login CSR
 export const loginCSR = async (req: LoginRequest) => {
@@ -46,6 +51,16 @@ export const MFACreateCSR = async (req: HashKeyRequest) => {
 export const JWTDecodeCSR = async (req: HashKeyRequest) => {
   const res = await axios.post(
     `${process.env.NEXT_PUBLIC_CSR_URL}/decode_applicant`,
+    req,
+    APICommonHeader,
+  )
+  return res
+}
+
+// 希望日時登録 CSR
+export const DesiredAtCSR = async (req: DesiredAtRequest) => {
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_CSR_URL}/applicant/desired`,
     req,
     APICommonHeader,
   )

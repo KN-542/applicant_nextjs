@@ -3,6 +3,7 @@ import { RouterPath } from '@/enum/router'
 import store, { RootState } from '@/hooks/store/store'
 import { useSelector } from 'react-redux'
 import {
+  ButtonColor,
   ErrorDisp,
   FormButtons,
   SubTitle,
@@ -14,7 +15,7 @@ import {
   w,
 } from '@/styles/index'
 import { Box, Button, Typography } from '@mui/material'
-import { indigo } from '@mui/material/colors'
+import { common, indigo } from '@mui/material/colors'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/router'
 import { LogoutCSR } from '@/api/repository'
@@ -89,15 +90,7 @@ const Complete = () => {
         <Button
           type="submit"
           variant="contained"
-          sx={[
-            minW(90),
-            {
-              backgroundColor: indigo[500],
-              '&:hover': {
-                backgroundColor: indigo[500],
-              },
-            },
-          ]}
+          sx={[minW(90), ButtonColor(common.white, indigo[500])]}
           onClick={() => router.push(RouterPath.Main)}
         >
           {t('features.main.editButton')}

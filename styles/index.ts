@@ -1,4 +1,5 @@
 import { blue, common, indigo } from '@mui/material/colors'
+import _ from 'lodash'
 
 export const m = (m: number) => {
   return { m: m }
@@ -153,12 +154,6 @@ export const FormBox = {
   flexFlow: 'column',
 }
 
-export const FormRadio = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  flexDirection: 'row',
-}
-
 export const FormButtons = {
   display: 'flex',
   justifyContent: 'space-between',
@@ -199,73 +194,13 @@ export const FileDisp = {
   color: blue[300],
 }
 
-export const TableMenu = {
-  display: 'flex',
-  justifyContent: 'flex-end',
-  width: '90%',
-  m: '0 auto',
-  mb: 3,
+export const ButtonColor = (color: string, bgColor: string) => {
+  return {
+    color: _.isEmpty(color) ? '' : color,
+    backgroundColor: _.isEmpty(bgColor) ? '' : bgColor,
+    '&:hover': {
+      color: _.isEmpty(color) ? '' : color,
+      backgroundColor: _.isEmpty(bgColor) ? '' : bgColor,
+    },
+  }
 }
-
-export const Resume = {
-  textTransform: 'none',
-}
-
-export const ColorBox = {
-  p: 2,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-}
-
-export const ColorBoxChild = { display: 'flex', flexWrap: 'wrap', gap: 2 }
-export const ColorBoxChildNowrap = {
-  display: 'flex',
-  flexWrap: 'nowrap',
-  gap: 2,
-}
-export const ColorButton = {
-  width: 100,
-  height: 100,
-  color: common.white,
-  textTransform: 'none',
-}
-
-export const DialogKey = {
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  mb: 5,
-}
-export const DialogKeyChild = {
-  width: '20%',
-  fontWeight: 'bold',
-  fontSize: 20,
-  padding: 2,
-}
-export const DialogValue = {
-  width: '90%',
-  textAlign: 'center',
-  fontSize: 20,
-  padding: 2,
-}
-
-export const SideBarName = {
-  textDecoration: 'none',
-  color: 'grey',
-  ml: 4,
-}
-export const SideBarBody = {
-  height: 100,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  padding: '1em',
-  color: '#ffffff',
-  fontFamily: '-apple-system, BlinkMacSystemFont, Roboto, sans-serif',
-}
-
-export const Cell = { color: common.white, padding: 0.5 }
-
-export const TableHeaderSX = { position: 'sticky', top: 0, height: 48 }
