@@ -40,6 +40,11 @@ import {
   confirmButton,
   FileDisp,
   ButtonColor,
+  TableTop,
+  TableCon,
+  Table0_0,
+  TableCellColor,
+  TableBodyCell,
 } from '@/styles/index'
 import NextHead from '@/components/Header'
 import DateRangeIcon from '@mui/icons-material/DateRange'
@@ -383,48 +388,18 @@ const Applicant = () => {
           <p>{t('features.main.subTitleMsg')}</p>
         </Box>
 
-        <Box
-          sx={[
-            w(90),
-            {
-              position: 'relative',
-              zIndex: 0,
-              m: '0 auto',
-            },
-            mb(20),
-          ]}
-        >
-          <TableContainer
-            component={Paper}
-            sx={{
-              overflow: 'auto',
-              mt: 4,
-            }}
-          >
+        <Box sx={[w(90), TableTop, mb(20)]}>
+          <TableContainer component={Paper} sx={TableCon}>
             <Table stickyHeader aria-label="sticky table">
               <TableHead>
                 <TableRow>
-                  <TableCell
-                    sx={{
-                      backgroundColor: indigo[500],
-                      color: common.white,
-                      position: 'sticky',
-                      left: 0,
-                      zIndex: 3,
-                    }}
-                  ></TableCell>
+                  <TableCell sx={[TableCellColor, Table0_0]}></TableCell>
                   {filter(dateOptions, (item) => !isEmpty(item)).map(
                     (date, index) => (
                       <TableCell
                         key={index}
                         align="center"
-                        sx={[
-                          minW(130),
-                          {
-                            backgroundColor: indigo[500],
-                            color: common.white,
-                          },
-                        ]}
+                        sx={[minW(130), TableCellColor]}
                       >
                         {date}
                       </TableCell>
@@ -438,16 +413,7 @@ const Applicant = () => {
                     <TableCell
                       component="th"
                       scope="row"
-                      sx={[
-                        minW(130),
-                        {
-                          backgroundColor: indigo[500],
-                          color: common.white,
-                          position: 'sticky',
-                          left: 0,
-                          zIndex: 1,
-                        },
-                      ]}
+                      sx={[minW(130), TableCellColor, TableBodyCell]}
                     >
                       {row.time}
                     </TableCell>
