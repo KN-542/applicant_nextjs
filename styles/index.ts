@@ -194,6 +194,34 @@ export const FileDisp = {
   color: blue[300],
 }
 
+export const TableTop = {
+  position: 'relative',
+  zIndex: 0,
+  m: '0 auto',
+}
+
+export const TableCon = {
+  overflow: 'auto',
+  mt: 4,
+}
+
+export const Table0_0 = {
+  position: 'sticky',
+  left: 0,
+  zIndex: 3,
+}
+
+export const TableBodyCell = {
+  position: 'sticky',
+  left: 0,
+  zIndex: 1,
+}
+
+export const TableCellColor = {
+  backgroundColor: indigo[500],
+  color: common.white,
+}
+
 export const ButtonColor = (color: string, bgColor: string) => {
   return {
     color: _.isEmpty(color) ? '' : color,
