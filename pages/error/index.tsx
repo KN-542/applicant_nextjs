@@ -4,7 +4,7 @@ import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import { Button } from '@mui/material'
 import { common } from '@mui/material/colors'
-import { mt, mb, w, ErrorDisp } from '@/styles/index'
+import { mt, mb, w, ErrorDisp, ButtonColor } from '@/styles/index'
 import { useRouter } from 'next/router'
 import { useTranslations } from 'next-intl'
 import Copyright from '@/components/Copyright'
@@ -36,18 +36,7 @@ const Error = () => {
           <Button
             type="submit"
             variant="contained"
-            sx={[
-              mt(10),
-              w(60),
-              {
-                backgroundColor: common.black,
-                color: common.white,
-                '&:hover': {
-                  backgroundColor: common.black,
-                  color: common.white,
-                },
-              },
-            ]}
+            sx={[mt(10), w(60), ButtonColor(common.white, common.black)]}
             onClick={() => router.push(RouterPath.Login)}
           >
             {t('features.login.errorButton')}

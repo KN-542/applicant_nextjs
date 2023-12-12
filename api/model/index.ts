@@ -11,3 +11,8 @@ export type MFARequest = {
   hash_key: string
   code: string
 }
+// 希望日時登録
+export type DesiredAtRequest = {
+  hash_key: string
+  desired_at: string
+}

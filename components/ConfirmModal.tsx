@@ -13,6 +13,7 @@ import { useTranslations } from 'next-intl'
 import _ from 'lodash'
 import {
   Bold,
+  ButtonColor,
   ColorRed,
   FormButtons,
   SubTitle,
@@ -27,7 +28,7 @@ import DateRangeIcon from '@mui/icons-material/DateRange'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import { RouterPath } from '@/enum/router'
 import { useRouter } from 'next/router'
-import { indigo } from '@mui/material/colors'
+import { common, indigo } from '@mui/material/colors'
 
 type Props = {
   open: boolean
@@ -88,15 +89,7 @@ const ConfirmModal = (props: Props) => {
         <Button
           type="submit"
           variant="contained"
-          sx={[
-            minW(90),
-            {
-              backgroundColor: indigo[500],
-              '&:hover': {
-                backgroundColor: indigo[500],
-              },
-            },
-          ]}
+          sx={[minW(90), ButtonColor(common.white, indigo[500])]}
           onClick={props.submit}
         >
           {t('common.button.submit')}
