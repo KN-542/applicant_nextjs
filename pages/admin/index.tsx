@@ -3,14 +3,9 @@ import { useSelector } from 'react-redux'
 import {
   Box,
   Button,
-  FormControl,
-  Select,
-  MenuItem,
   DialogContent,
   CssBaseline,
-  Grid,
   Typography,
-  Container,
   Table,
   TableBody,
   TableCell,
@@ -19,7 +14,6 @@ import {
   TableRow,
   Paper,
 } from '@mui/material'
-import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/router'
 import { common, indigo, red } from '@mui/material/colors'
 import {
@@ -27,11 +21,8 @@ import {
   mb,
   w,
   DialogContentMain,
-  M0Auto,
-  FormBox,
   ml,
   mr,
-  FormContent,
   minW,
   Title,
   SubTitle,
@@ -128,62 +119,62 @@ const Applicant = () => {
   // TODO API
   const [scheduleData, setScheduleData] = useState([
     {
-      time: '9:00 ~ 10:00',
+      time: '9:00',
       dates: new Array(WEEKS).fill(false),
       clickId: -1,
     },
     {
-      time: '10:00 ~ 11:00',
+      time: '10:00',
       dates: new Array(WEEKS).fill(true),
       clickId: -1,
     },
     {
-      time: '11:00 ~ 12:00',
+      time: '11:00',
       dates: new Array(WEEKS).fill(true),
       clickId: -1,
     },
     {
-      time: '12:00 ~ 13:00',
+      time: '12:00',
       dates: new Array(WEEKS).fill(true),
       clickId: -1,
     },
     {
-      time: '13:00 ~ 14:00',
+      time: '13:00',
       dates: new Array(WEEKS).fill(true),
       clickId: -1,
     },
     {
-      time: '14:00 ~ 15:00',
+      time: '14:00',
       dates: new Array(WEEKS).fill(true),
       clickId: -1,
     },
     {
-      time: '15:00 ~ 16:00',
+      time: '15:00',
       dates: new Array(WEEKS).fill(true),
       clickId: -1,
     },
     {
-      time: '16:00 ~ 17:00',
+      time: '16:00',
       dates: new Array(WEEKS).fill(true),
       clickId: -1,
     },
     {
-      time: '17:00 ~ 18:00',
+      time: '17:00',
       dates: new Array(WEEKS).fill(true),
       clickId: -1,
     },
     {
-      time: '18:00 ~ 19:00',
+      time: '18:00',
       dates: new Array(WEEKS).fill(true),
       clickId: -1,
     },
     {
-      time: '19:00 ~ 20:00',
+      time: '19:00',
       dates: new Array(WEEKS).fill(true),
       clickId: -1,
     },
     {
-      time: '20:00 ~ 21:00',
+      time: '20:00',
       dates: new Array(WEEKS).fill(false),
       clickId: -1,
     },
