@@ -9,3 +9,10 @@ export type UserModel = {
 export type CommonModel = {
   errorMsg?: string
 }
+
+// 予約時間
+export type ReserveTime = {
+  time: Date
+  isReserve: boolean
+  isClicked: boolean
+}
