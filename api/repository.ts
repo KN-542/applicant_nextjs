@@ -82,6 +82,16 @@ export const DocumentsCSR = async (req: FormData) => {
   return res
 }
 
+// 面接可能日時取得 CSR
+export const ReserveTableCSR = async () => {
+  const res = await axios.post(
+    `${process.env.NEXT_PUBLIC_CSR_URL}/user/reserve_table`,
+    {},
+    APICommonHeader,
+  )
+  return res
+}
+
 // 日本の祝日取得
 export const HolidaysJp = async () => {
   const res = await axios.get('https://holidays-jp.github.io/api/v1/date.json')

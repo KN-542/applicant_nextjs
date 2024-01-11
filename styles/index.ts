@@ -203,6 +203,7 @@ export const TableTop = {
 export const TableCon = {
   overflow: 'auto',
   mt: 4,
+  maxHeight: 500,
 }
 
 export const Table0_0 = {
