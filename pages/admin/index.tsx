@@ -108,7 +108,7 @@ const Applicant = () => {
         })) {
           datesList.push(o)
         }
-        for (let i = 0; i < WEEKS; i++) {
+        for (let i = 0; i < DAYS_COMPONENTS; i++) {
           options.push(
             map(
               filter(cloneDeep(res.data.options), (_, index: number) =>
@@ -150,6 +150,17 @@ const Applicant = () => {
           return
         }
       })
+  }
+
+  const selectedReserve = (rIdx: number, oIdx: number) => {
+    const list = cloneDeep(reserveTable)
+    for (const options of list) {
+      for (const option of options) {
+        option.isClicked = false
+      }
+    }
+    list[rIdx][oIdx].isClicked = !list[rIdx][oIdx].isClicked
+    setReserveTable(list)
   }
 
   const onSubmit = () => {
@@ -396,7 +407,6 @@ const Applicant = () => {
                                   <Button
                                     variant="text"
                                     sx={ButtonColor(common.white, indigo[500])}
-                                    onClick={() => {}}
                                   >
                                     <PanoramaFishEyeIcon />
                                   </Button>
@@ -405,7 +415,9 @@ const Applicant = () => {
                                   <Button
                                     variant="text"
                                     sx={ButtonColor(indigo[500], common.white)}
-                                    onClick={() => {}}
+                                    onClick={() => {
+                                      selectedReserve(Number(index), Number(i))
+                                    }}
                                   >
                                     <PanoramaFishEyeIcon />
                                   </Button>
