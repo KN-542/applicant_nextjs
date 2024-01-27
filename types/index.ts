@@ -12,7 +12,7 @@ export type CommonModel = {
 
 // 予約時間
 export type ReserveTime = {
-  time: Date
-  isReserve: boolean
-  isClicked: boolean
+  time?: Date
+  isReserve?: boolean
+  isClicked?: boolean
 }

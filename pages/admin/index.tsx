@@ -41,12 +41,7 @@ import NextHead from '@/components/Header'
 import DateRangeIcon from '@mui/icons-material/DateRange'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import DragDrop from '@/components/DragDrop'
-import {
-  DesiredAtCSR,
-  DocumentsCSR,
-  HolidaysJp,
-  ReserveTableCSR,
-} from '@/api/repository'
+import { DesiredAtCSR, DocumentsCSR, ReserveTableCSR } from '@/api/repository'
 import { useTranslations } from 'next-intl'
 import { toast } from 'react-toastify'
 import ClearIcon from '@mui/icons-material/Clear'
@@ -80,7 +75,7 @@ const Applicant = () => {
   const WEEKS = 14
 
   const [open, setOpen] = useState(false)
-  const [date, setDate] = useState('')
+  const [date, setDate] = useState<Date>(null)
   const [resume, setResume] = useState(null)
   const [curriculumVitae, setCurriculumVitae] = useState(null)
   const [resumeName, setResumeName] = useState('')
@@ -164,7 +159,14 @@ const Applicant = () => {
   }
 
   const onSubmit = () => {
-    if (isEmpty(date)) {
+    const reserve: ReserveTime = {}
+    for (const options of reserveTable) {
+      for (const option of options) {
+        if (option.isClicked) Object.assign(reserve, option)
+      }
+    }
+
+    if (isEmpty(reserve.time?.toISOString())) {
       toast(t('features.main.subTitle') + t('common.validate.required'), {
         style: {
           backgroundColor: red[500],
@@ -178,12 +180,19 @@ const Applicant = () => {
       return
     }
 
+    setDate(reserve.time)
+
     setElement(
       <>
         <Typography component="h6" sx={[mb(2), Bold]}>
           {`・${t('features.main.subTitle')} `}
           <Box component="span" sx={ml(5)}>
-            {date}
+            {`${String(reserve?.time.getMonth() + 1).padStart(2, '0')}/${String(
+              reserve?.time.getDate(),
+            ).padStart(2, '0')} ${String(reserve?.time.getHours()).padStart(
+              2,
+              '0',
+            )}:${String(reserve?.time.getMinutes()).padStart(2, '0')}`}
           </Box>
         </Typography>
       </>,
@@ -269,7 +278,7 @@ const Applicant = () => {
 
     await DesiredAtCSR({
       hash_key: user.hashKey,
-      desired_at: date,
+      desired_at: date.toISOString(),
     } as DesiredAtRequest)
       .then(async () => {
         if (some([!isEmpty(resumeName), !isEmpty(curriculumVitaeName)])) {
