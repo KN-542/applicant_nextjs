@@ -279,6 +279,7 @@ const Applicant = () => {
     await DesiredAtCSR({
       hash_key: user.hashKey,
       desired_at: date.toISOString(),
+      title: user.name,
     } as DesiredAtRequest)
       .then(async () => {
         if (some([!isEmpty(resumeName), !isEmpty(curriculumVitaeName)])) {
