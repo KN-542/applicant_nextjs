@@ -15,4 +15,5 @@ export type MFARequest = {
 export type DesiredAtRequest = {
   hash_key: string
   desired_at: string
+  title: string
 }
