@@ -15,7 +15,8 @@
       "submit": "送信",
       "auth": "認証する",
       "delete": "削除",
-      "confirm": "確認して次へ"
+      "confirm": "確認して次へ",
+      "reSend": "再送する"
     },
     "validate": {
       "required": "は必須入力項目です",
@@ -23,6 +24,8 @@
       "requiredRadio": "を選択してください",
       "minLength": "文字以上",
       "maxLength": "文字以内で入力してください",
+      "length": "文字で入力してください",
+      "halfNum": "半角数字で入力してください",
       "halfAlphaNum": "半角英数字で入力してください",
       "pattern": {
         "mail": "メールアドレス形式で入力してください",
@@ -45,7 +48,7 @@
   },
   "features": {
     "login": {
-      "top": "CLINKS 採用",
+      "top": "Nexulon",
       "mail": "メールアドレス",
       "password": "パスワード",
       "passwordChangeMsg": "※初回ログインのため、パスワードの変更が必須となります。",
@@ -62,7 +65,8 @@
       "errorButton": "ログイン画面へ",
       "errorMsg1": "サーバーで問題が発生しているためページを表示できません。",
       "errorMsg2": "しばらく時間を置いてからやり直してください。",
-      "errorMsg3": "または、管理者にお問い合わせください。"
+      "errorMsg3": "または、管理者にお問い合わせください。",
+      "mfa": "認証コード"
     },
     "main": {
       "title": "面接日程調整",

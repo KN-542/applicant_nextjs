@@ -2,9 +2,12 @@ import axios from 'axios'
 import { APICommonHeader } from '.'
 import {
   DesiredAtRequest,
-  HashKeyRequest,
+  JWTDdcodeRequest,
   LoginRequest,
+  LogoutRequest,
+  MFACreateRequest,
   MFARequest,
+  ReserveTableRequest,
 } from './model'
 
 // Login CSR
@@ -18,7 +21,7 @@ export const loginCSR = async (req: LoginRequest) => {
 }
 
 // Logout CSR
-export const LogoutCSR = async (req: HashKeyRequest) => {
+export const LogoutCSR = async (req: LogoutRequest) => {
   const res = await axios.post(
     `${process.env.NEXT_PUBLIC_CSR_URL}/logout_applicant`,
     req,
@@ -38,7 +41,7 @@ export const MFACSR = async (req: MFARequest) => {
 }
 
 // MFA create CSR
-export const MFACreateCSR = async (req: HashKeyRequest) => {
+export const MFACreateCSR = async (req: MFACreateRequest) => {
   const res = await axios.post(
     `${process.env.NEXT_PUBLIC_CSR_URL}/code_gen_applicant`,
     req,
@@ -48,7 +51,7 @@ export const MFACreateCSR = async (req: HashKeyRequest) => {
 }
 
 // JWT Decode CSR
-export const JWTDecodeCSR = async (req: HashKeyRequest) => {
+export const JWTDecodeCSR = async (req: JWTDdcodeRequest) => {
   const res = await axios.post(
     `${process.env.NEXT_PUBLIC_CSR_URL}/decode_applicant`,
     req,
@@ -83,17 +86,11 @@ export const DocumentsCSR = async (req: FormData) => {
 }
 
 // 面接可能日時取得 CSR
-export const ReserveTableCSR = async () => {
+export const ReserveTableCSR = async (req: ReserveTableRequest) => {
   const res = await axios.post(
-    `${process.env.NEXT_PUBLIC_CSR_URL}/user/reserve_table`,
-    {},
+    `${process.env.NEXT_PUBLIC_CSR_URL}/applicant/reserve_table`,
+    req,
     APICommonHeader,
   )
-  return res
-}
-
-// 日本の祝日取得
-export const HolidaysJp = async () => {
-  const res = await axios.get('https://holidays-jp.github.io/api/v1/date.json')
   return res
 }

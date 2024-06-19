@@ -1,4 +1,3 @@
-import { green, indigo, red } from '@mui/material/colors'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { CommonModel, UserModel } from 'types/index'
 
@@ -26,7 +25,10 @@ export const slice = createSlice({
     commonDispatch: (state, action: PayloadAction<CommonModel>) => {
       Object.assign(state.common, action.payload)
     },
+    signOut: (state) => {
+      Object.assign(state.user, initState.user)
+    },
   },
 })
 
-export const { userDispatch, commonDispatch } = slice.actions
+export const { userDispatch, commonDispatch, signOut } = slice.actions

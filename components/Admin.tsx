@@ -1,47 +1,57 @@
-// components/Admin.js
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import store, { RootState } from '@/hooks/store/store'
-import { JWTDecodeCSR } from '@/api/repository'
+import { JWTDecodeCSR, LogoutCSR } from '@/api/repository'
 import { RouterPath } from '@/enum/router'
-import { MFAStatus } from '@/enum/login'
 import { APICommonCode, APISessionCheckCode } from '@/enum/apiError'
 import _, { every, isEqual } from 'lodash'
 import { ToastContainer } from 'react-toastify'
-import { HashKeyRequest } from '@/api/model/index'
+import { JWTDdcodeRequest, LogoutRequest } from '@/api/model/index'
 import { commonDispatch, userDispatch } from '@/hooks/store'
 import { CommonModel, UserModel } from '@/types/index'
 import { useTranslations } from 'next-intl'
 
-const Admin = ({ Component, pageProps, logout }) => {
+const Admin = ({ Component, pageProps }) => {
   const router = useRouter()
   const t = useTranslations()
 
   const user = useSelector((state: RootState) => state.user)
 
-  const [disp, setDisp] = useState(false)
+  const [disp, isDisp] = useState<boolean>(false)
+
+  const logout = async (req: LogoutRequest, msg: string) => {
+    await LogoutCSR(req)
+      .then(() => {
+        store.dispatch(
+          userDispatch({
+            hashKey: '',
+            name: '',
+            mail: '',
+          } as UserModel),
+        )
+        store.dispatch(
+          commonDispatch({
+            errorMsg: msg,
+          } as CommonModel),
+        )
+        router.push(RouterPath.Login)
+      })
+      .catch((error) => {
+        isEqual(error.response.data.code, APICommonCode.BadRequest)
+          ? router.push(RouterPath.Login)
+          : router.push(RouterPath.Error)
+        return
+      })
+  }
 
   useEffect(() => {
     // JWT検証
     JWTDecodeCSR({
       hash_key: user.hashKey,
-    } as HashKeyRequest)
-      .then((res) => {
-        if (isEqual(res.data.mfa, MFAStatus.UnAuthenticated)) {
-          router.push(RouterPath.LoginMFA)
-          return
-        }
-
-        store.dispatch(
-          userDispatch({
-            hashKey: res.data.hash_key,
-            name: res.data.name,
-            mail: res.data.email,
-          } as UserModel),
-        )
-
-        setDisp(true)
+    } as JWTDdcodeRequest)
+      .then(() => {
+        isDisp(true)
       })
       .catch(async (error) => {
         if (
@@ -60,7 +70,13 @@ const Admin = ({ Component, pageProps, logout }) => {
           msg = t(`common.api.code.expired${error.response.data.code}`)
         }
 
-        await logout({ hash_key: user.hashKey } as HashKeyRequest, msg)
+        store.dispatch(
+          commonDispatch({
+            errorMsg: msg,
+          } as CommonModel),
+        )
+
+        await logout({ hash_key: user.hashKey } as LogoutRequest, msg)
       })
   }, [])
 
