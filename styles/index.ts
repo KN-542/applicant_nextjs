@@ -121,6 +121,16 @@ export const DragDropArea = {
   bgcolor: common.white,
 }
 
+export const LogoutButton = {
+  display: 'flex',
+  m: '0 auto',
+  minHeight: 48,
+  minWidth: 190,
+  width: '10%',
+  mb: 10,
+  mt: 2,
+}
+
 export const confirmButton = {
   display: 'flex',
   m: '0 auto',
@@ -232,4 +242,13 @@ export const ButtonColor = (color: string, bgColor: string) => {
       backgroundColor: _.isEmpty(bgColor) ? '' : bgColor,
     },
   }
+}
+
+export const SpaceEvenly = { display: 'flex', justifyContent: 'space-evenly' }
+
+export const ModalResponsive = {
+  borderRadius: '50px',
+  '@media (min-width:1100px)': {
+    m: 10,
+  },
 }

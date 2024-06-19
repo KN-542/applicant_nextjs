@@ -19,7 +19,7 @@ import { common, indigo } from '@mui/material/colors'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/router'
 import { LogoutCSR } from '@/api/repository'
-import { HashKeyRequest } from '@/api/model'
+import { LogoutRequest } from '@/api/model'
 import { commonDispatch, userDispatch } from '@/hooks/store'
 import { CommonModel, UserModel } from '@/types/index'
 import { isEqual } from 'lodash'
@@ -32,7 +32,7 @@ const Complete = () => {
   const user = useSelector((state: RootState) => state.user)
 
   const logout = async () => {
-    await LogoutCSR({ hash_key: user.hashKey } as HashKeyRequest)
+    await LogoutCSR({ hash_key: user.hashKey } as LogoutRequest)
       .then(() => {
         store.dispatch(
           userDispatch({

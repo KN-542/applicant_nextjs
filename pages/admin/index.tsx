@@ -36,12 +36,19 @@ import {
   Table0_0,
   TableCellColor,
   TableBodyCell,
+  FormButtons,
+  LogoutButton,
 } from '@/styles/index'
 import NextHead from '@/components/Header'
 import DateRangeIcon from '@mui/icons-material/DateRange'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import DragDrop from '@/components/DragDrop'
-import { DesiredAtCSR, DocumentsCSR, ReserveTableCSR } from '@/api/repository'
+import {
+  DesiredAtCSR,
+  DocumentsCSR,
+  LogoutCSR,
+  ReserveTableCSR,
+} from '@/api/repository'
 import { useTranslations } from 'next-intl'
 import { toast } from 'react-toastify'
 import ClearIcon from '@mui/icons-material/Clear'
@@ -57,11 +64,16 @@ import {
 } from 'lodash'
 import ConfirmModal from '@/components/ConfirmModal'
 import { RouterPath } from '@/enum/router'
-import { RootState } from '@/hooks/store/store'
+import store, { RootState } from '@/hooks/store/store'
 import { APICommonCode } from '@/enum/apiError'
 import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye'
-import { DesiredAtRequest } from '@/api/model'
-import { ReserveTime } from '@/types/index'
+import {
+  DesiredAtRequest,
+  LogoutRequest,
+  ReserveTableRequest,
+} from '@/api/model'
+import { CommonModel, ReserveTime, UserModel } from '@/types/index'
+import { commonDispatch, userDispatch } from '@/hooks/store'
 
 const Applicant = () => {
   const router = useRouter()
@@ -74,30 +86,62 @@ const Applicant = () => {
   const DAYS_COMPONENTS = 24
   const WEEKS = 14
 
-  const [open, setOpen] = useState(false)
+  const [open, isOpen] = useState<boolean>(false)
   const [date, setDate] = useState<Date>(null)
-  const [resume, setResume] = useState(null)
-  const [curriculumVitae, setCurriculumVitae] = useState(null)
-  const [resumeName, setResumeName] = useState('')
-  const [curriculumVitaeName, setCurriculumVitaeName] = useState('')
-  const [resumeExtension, setResumeExtension] = useState('')
-  const [curriculumVitaeExtension, setCurriculumVitaeExtension] = useState('')
-  const [element, setElement] = useState(<></>)
-  const [element2, setElement2] = useState(<></>)
+  const [scheduleHash, setScheduleHash] = useState<string>('')
+  const [resume, setResume] = useState<File>(null)
+  const [curriculumVitae, setCurriculumVitae] = useState<File>(null)
+  const [resumeName, setResumeName] = useState<string>('')
+  const [curriculumVitaeName, setCurriculumVitaeName] = useState<string>('')
+  const [resumeExtension, setResumeExtension] = useState<string>('')
+  const [curriculumVitaeExtension, setCurriculumVitaeExtension] =
+    useState<string>('')
+  const [element, setElement] = useState<JSX.Element>(<></>)
+  const [element2, setElement2] = useState<JSX.Element>(<></>)
   const [dates, setDates] = useState<Date[]>([])
   const [reserveTable, setReserveTable] = useState<ReserveTime[][]>([])
-  const [isLoading, setIsLoading] = useState(true)
+  const [loading, isLoading] = useState(true)
+
+  const logout = async () => {
+    await LogoutCSR({ hash_key: user.hashKey } as LogoutRequest)
+      .then(() => {
+        store.dispatch(
+          userDispatch({
+            hashKey: '',
+            name: '',
+            mail: '',
+          } as UserModel),
+        )
+        store.dispatch(
+          commonDispatch({
+            errorMsg: '',
+          } as CommonModel),
+        )
+      })
+      .catch((error) => {
+        isEqual(error.response.data.code, APICommonCode.BadRequest)
+          ? router.push(RouterPath.Login)
+          : router.push(RouterPath.Error)
+        return
+      })
+  }
 
   const generateDateOptions = async () => {
-    setIsLoading(true)
+    isLoading(true)
     const datesList: Date[] = []
     const options: ReserveTime[][] = []
-    await ReserveTableCSR()
+    await ReserveTableCSR({
+      hash_key: user.hashKey,
+    } as ReserveTableRequest)
       .then((res) => {
         if (!isEqual(size(res.data.options), DAYS_COMPONENTS * WEEKS)) {
           router.push(RouterPath.Error)
           return
         }
+
+        setScheduleHash(res.data.calendar_hash_key)
+
+        const d = new Date(res.data.schedule)
         for (const o of map(res.data.date as string[], (item) => {
           return new Date(item)
         })) {
@@ -110,18 +154,20 @@ const Applicant = () => {
                 isEqual(index % DAYS_COMPONENTS, i),
               ),
               (option) => {
+                const time = new Date(option.time)
                 return {
-                  time: new Date(option.time),
+                  time: time,
                   isReserve: option.is_reserve,
-                  isClicked: false,
+                  isClicked: isEqual(d.getTime(), time.getTime()),
                 } as ReserveTime
               },
             ),
           )
         }
+
         setDates(datesList)
         setReserveTable(options)
-        setIsLoading(false)
+        isLoading(false)
       })
       .catch((error) => {
         if (
@@ -230,7 +276,7 @@ const Applicant = () => {
       </>,
     )
 
-    setOpen(true)
+    isOpen(true)
   }
 
   const readFile = async (file: File, dropArea: string) => {
@@ -280,6 +326,7 @@ const Applicant = () => {
       hash_key: user.hashKey,
       desired_at: date.toISOString(),
       title: user.name,
+      calendar_hash_key: scheduleHash,
     } as DesiredAtRequest)
       .then(async () => {
         if (some([!isEmpty(resumeName), !isEmpty(curriculumVitaeName)])) {
@@ -354,7 +401,7 @@ const Applicant = () => {
     <>
       <NextHead></NextHead>
 
-      {!isLoading && (
+      {!loading && (
         <>
           <Typography component="h3" variant="h5" sx={Title}>
             {t('features.main.title')}
@@ -539,14 +586,27 @@ const Applicant = () => {
               </Box>
             </DialogContent>
 
-            <Button
-              type="submit"
-              variant="contained"
-              sx={confirmButton}
-              onClick={onSubmit}
-            >
-              {t('common.button.confirm')}
-            </Button>
+            <Box sx={[FormButtons, mt(5), mb(5)]}>
+              <Button
+                variant="outlined"
+                color="inherit"
+                sx={LogoutButton}
+                onClick={async () => {
+                  await logout()
+                  router.push(RouterPath.Login)
+                }}
+              >
+                {t('features.login.errorButton')}
+              </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                sx={[confirmButton]}
+                onClick={onSubmit}
+              >
+                {t('common.button.confirm')}
+              </Button>
+            </Box>
           </Box>
 
           <ConfirmModal
@@ -554,7 +614,7 @@ const Applicant = () => {
             element={element}
             element2={element2}
             submit={submit}
-            cancel={() => setOpen(false)}
+            cancel={() => isOpen(false)}
           ></ConfirmModal>
         </>
       )}
