@@ -1,8 +1,9 @@
 // ログインユーザー model
 export type UserModel = {
-  hashKey: string
-  name: string
-  mail: string
+  hashKey?: string
+  teamHashKey?: string
+  name?: string
+  mail?: string
 }
 
 // 設定 model

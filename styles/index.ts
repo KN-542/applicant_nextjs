@@ -1,4 +1,4 @@
-import { blue, common, indigo } from '@mui/material/colors'
+import { blue, common } from '@mui/material/colors'
 import _ from 'lodash'
 
 export const m = (m: number) => {
@@ -31,6 +31,12 @@ export const minW = (w: number) => {
 export const hBlock = (h: number) => {
   return { height: h }
 }
+export const Color = (c: string) => {
+  return { color: c }
+}
+export const BackGroundColor = (c: string) => {
+  return { backgroundColor: c }
+}
 
 export const ErrorDisp = {
   display: 'flex',
@@ -40,17 +46,24 @@ export const ErrorDisp = {
   height: '100vh',
 }
 
-export const Title = {
+export const Top = {
   position: 'fixed',
   zIndex: 1,
   top: 0,
   width: '100%',
-  textAlign: 'center',
-  fontSize: 40,
-  fontWeight: 'bold',
-  backgroundColor: indigo[500],
+  backgroundColor: blue[500],
   color: common.white,
-  p: 3,
+  p: 2,
+}
+
+export const TopMenu = {
+  display: 'flex',
+  alignItems: 'center',
+}
+
+export const Title = {
+  fontSize: 30,
+  fontWeight: 'bold',
 }
 
 export const SubTitle = {
@@ -99,7 +112,6 @@ export const ToolBarMlMedia = {
 
 export const ColorRed = { color: 'red' }
 export const ColorWhite = { color: common.white }
-export const SecondaryMain = { bgcolor: 'secondary.main' }
 
 export const Bold = {
   fontWeight: 'bold',
@@ -139,8 +151,8 @@ export const confirmButton = {
   width: '10%',
   mb: 10,
   mt: 2,
-  bgcolor: indigo[500],
-  '&:hover': { bgcolor: indigo[500] },
+  bgcolor: blue[500],
+  '&:hover': { bgcolor: blue[500] },
 }
 
 export const LoginMain = {
@@ -229,7 +241,7 @@ export const TableBodyCell = {
 }
 
 export const TableCellColor = {
-  backgroundColor: indigo[500],
+  backgroundColor: blue[500],
   color: common.white,
 }
 

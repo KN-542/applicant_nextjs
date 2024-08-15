@@ -10,14 +10,18 @@ import { useTranslations } from 'next-intl'
 import Copyright from '@/components/Copyright'
 import { RouterPath } from '@/enum/router'
 import NextHead from '@/components/Header'
+import { RootState } from '@/hooks/store/store'
+import { useSelector } from 'react-redux'
 
 const Error = () => {
   const router = useRouter()
   const t = useTranslations()
 
+  const user = useSelector((state: RootState) => state.user)
+
   return (
     <>
-      <NextHead></NextHead>
+      <NextHead />
       <Container component="main" maxWidth="sm">
         <Box sx={ErrorDisp}>
           <Typography variant="h3" component="h1" gutterBottom sx={mb(4)}>
@@ -37,7 +41,12 @@ const Error = () => {
             type="submit"
             variant="contained"
             sx={[mt(10), w(60), ButtonColor(common.white, common.black)]}
-            onClick={() => router.push(RouterPath.Login)}
+            onClick={() =>
+              router.push(
+                RouterPath.Login.replace('[id]', '') +
+                  encodeURIComponent(user.teamHashKey),
+              )
+            }
           >
             {t('features.login.errorButton')}
           </Button>

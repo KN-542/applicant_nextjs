@@ -1,6 +1,7 @@
 export enum RouterPath {
-  Login = '/login',
+  Login = '/login/[id]',
   Error = '/error',
+  NotFound = '/_error',
   LoginMFA = '/login/mfa',
   Main = '/admin',
   Complete = '/admin/complete',
@@ -12,6 +13,8 @@ export const decideTitle = (path: string) => {
       return 'common.title.login'
     case RouterPath.Error:
       return 'common.title.error.500'
+    case RouterPath.NotFound:
+      return 'common.title.error.404'
     case RouterPath.LoginMFA:
       return 'common.title.login'
     case RouterPath.Main:

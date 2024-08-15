@@ -4,26 +4,25 @@ import store, { RootState } from '@/hooks/store/store'
 import { useSelector } from 'react-redux'
 import {
   ButtonColor,
-  ErrorDisp,
   FormButtons,
+  SpaceBetween,
   SubTitle,
   SubTitleMsg,
   Title,
+  Top,
   mb,
   minW,
   mt,
   w,
 } from '@/styles/index'
 import { Box, Button, Typography } from '@mui/material'
-import { common, indigo } from '@mui/material/colors'
+import { blue, common } from '@mui/material/colors'
 import { useTranslations } from 'next-intl'
 import { useRouter } from 'next/router'
 import { LogoutCSR } from '@/api/repository'
 import { LogoutRequest } from '@/api/model'
-import { commonDispatch, userDispatch } from '@/hooks/store'
-import { CommonModel, UserModel } from '@/types/index'
-import { isEqual } from 'lodash'
-import { APICommonCode } from '@/enum/apiError'
+import { commonDispatch, signOut } from '@/hooks/store'
+import { CommonModel } from '@/types/index'
 
 const Complete = () => {
   const router = useRouter()
@@ -34,39 +33,32 @@ const Complete = () => {
   const logout = async () => {
     await LogoutCSR({ hash_key: user.hashKey } as LogoutRequest)
       .then(() => {
-        store.dispatch(
-          userDispatch({
-            hashKey: '',
-            name: '',
-            mail: '',
-          } as UserModel),
-        )
-        store.dispatch(
-          commonDispatch({
-            errorMsg: '',
-          } as CommonModel),
-        )
+        store.dispatch(signOut()),
+          store.dispatch(
+            commonDispatch({
+              errorMsg: '',
+            } as CommonModel),
+          )
       })
-      .catch((error) => {
-        isEqual(error.response.data.code, APICommonCode.BadRequest)
-          ? router.push(RouterPath.Login)
-          : router.push(RouterPath.Error)
-        return
+      .catch(() => {
+        router.push(RouterPath.Error)
       })
   }
 
   return (
     <>
-      <NextHead></NextHead>
+      <NextHead />
 
-      <Typography component="h3" variant="h5" sx={Title}>
-        {t('features.main.title')}
-      </Typography>
+      <Box sx={[Top, SpaceBetween]}>
+        <Box></Box>
+        <Typography sx={Title}>{t('features.main.title')}</Typography>
+        <Box></Box>
+      </Box>
 
       <Typography
         component="h3"
         variant="h5"
-        sx={[SubTitle, w(90), mb(2), mt(30)]}
+        sx={[SubTitle, w(90), mb(2), mt(25)]}
       >
         {t('features.main.complete')}
       </Typography>
@@ -75,7 +67,7 @@ const Complete = () => {
         <p>{t('features.main.completeMsg2')}</p>
         <p>{t('features.main.completeMsg3')}</p>
       </Box>
-      <Box sx={[FormButtons, mt(5), mb(5)]}>
+      <Box sx={[FormButtons, mt(15), mb(5)]}>
         <Button
           variant="outlined"
           color="inherit"
@@ -90,7 +82,7 @@ const Complete = () => {
         <Button
           type="submit"
           variant="contained"
-          sx={[minW(90), ButtonColor(common.white, indigo[500])]}
+          sx={[minW(90), ButtonColor(common.white, blue[500])]}
           onClick={() => router.push(RouterPath.Main)}
         >
           {t('features.main.editButton')}

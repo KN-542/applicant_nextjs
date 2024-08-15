@@ -4,6 +4,7 @@ import { CommonModel, UserModel } from 'types/index'
 const state = {
   user: {
     hashKey: '',
+    teamHashKey: '',
     name: '',
     mail: '',
   } as UserModel,

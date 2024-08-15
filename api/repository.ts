@@ -1,18 +1,28 @@
-import axios from 'axios'
-import { APICommonHeader } from '.'
+import { APICommonHeader, axios1 } from '.'
 import {
+  ConfirmTeamRequest,
   DesiredAtRequest,
-  JWTDdcodeRequest,
+  DecodeJWTRequest,
   LoginRequest,
   LogoutRequest,
-  MFACreateRequest,
+  CreateMFARequest,
   MFARequest,
   ReserveTableRequest,
 } from './model'
 
+// チーム存在確認 CSR
+export const ConfirmTeamCSR = async (req: ConfirmTeamRequest) => {
+  const res = await axios1.post(
+    `${process.env.NEXT_PUBLIC_CSR_URL}/confirm_team_applicant`,
+    req,
+    APICommonHeader,
+  )
+  return res
+}
+
 // Login CSR
-export const loginCSR = async (req: LoginRequest) => {
-  const res = await axios.post(
+export const LoginCSR = async (req: LoginRequest) => {
+  const res = await axios1.post(
     `${process.env.NEXT_PUBLIC_CSR_URL}/login_applicant`,
     req,
     APICommonHeader,
@@ -22,7 +32,7 @@ export const loginCSR = async (req: LoginRequest) => {
 
 // Logout CSR
 export const LogoutCSR = async (req: LogoutRequest) => {
-  const res = await axios.post(
+  const res = await axios1.post(
     `${process.env.NEXT_PUBLIC_CSR_URL}/logout_applicant`,
     req,
     APICommonHeader,
@@ -32,7 +42,7 @@ export const LogoutCSR = async (req: LogoutRequest) => {
 
 // MFA CSR
 export const MFACSR = async (req: MFARequest) => {
-  const res = await axios.post(
+  const res = await axios1.post(
     `${process.env.NEXT_PUBLIC_CSR_URL}/mfa_applicant`,
     req,
     APICommonHeader,
@@ -41,8 +51,8 @@ export const MFACSR = async (req: MFARequest) => {
 }
 
 // MFA create CSR
-export const MFACreateCSR = async (req: MFACreateRequest) => {
-  const res = await axios.post(
+export const CreateMFACSR = async (req: CreateMFARequest) => {
+  const res = await axios1.post(
     `${process.env.NEXT_PUBLIC_CSR_URL}/code_gen_applicant`,
     req,
     APICommonHeader,
@@ -51,8 +61,8 @@ export const MFACreateCSR = async (req: MFACreateRequest) => {
 }
 
 // JWT Decode CSR
-export const JWTDecodeCSR = async (req: JWTDdcodeRequest) => {
-  const res = await axios.post(
+export const DecodeJWTCSR = async (req: DecodeJWTRequest) => {
+  const res = await axios1.post(
     `${process.env.NEXT_PUBLIC_CSR_URL}/decode_applicant`,
     req,
     APICommonHeader,
@@ -62,7 +72,7 @@ export const JWTDecodeCSR = async (req: JWTDdcodeRequest) => {
 
 // 希望日時登録 CSR
 export const DesiredAtCSR = async (req: DesiredAtRequest) => {
-  const res = await axios.post(
+  const res = await axios1.post(
     `${process.env.NEXT_PUBLIC_CSR_URL}/applicant/desired`,
     req,
     APICommonHeader,
@@ -72,7 +82,7 @@ export const DesiredAtCSR = async (req: DesiredAtRequest) => {
 
 // Documents CSR
 export const DocumentsCSR = async (req: FormData) => {
-  const res = await axios.post(
+  const res = await axios1.post(
     `${process.env.NEXT_PUBLIC_CSR_URL}/applicant/documents`,
     req,
     {
@@ -87,7 +97,7 @@ export const DocumentsCSR = async (req: FormData) => {
 
 // 面接可能日時取得 CSR
 export const ReserveTableCSR = async (req: ReserveTableRequest) => {
-  const res = await axios.post(
+  const res = await axios1.post(
     `${process.env.NEXT_PUBLIC_CSR_URL}/applicant/reserve_table`,
     req,
     APICommonHeader,

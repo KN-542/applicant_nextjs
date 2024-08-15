@@ -28,7 +28,7 @@ import DateRangeIcon from '@mui/icons-material/DateRange'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import { RouterPath } from '@/enum/router'
 import { useRouter } from 'next/router'
-import { common, indigo } from '@mui/material/colors'
+import { blue, common } from '@mui/material/colors'
 
 type Props = {
   open: boolean
@@ -89,7 +89,7 @@ const ConfirmModal = (props: Props) => {
         <Button
           type="submit"
           variant="contained"
-          sx={[minW(90), ButtonColor(common.white, indigo[500])]}
+          sx={[minW(90), ButtonColor(common.white, blue[500])]}
           onClick={props.submit}
         >
           {t('common.button.submit')}

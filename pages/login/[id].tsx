@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import {
   Avatar,
   Button,
@@ -15,17 +15,23 @@ import { useTranslations } from 'next-intl'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { Pattern, ValidationType } from '@/enum/validation'
 import ErrorHandler from '@/components/ErrorHandler'
-import _, { every, isEmpty, isEqual, trim } from 'lodash'
-import { LogoutCSR, MFACSR, MFACreateCSR, loginCSR } from '@/api/repository'
+import _ from 'lodash'
+import {
+  ConfirmTeamCSR,
+  LogoutCSR,
+  MFACSR,
+  CreateMFACSR,
+  LoginCSR,
+} from '@/api/repository'
 import { useRouter } from 'next/router'
 import {
   LoginMain,
   minW,
   mt,
   mb,
-  SecondaryMain,
   m,
   ButtonColor,
+  BackGroundColor,
 } from '@/styles/index'
 import store, { RootState } from '@/hooks/store/store'
 import { commonDispatch, signOut, userDispatch } from '@/hooks/store'
@@ -33,38 +39,74 @@ import { CommonModel, UserModel } from '@/types/index'
 import { RouterPath } from '@/enum/router'
 import NextHead from '@/components/Header'
 import {
+  ConfirmTeamRequest,
   LoginRequest,
   LogoutRequest,
-  MFACreateRequest,
+  CreateMFARequest,
   MFARequest,
 } from '@/api/model/index'
-import {
-  APICommonCode,
-  APILoginCode,
-  APIMFACode,
-  APISessionCheckCode,
-} from '@/enum/apiError'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux'
-import { common, indigo, red } from '@mui/material/colors'
+import { blue, common, red } from '@mui/material/colors'
 import ClearIcon from '@mui/icons-material/Clear'
 import MFA from '@/components/MFA'
+import { GetStaticPaths, GetStaticProps } from 'next'
+
+type Props = {
+  id: string
+}
 
 type Inputs = {
   mail: string
 }
 
-const Login = () => {
+const Login: FC<Props> = ({ id }) => {
   const router = useRouter()
   const t = useTranslations()
 
   const commonStore = useSelector((state: RootState) => state.common)
   const user: UserModel = useSelector((state: RootState) => state.user)
 
-  const [loading, isLoading] = useState<boolean>(true)
+  const [init, isInit] = useState<boolean>(true)
   const [hash, setHash] = useState<string>('')
   const [open, isOpen] = useState<boolean>(false)
   const submitButtonRef = useRef(null)
+
+  const inits = async () => {
+    // API: チーム存在確認
+    await ConfirmTeamCSR({
+      hash_key: decodeURIComponent(id),
+    } as ConfirmTeamRequest)
+      .then(() => {
+        store.dispatch(userDispatch({ teamHashKey: decodeURIComponent(id) }))
+        isInit(false)
+      })
+      .catch(({ isServerError, routerPath, toastMsg, _storeMsg, code }) => {
+        if (isServerError) {
+          router.push(routerPath)
+          return
+        }
+
+        if (code) {
+          router.push(RouterPath.NotFound)
+          return
+        }
+
+        if (!_.isEmpty(toastMsg)) {
+          toast(t(toastMsg), {
+            style: {
+              backgroundColor: red[500],
+              color: common.white,
+              width: 500,
+            },
+            position: 'bottom-left',
+            hideProgressBar: true,
+            closeButton: () => <ClearIcon />,
+          })
+          return
+        }
+      })
+  }
 
   const formValidationValue: FormValidationValue = {
     mail: {
@@ -101,88 +143,53 @@ const Login = () => {
   } = useForm<Inputs>()
 
   const submit: SubmitHandler<Inputs> = async (d: Inputs) => {
-    // API ログイン
-    await loginCSR({
-      email: d.mail,
-    } as LoginRequest)
-      .then(async (res) => {
-        setHash(String(res.data.hash_key))
+    try {
+      // API ログイン
+      const res = await LoginCSR({
+        email: d.mail,
+        team_hash_key: decodeURIComponent(id),
+      } as LoginRequest)
 
-        // API MFAコード生成
-        await MFACreateCSR({
-          hash_key: String(res.data.hash_key),
-        } as MFACreateRequest)
-          .then(() => {
-            store.dispatch(
-              userDispatch({
-                hashKey: res.data.hash_key,
-                name: res.data.name,
-                mail: d.mail,
-              } as UserModel),
-            )
-            isOpen(true)
-          })
-          .catch((error) => {
-            if (
-              _.every([
-                500 <= error.response?.status,
-                error.response?.status < 600,
-              ])
-            ) {
-              router.push(RouterPath.Error)
-              return
-            }
+      setHash(String(res.data.hash_key))
 
-            let msg = ''
-            if (
-              _.isEqual(error.response?.data.code, APICommonCode.BadRequest)
-            ) {
-              msg = t(`common.api.code.${error.response?.data.code}`)
-            } else if (
-              _.isEqual(
-                error.response?.data.code,
-                APISessionCheckCode.LoginRequired,
-              )
-            ) {
-              msg = t(`common.api.code.expired${error.response?.data.code}`)
-            }
+      // API MFAコード生成
+      await CreateMFACSR({
+        hash_key: String(res.data.hash_key),
+      } as CreateMFARequest)
 
-            store.dispatch(
-              commonDispatch({
-                errorMsg: msg,
-              } as CommonModel),
-            )
-          })
-      })
-      .catch((error) => {
-        let msg = ''
-        if (error.response?.data.code > 0) {
-          if (isEqual(error.response?.data.code, APICommonCode.BadRequest)) {
-            msg = t(`common.api.code.${error.response?.data.code}`)
-          } else if (
-            isEqual(error.response?.data.code, APILoginCode.LoinAuth)
-          ) {
-            msg = t(`common.api.code.login${error.response?.data.code}`)
-          }
+      store.dispatch(
+        userDispatch({
+          hashKey: res.data.hash_key,
+          teamHashKey: decodeURIComponent(id),
+          name: res.data.name,
+          mail: d.mail,
+        } as UserModel),
+      )
+      isOpen(true)
+    } catch ({ isServerError, routerPath, toastMsg, storeMsg, code }) {
+      if (isServerError) {
+        router.push(routerPath)
+        return
+      }
 
-          toast(msg, {
-            style: {
-              backgroundColor: red[500],
-              color: common.white,
-              width: 500,
-            },
-            position: 'bottom-left',
-            hideProgressBar: true,
-            closeButton: () => <ClearIcon />,
-          })
-        }
+      if (code) {
+        router.push(RouterPath.NotFound)
+      }
 
-        if (
-          every([500 <= error.response?.status, error.response?.status < 600])
-        ) {
-          router.push(RouterPath.Error)
-        }
-      })
+      if (!_.isEmpty(toastMsg)) {
+        toast(t(toastMsg), {
+          style: {
+            backgroundColor: blue[500],
+            color: common.white,
+            width: 500,
+          },
+          position: 'bottom-left',
+          hideProgressBar: true,
+          closeButton: () => <ClearIcon />,
+        })
+        return
+      }
+    }
   }
 
   const reSend = async () => {
@@ -201,13 +208,8 @@ const Login = () => {
       .then(() => {
         store.dispatch(signOut())
       })
-      .catch((error) => {
-        if (
-          _.every([500 <= error.response?.status, error.response?.status < 600])
-        ) {
-          router.push(RouterPath.Error)
-          return
-        }
+      .catch(() => {
+        router.push(RouterPath.Error)
       })
   }
 
@@ -221,81 +223,77 @@ const Login = () => {
         isOpen(false)
         router.push(RouterPath.Main)
       })
-      .catch(async (error) => {
-        if (
-          _.every([500 <= error.response?.status, error.response?.status < 600])
-        ) {
-          router.push(RouterPath.Error)
-          return
-        }
+      .catch(
+        async ({ isServerError, routerPath, toastMsg, _storeMsg, code }) => {
+          if (isServerError) {
+            router.push(routerPath)
+            return
+          }
 
-        let msg = ''
-        if (_.isEqual(error.response?.data.code, APICommonCode.BadRequest)) {
-          msg = t(`common.api.code.${error.response?.data.code}`)
-        } else {
-          msg = t(`common.api.code.mfa${error.response?.data.code}`)
-        }
+          if (code) {
+            setTimeout(async () => {
+              await submitButtonRef.current.click()
+            }, 0.25 * 1000)
+            return
+          }
 
-        toast(msg, {
+          if (!_.isEmpty(toastMsg)) {
+            toast(t(toastMsg), {
+              style: {
+                backgroundColor: blue[500],
+                color: common.white,
+                width: 500,
+              },
+              position: 'bottom-left',
+              hideProgressBar: true,
+              closeButton: () => <ClearIcon />,
+            })
+            return
+          }
+        },
+      )
+  }
+
+  useEffect(() => {
+    // トースト
+    if (!_.isEmpty(commonStore.errorMsg)) {
+      setTimeout(() => {
+        toast(commonStore.errorMsg, {
           style: {
             backgroundColor: red[500],
             color: common.white,
-            width: 600,
+            width: 630,
           },
           position: 'bottom-left',
           hideProgressBar: true,
           closeButton: () => <ClearIcon />,
         })
+      }, 0.1 * 1000)
 
-        if (_.isEqual(error.response?.data.code, APIMFACode.Expired)) {
-          setTimeout(async () => {
-            await submitButtonRef.current.click()
-          }, 0.25 * 1000)
-        }
-      })
-  }
-
-  useEffect(() => {
-    if (loading) {
-      // トースト
-      if (!isEmpty(commonStore.errorMsg)) {
-        setTimeout(() => {
-          toast(commonStore.errorMsg, {
-            style: {
-              backgroundColor: red[500],
-              color: common.white,
-              width: 630,
-            },
-            position: 'bottom-left',
-            hideProgressBar: true,
-            closeButton: () => <ClearIcon />,
-          })
-        }, 0.1 * 1000)
-
-        store.dispatch(
-          commonDispatch({
-            errorMsg: '',
-          } as CommonModel),
-        )
-        store.dispatch(signOut())
-      }
-
-      // ログアウト
-      reset()
+      store.dispatch(
+        commonDispatch({
+          errorMsg: '',
+        } as CommonModel),
+      )
+      store.dispatch(signOut())
     }
 
-    isLoading(false)
+    // ログアウト
+    reset()
+
+    // チーム存在確認
+    inits()
   }, [])
 
   return (
     <>
-      <NextHead></NextHead>
-      {!loading && (
+      <NextHead />
+      {!init && (
         <>
           <Container component="main" maxWidth="xs" sx={mt(30)}>
             <CssBaseline />
             <Box sx={LoginMain}>
-              <Avatar sx={[m(1), SecondaryMain]}>
+              <Avatar sx={[m(1), BackGroundColor(blue[500])]}>
                 <LockOutlinedIcon />
               </Avatar>
               <Typography component="h1" variant="h4">
@@ -318,7 +316,7 @@ const Login = () => {
                     required: true,
                     maxLength: formValidationValue.mail.max,
                     pattern: formValidationValue.mail.pattern,
-                    setValueAs: (value) => trim(value),
+                    setValueAs: (value) => value.trim(),
                   })}
                   aria-invalid={errors.mail ? 'true' : 'false'}
                 />
@@ -332,7 +330,7 @@ const Login = () => {
                   fullWidth
                   variant="contained"
                   ref={submitButtonRef}
-                  sx={[mt(3), mb(1), ButtonColor(common.white, indigo[500])]}
+                  sx={[mt(3), mb(1), ButtonColor(common.white, blue[500])]}
                 >
                   {t('features.login.login')}
                 </Button>
@@ -356,9 +354,17 @@ const Login = () => {
   )
 }
 
-export const getStaticProps = async ({ locale }) => {
+export const getStaticPaths: GetStaticPaths = async () => {
+  return {
+    paths: [], // 空配列を返す。全てのパスは初回アクセス時に生成される。
+    fallback: 'blocking',
+  }
+}
+
+export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
   return {
     props: {
+      id: params?.id,
       messages: (await import(`../../public/locales/${locale}/common.json`))
         .default,
     },

@@ -2,15 +2,16 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useRouter } from 'next/router'
 import store, { RootState } from '@/hooks/store/store'
-import { JWTDecodeCSR, LogoutCSR } from '@/api/repository'
+import { DecodeJWTCSR } from '@/api/repository'
 import { RouterPath } from '@/enum/router'
-import { APICommonCode, APISessionCheckCode } from '@/enum/apiError'
-import _, { every, isEqual } from 'lodash'
-import { ToastContainer } from 'react-toastify'
-import { JWTDdcodeRequest, LogoutRequest } from '@/api/model/index'
-import { commonDispatch, userDispatch } from '@/hooks/store'
-import { CommonModel, UserModel } from '@/types/index'
+import ClearIcon from '@mui/icons-material/Clear'
+import _ from 'lodash'
+import { toast, ToastContainer } from 'react-toastify'
+import { DecodeJWTRequest } from '@/api/model/index'
+import { commonDispatch } from '@/hooks/store'
+import { CommonModel } from '@/types/index'
 import { useTranslations } from 'next-intl'
+import { blue, common } from '@mui/material/colors'
 
 const Admin = ({ Component, pageProps }) => {
   const router = useRouter()
@@ -20,65 +21,45 @@ const Admin = ({ Component, pageProps }) => {
 
   const [disp, isDisp] = useState<boolean>(false)
 
-  const logout = async (req: LogoutRequest, msg: string) => {
-    await LogoutCSR(req)
-      .then(() => {
-        store.dispatch(
-          userDispatch({
-            hashKey: '',
-            name: '',
-            mail: '',
-          } as UserModel),
-        )
-        store.dispatch(
-          commonDispatch({
-            errorMsg: msg,
-          } as CommonModel),
-        )
-        router.push(RouterPath.Login)
-      })
-      .catch((error) => {
-        isEqual(error.response.data.code, APICommonCode.BadRequest)
-          ? router.push(RouterPath.Login)
-          : router.push(RouterPath.Error)
-        return
-      })
-  }
-
   useEffect(() => {
     // JWT検証
-    JWTDecodeCSR({
+    DecodeJWTCSR({
       hash_key: user.hashKey,
-    } as JWTDdcodeRequest)
+    } as DecodeJWTRequest)
       .then(() => {
         isDisp(true)
       })
-      .catch(async (error) => {
-        if (
-          every([500 <= error.response.status, error.response.status < 600])
-        ) {
-          router.push(RouterPath.Error)
+      .catch(({ isServerError, routerPath, toastMsg, storeMsg }) => {
+        if (isServerError) {
+          router.push(routerPath)
           return
         }
 
-        let msg = ''
-        if (isEqual(error.response.data.code, APICommonCode.BadRequest)) {
-          msg = t(`common.api.code.${error.response.data.code}`)
-        } else if (
-          isEqual(error.response.data.code, APISessionCheckCode.LoginRequired)
-        ) {
-          msg = t(`common.api.code.expired${error.response.data.code}`)
+        if (!_.isEmpty(toastMsg)) {
+          toast(t(toastMsg), {
+            style: {
+              backgroundColor: blue[500],
+              color: common.white,
+              width: 500,
+            },
+            position: 'bottom-left',
+            hideProgressBar: true,
+            closeButton: () => <ClearIcon />,
+          })
+          return
         }
 
-        store.dispatch(
-          commonDispatch({
-            errorMsg: msg,
-          } as CommonModel),
-        )
-
-        await logout({ hash_key: user.hashKey } as LogoutRequest, msg)
+        if (!_.isEmpty(storeMsg)) {
+          const msg = t(storeMsg)
+          store.dispatch(
+            commonDispatch({
+              errorMsg: msg,
+            } as CommonModel),
+          )
+          router.push(_.isEmpty(routerPath) ? RouterPath.Login : routerPath)
+        }
       })
-  }, [])
+  }, [router.pathname])
 
   return (
     <>

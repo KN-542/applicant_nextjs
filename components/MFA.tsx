@@ -16,7 +16,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { common, indigo } from '@mui/material/colors'
+import { blue, common } from '@mui/material/colors'
 import { useTranslations } from 'next-intl'
 import _ from 'lodash'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -132,7 +132,7 @@ const MFA = (props: Props) => {
             </Button>
             <Button
               variant="contained"
-              sx={ButtonColor(common.white, indigo[500])}
+              sx={ButtonColor(common.white, blue[500])}
               onClick={async () => {
                 reset()
                 await props.reSend()
@@ -143,7 +143,7 @@ const MFA = (props: Props) => {
             <Button
               type="submit"
               variant="contained"
-              sx={ButtonColor(common.white, indigo[500])}
+              sx={ButtonColor(common.white, blue[500])}
             >
               {t('common.button.auth')}
             </Button>

@@ -15,7 +15,7 @@ import {
   Paper,
 } from '@mui/material'
 import { useRouter } from 'next/router'
-import { common, indigo, red } from '@mui/material/colors'
+import { blue, common, red } from '@mui/material/colors'
 import {
   mt,
   mb,
@@ -38,6 +38,9 @@ import {
   TableBodyCell,
   FormButtons,
   LogoutButton,
+  SpaceBetween,
+  Top,
+  TopMenu,
 } from '@/styles/index'
 import NextHead from '@/components/Header'
 import DateRangeIcon from '@mui/icons-material/DateRange'
@@ -52,16 +55,7 @@ import {
 import { useTranslations } from 'next-intl'
 import { toast } from 'react-toastify'
 import ClearIcon from '@mui/icons-material/Clear'
-import {
-  cloneDeep,
-  every,
-  filter,
-  isEmpty,
-  isEqual,
-  map,
-  size,
-  some,
-} from 'lodash'
+import _ from 'lodash'
 import ConfirmModal from '@/components/ConfirmModal'
 import { RouterPath } from '@/enum/router'
 import store, { RootState } from '@/hooks/store/store'
@@ -72,8 +66,9 @@ import {
   LogoutRequest,
   ReserveTableRequest,
 } from '@/api/model'
-import { CommonModel, ReserveTime, UserModel } from '@/types/index'
-import { commonDispatch, userDispatch } from '@/hooks/store'
+import { CommonModel, ReserveTime } from '@/types/index'
+import { commonDispatch, signOut } from '@/hooks/store'
+import LogoutIcon from '@mui/icons-material/Logout'
 
 const Applicant = () => {
   const router = useRouter()
@@ -105,36 +100,30 @@ const Applicant = () => {
   const logout = async () => {
     await LogoutCSR({ hash_key: user.hashKey } as LogoutRequest)
       .then(() => {
-        store.dispatch(
-          userDispatch({
-            hashKey: '',
-            name: '',
-            mail: '',
-          } as UserModel),
-        )
+        store.dispatch(signOut())
         store.dispatch(
           commonDispatch({
             errorMsg: '',
           } as CommonModel),
         )
       })
-      .catch((error) => {
-        isEqual(error.response.data.code, APICommonCode.BadRequest)
-          ? router.push(RouterPath.Login)
-          : router.push(RouterPath.Error)
-        return
+      .catch(() => {
+        router.push(RouterPath.Error)
       })
   }
 
   const generateDateOptions = async () => {
     isLoading(true)
+
     const datesList: Date[] = []
     const options: ReserveTime[][] = []
+
+    // API: 予約表提示
     await ReserveTableCSR({
       hash_key: user.hashKey,
     } as ReserveTableRequest)
       .then((res) => {
-        if (!isEqual(size(res.data.options), DAYS_COMPONENTS * WEEKS)) {
+        if (!_.isEqual(_.size(res.data.options), DAYS_COMPONENTS * WEEKS)) {
           router.push(RouterPath.Error)
           return
         }
@@ -142,23 +131,23 @@ const Applicant = () => {
         setScheduleHash(res.data.calendar_hash_key)
 
         const d = new Date(res.data.schedule)
-        for (const o of map(res.data.date as string[], (item) => {
+        for (const o of _.map(res.data.date as string[], (item) => {
           return new Date(item)
         })) {
           datesList.push(o)
         }
         for (let i = 0; i < DAYS_COMPONENTS; i++) {
           options.push(
-            map(
-              filter(cloneDeep(res.data.options), (_, index: number) =>
-                isEqual(index % DAYS_COMPONENTS, i),
+            _.map(
+              _.filter(_.cloneDeep(res.data.options), (_a, index: number) =>
+                _.isEqual(index % DAYS_COMPONENTS, i),
               ),
               (option) => {
                 const time = new Date(option.time)
                 return {
                   time: time,
                   isReserve: option.is_reserve,
-                  isClicked: isEqual(d.getTime(), time.getTime()),
+                  isClicked: _.isEqual(d.getTime(), time.getTime()),
                 } as ReserveTime
               },
             ),
@@ -167,22 +156,19 @@ const Applicant = () => {
 
         setDates(datesList)
         setReserveTable(options)
-        isLoading(false)
       })
-      .catch((error) => {
-        if (
-          every([500 <= error.response?.status, error.response?.status < 600])
-        ) {
-          router.push(RouterPath.Error)
+      .catch(({ isServerError, routerPath, toastMsg }) => {
+        if (isServerError) {
+          router.push(routerPath)
           return
         }
 
-        if (isEqual(error.response?.data.code, APICommonCode.BadRequest)) {
-          toast(t(`common.api.code.${error.response?.data.code}`), {
+        if (!_.isEmpty(toastMsg)) {
+          toast(t(toastMsg), {
             style: {
               backgroundColor: red[500],
               color: common.white,
-              width: 600,
+              width: 500,
             },
             position: 'bottom-left',
             hideProgressBar: true,
@@ -191,16 +177,21 @@ const Applicant = () => {
           return
         }
       })
+      .finally(() => {
+        isLoading(false)
+      })
   }
 
   const selectedReserve = (rIdx: number, oIdx: number) => {
-    const list = cloneDeep(reserveTable)
+    const list = _.cloneDeep(reserveTable)
+    const isClicked = list[rIdx][oIdx].isClicked
+
     for (const options of list) {
       for (const option of options) {
         option.isClicked = false
       }
     }
-    list[rIdx][oIdx].isClicked = !list[rIdx][oIdx].isClicked
+    list[rIdx][oIdx].isClicked = !isClicked
     setReserveTable(list)
   }
 
@@ -212,7 +203,7 @@ const Applicant = () => {
       }
     }
 
-    if (isEmpty(reserve.time?.toISOString())) {
+    if (_.isEmpty(reserve.time?.toISOString())) {
       toast(t('features.main.subTitle') + t('common.validate.required'), {
         style: {
           backgroundColor: red[500],
@@ -247,13 +238,13 @@ const Applicant = () => {
       <>
         <Typography component="h6" sx={[mb(2), Bold]}>
           {`・${t('features.main.resume')} `}
-          {!isEmpty(resumeName) && (
+          {!_.isEmpty(resumeName) && (
             <Box component="span" sx={[FileDisp, ml(5)]}>
               <InsertDriveFileIcon sx={[mr(0.25), mb(1)]} />
               {resumeName}
             </Box>
           )}
-          {isEmpty(resumeName) && (
+          {_.isEmpty(resumeName) && (
             <Box component="span" sx={ml(5)}>
               {'-'}
             </Box>
@@ -261,13 +252,13 @@ const Applicant = () => {
         </Typography>
         <Typography component="h6" sx={[mb(2), Bold]}>
           {`・${t('features.main.curriculumVitae')} `}
-          {!isEmpty(curriculumVitaeName) && (
+          {!_.isEmpty(curriculumVitaeName) && (
             <Box component="span" sx={[FileDisp, ml(5)]}>
               <InsertDriveFileIcon sx={[mr(0.25), mb(1)]} />
               {curriculumVitaeName}
             </Box>
           )}
-          {isEmpty(curriculumVitaeName) && (
+          {_.isEmpty(curriculumVitaeName) && (
             <Box component="span" sx={ml(5)}>
               {'-'}
             </Box>
@@ -296,13 +287,13 @@ const Applicant = () => {
       return
     }
 
-    if (isEqual(dropArea, RESUME)) {
+    if (_.isEqual(dropArea, RESUME)) {
       setResume(file)
       setResumeName(file.name)
       setResumeExtension(file.name.substring(file.name.lastIndexOf('.') + 1))
       return
     }
-    if (isEqual(dropArea, CURRICULUM_VITAE)) {
+    if (_.isEqual(dropArea, CURRICULUM_VITAE)) {
       setCurriculumVitae(file)
       setCurriculumVitaeName(file.name)
       setCurriculumVitaeExtension(
@@ -312,85 +303,59 @@ const Applicant = () => {
   }
 
   const submit = async () => {
-    const formData = new FormData()
-    if (!isEmpty(resumeName)) {
-      formData.append('resume', resume)
-      formData.append('resume_extension', resumeExtension)
-    }
-    if (!isEmpty(curriculumVitaeName)) {
-      formData.append('curriculum_vitae', curriculumVitae)
-      formData.append('curriculum_vitae_extension', curriculumVitaeExtension)
-    }
+    try {
+      // フォームデータ作成
+      const formData = new FormData()
 
-    await DesiredAtCSR({
-      hash_key: user.hashKey,
-      desired_at: date.toISOString(),
-      title: user.name,
-      calendar_hash_key: scheduleHash,
-    } as DesiredAtRequest)
-      .then(async () => {
-        if (some([!isEmpty(resumeName), !isEmpty(curriculumVitaeName)])) {
-          formData.append('hash_key', user.hashKey)
+      if (_.some([!_.isEmpty(resumeName), !_.isEmpty(curriculumVitaeName)])) {
+        formData.append('hash_key', user.hashKey)
+
+        if (!_.isEmpty(resumeName)) {
+          formData.append('resume', resume)
+          formData.append('resume_extension', resumeExtension)
+        }
+        if (!_.isEmpty(curriculumVitaeName)) {
+          formData.append('curriculum_vitae', curriculumVitae)
           formData.append(
-            'file_name',
-            `${user.name}_${user.mail.replace(/\./g, '')}`,
+            'curriculum_vitae_extension',
+            curriculumVitaeExtension,
           )
-
-          await DocumentsCSR(formData)
-            .then(() => {
-              router.push(RouterPath.Complete)
-            })
-            .catch((error) => {
-              if (
-                every([
-                  500 <= error.response.status,
-                  error.response.status < 600,
-                ])
-              ) {
-                router.push(RouterPath.Error)
-                return
-              }
-
-              if (isEqual(error.response.data.code, APICommonCode.BadRequest)) {
-                toast(t(`common.api.code.${error.response.data.code}`), {
-                  style: {
-                    backgroundColor: red[500],
-                    color: common.white,
-                    width: 600,
-                  },
-                  position: 'bottom-left',
-                  hideProgressBar: true,
-                  closeButton: () => <ClearIcon />,
-                })
-                return
-              }
-            })
-        } else {
-          router.push(RouterPath.Complete)
-        }
-      })
-      .catch((error) => {
-        if (
-          every([500 <= error.response.status, error.response.status < 600])
-        ) {
-          router.push(RouterPath.Error)
-          return
         }
 
-        if (isEqual(error.response.data.code, APICommonCode.BadRequest)) {
-          toast(t(`common.api.code.${error.response.data.code}`), {
-            style: {
-              backgroundColor: red[500],
-              color: common.white,
-              width: 600,
-            },
-            position: 'bottom-left',
-            hideProgressBar: true,
-            closeButton: () => <ClearIcon />,
-          })
-          return
-        }
-      })
+        // API: 書類アップロード
+        await DocumentsCSR(formData)
+      }
+
+      // API: 希望面接日時登録
+      await DesiredAtCSR({
+        applicant_hash_key: user.hashKey,
+        desired_at: date.toISOString(),
+        title: user.name,
+        resume_extension: resumeExtension,
+        curriculum_vitae_extension: curriculumVitaeExtension,
+      } as DesiredAtRequest)
+
+      router.push(RouterPath.Complete)
+    } catch ({ isServerError, routerPath, toastMsg }) {
+      if (isServerError) {
+        router.push(routerPath)
+        return
+      }
+
+      if (!_.isEmpty(toastMsg)) {
+        toast(t(toastMsg), {
+          style: {
+            backgroundColor: blue[500],
+            color: common.white,
+            width: 500,
+          },
+          position: 'bottom-left',
+          hideProgressBar: true,
+          closeButton: () => <ClearIcon />,
+        })
+        return
+      }
+    }
   }
 
   useEffect(() => {
@@ -399,13 +364,28 @@ const Applicant = () => {
 
   return (
     <>
-      <NextHead></NextHead>
+      <NextHead />
 
       {!loading && (
         <>
-          <Typography component="h3" variant="h5" sx={Title}>
-            {t('features.main.title')}
-          </Typography>
+          <Box sx={[Top, SpaceBetween]}>
+            <Box></Box>
+            <Typography sx={Title}>{t('features.main.title')}</Typography>
+            <Button
+              color="inherit"
+              sx={TopMenu}
+              onClick={async () => {
+                await logout()
+                router.push(
+                  RouterPath.Login.replace('[id]', '') +
+                    encodeURIComponent(user.teamHashKey),
+                )
+              }}
+            >
+              <LogoutIcon sx={mr(0.25)} />
+              {t('common.button.logout')}
+            </Button>
+          </Box>
 
           <Box component="div" sx={mt(20)}>
             <Typography
@@ -426,7 +406,7 @@ const Applicant = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell sx={[TableCellColor, Table0_0]}></TableCell>
-                      {map(dates, (o, index) => (
+                      {_.map(dates, (o, index) => (
                         <TableCell
                           key={index}
                           align="center"
@@ -441,7 +421,7 @@ const Applicant = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {map(reserveTable, (options, index) => (
+                    {_.map(reserveTable, (options, index) => (
                       <TableRow key={index}>
                         <TableCell
                           component="th"
@@ -456,30 +436,22 @@ const Applicant = () => {
                             '0',
                           )}`}
                         </TableCell>
-                        {map(options, (option, i) => (
+                        {_.map(options, (option, i) => (
                           <TableCell key={i} align="center">
                             {option.isReserve ? (
-                              <>
-                                {option.isClicked && (
-                                  <Button
-                                    variant="text"
-                                    sx={ButtonColor(common.white, indigo[500])}
-                                  >
-                                    <PanoramaFishEyeIcon />
-                                  </Button>
-                                )}
-                                {!option.isClicked && (
-                                  <Button
-                                    variant="text"
-                                    sx={ButtonColor(indigo[500], common.white)}
-                                    onClick={() => {
-                                      selectedReserve(Number(index), Number(i))
-                                    }}
-                                  >
-                                    <PanoramaFishEyeIcon />
-                                  </Button>
-                                )}
-                              </>
+                              <Button
+                                variant="text"
+                                sx={
+                                  option.isClicked
+                                    ? ButtonColor(common.white, blue[500])
+                                    : ButtonColor(blue[500], common.white)
+                                }
+                                onClick={() => {
+                                  selectedReserve(Number(index), Number(i))
+                                }}
+                              >
+                                <PanoramaFishEyeIcon />
+                              </Button>
                             ) : (
                               <ClearIcon />
                             )}
@@ -516,7 +488,7 @@ const Applicant = () => {
                       <Box component="span">{`・${t(
                         'features.main.resume',
                       )}`}</Box>
-                      {!isEmpty(resumeName) && (
+                      {!_.isEmpty(resumeName) && (
                         <>
                           <Box component="span" sx={[FileDisp, ml(5)]}>
                             <InsertDriveFileIcon sx={[mr(0.25), mb(1)]} />
@@ -554,7 +526,7 @@ const Applicant = () => {
                       <Box component="span">{`・${t(
                         'features.main.curriculumVitae',
                       )}`}</Box>
-                      {!isEmpty(curriculumVitaeName) && (
+                      {!_.isEmpty(curriculumVitaeName) && (
                         <>
                           <Box component="span" sx={[FileDisp, ml(5)]}>
                             <InsertDriveFileIcon sx={[mr(0.25), mb(1)]} />
@@ -593,7 +565,10 @@ const Applicant = () => {
                 sx={LogoutButton}
                 onClick={async () => {
                   await logout()
-                  router.push(RouterPath.Login)
+                  router.push(
+                    RouterPath.Login.replace('[id]', '') +
+                      encodeURIComponent(user.teamHashKey),
+                  )
                 }}
               >
                 {t('features.login.errorButton')}

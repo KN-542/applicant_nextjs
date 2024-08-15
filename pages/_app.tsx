@@ -17,7 +17,8 @@ const App = ({ Component, pageProps }) => {
 
   if (
     _.some([
-      _.isEqual(router.pathname, RouterPath.Login),
+      _.isEqual(router.pathname, RouterPath.NotFound),
+      router.pathname.startsWith(RouterPath.Login.replace('[id]', '')),
       _.isEqual(router.pathname, RouterPath.Error),
     ])
   ) {
