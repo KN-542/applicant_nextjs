@@ -74,7 +74,10 @@ const Complete = () => {
           sx={minW(90)}
           onClick={async () => {
             await logout()
-            router.push(RouterPath.Login)
+            router.push(
+              RouterPath.Login.replace('[id]', '') +
+                encodeURIComponent(user.teamHashKey),
+            )
           }}
         >
           {t('features.login.errorButton')}

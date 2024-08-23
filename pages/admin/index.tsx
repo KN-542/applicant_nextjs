@@ -59,7 +59,6 @@ import _ from 'lodash'
 import ConfirmModal from '@/components/ConfirmModal'
 import { RouterPath } from '@/enum/router'
 import store, { RootState } from '@/hooks/store/store'
-import { APICommonCode } from '@/enum/apiError'
 import PanoramaFishEyeIcon from '@mui/icons-material/PanoramaFishEye'
 import {
   DesiredAtRequest,
@@ -345,7 +344,7 @@ const Applicant = () => {
       if (!_.isEmpty(toastMsg)) {
         toast(t(toastMsg), {
           style: {
-            backgroundColor: blue[500],
+            backgroundColor: red[500],
             color: common.white,
             width: 500,
           },

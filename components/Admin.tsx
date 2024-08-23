@@ -11,7 +11,7 @@ import { DecodeJWTRequest } from '@/api/model/index'
 import { commonDispatch } from '@/hooks/store'
 import { CommonModel } from '@/types/index'
 import { useTranslations } from 'next-intl'
-import { blue, common } from '@mui/material/colors'
+import { red, common } from '@mui/material/colors'
 
 const Admin = ({ Component, pageProps }) => {
   const router = useRouter()
@@ -38,7 +38,7 @@ const Admin = ({ Component, pageProps }) => {
         if (!_.isEmpty(toastMsg)) {
           toast(t(toastMsg), {
             style: {
-              backgroundColor: blue[500],
+              backgroundColor: red[500],
               color: common.white,
               width: 500,
             },

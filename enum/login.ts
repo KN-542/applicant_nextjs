@@ -1,7 +1,7 @@
 export enum MFAStatus {
   UnAuthenticated,
   Authenticated,
-  PasswordChange,
+  Expired,
 }
 
 export enum PasswordChangeStatus {

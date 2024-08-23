@@ -51,6 +51,7 @@ import { blue, common, red } from '@mui/material/colors'
 import ClearIcon from '@mui/icons-material/Clear'
 import MFA from '@/components/MFA'
 import { GetStaticPaths, GetStaticProps } from 'next'
+import { MFAStatus } from '@/enum/login'
 
 type Props = {
   id: string
@@ -173,13 +174,23 @@ const Login: FC<Props> = ({ id }) => {
       }
 
       if (code) {
-        router.push(RouterPath.NotFound)
+        toast(t(`common.api.code.login${code}`), {
+          style: {
+            backgroundColor: red[500],
+            color: common.white,
+            width: 500,
+          },
+          position: 'bottom-left',
+          hideProgressBar: true,
+          closeButton: () => <ClearIcon />,
+        })
+        return
       }
 
       if (!_.isEmpty(toastMsg)) {
         toast(t(toastMsg), {
           style: {
-            backgroundColor: blue[500],
+            backgroundColor: red[500],
             color: common.white,
             width: 500,
           },
@@ -231,16 +242,29 @@ const Login: FC<Props> = ({ id }) => {
           }
 
           if (code) {
-            setTimeout(async () => {
-              await submitButtonRef.current.click()
-            }, 0.25 * 1000)
+            toast(t(`common.api.code.mfa${code}`), {
+              style: {
+                backgroundColor: red[500],
+                color: common.white,
+                width: 500,
+              },
+              position: 'bottom-left',
+              hideProgressBar: true,
+              closeButton: () => <ClearIcon />,
+            })
+
+            if (_.isEqual(MFAStatus.Expired, code)) {
+              setTimeout(async () => {
+                await submitButtonRef.current.click()
+              }, 0.25 * 1000)
+            }
             return
           }
 
           if (!_.isEmpty(toastMsg)) {
             toast(t(toastMsg), {
               style: {
-                backgroundColor: blue[500],
+                backgroundColor: red[500],
                 color: common.white,
                 width: 500,
               },
