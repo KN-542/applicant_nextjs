@@ -50,7 +50,7 @@ import { useSelector } from 'react-redux'
 import { blue, common, red } from '@mui/material/colors'
 import ClearIcon from '@mui/icons-material/Clear'
 import MFA from '@/components/MFA'
-import { GetStaticPaths, GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
 import { MFAStatus } from '@/enum/login'
 
 type Props = {
@@ -378,14 +378,7 @@ const Login: FC<Props> = ({ id }) => {
   )
 }
 
-export const getStaticPaths: GetStaticPaths = async () => {
-  return {
-    paths: [], // 空配列を返す。全てのパスは初回アクセス時に生成される。
-    fallback: 'blocking',
-  }
-}
-
-export const getStaticProps: GetStaticProps = async ({ params, locale }) => {
+export const getServerSideProps: GetServerSideProps = async ({ params, locale }) => {
   return {
     props: {
       id: params?.id,
