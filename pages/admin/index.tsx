@@ -596,7 +596,7 @@ const Applicant = () => {
   )
 }
 
-export const getStaticProps = async ({ locale }) => {
+export const getServerSideProps = async ({ locale }) => {
   return {
     props: {
       messages: (await import(`../../public/locales/${locale}/common.json`))
