@@ -307,7 +307,7 @@ const Login: FC<Props> = ({ id }) => {
 
     // チーム存在確認
     inits()
-  }, [])
+  }, [router.pathname])
 
   return (
     <>
@@ -378,7 +378,10 @@ const Login: FC<Props> = ({ id }) => {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async ({ params, locale }) => {
+export const getServerSideProps: GetServerSideProps = async ({
+  params,
+  locale,
+}) => {
   return {
     props: {
       id: params?.id,

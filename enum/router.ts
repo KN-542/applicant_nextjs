@@ -1,5 +1,6 @@
 export enum RouterPath {
   Login = '/login/[id]',
+  Login0 = '/login',
   Error = '/error',
   NotFound = '/_error',
   LoginMFA = '/login/mfa',

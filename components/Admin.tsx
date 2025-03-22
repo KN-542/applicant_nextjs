@@ -29,9 +29,24 @@ const Admin = ({ Component, pageProps }) => {
       .then(() => {
         isDisp(true)
       })
-      .catch(({ isServerError, routerPath, toastMsg, storeMsg }) => {
+      .catch(({ isServerError, routerPath, toastMsg, storeMsg, code }) => {
         if (isServerError) {
           router.push(routerPath)
+          return
+        }
+
+        if (code) {
+          store.dispatch(
+            commonDispatch({
+              errorMsg: t(`common.api.code.login${code}`),
+            } as CommonModel),
+          )
+          router.push(
+            _.isEmpty(routerPath)
+              ? RouterPath.Login.replace('[id]', '') +
+                  encodeURIComponent(user.teamHashKey)
+              : routerPath,
+          )
           return
         }
 
@@ -56,7 +71,12 @@ const Admin = ({ Component, pageProps }) => {
               errorMsg: msg,
             } as CommonModel),
           )
-          router.push(_.isEmpty(routerPath) ? RouterPath.Login : routerPath)
+          router.push(
+            _.isEmpty(routerPath)
+              ? RouterPath.Login.replace('[id]', '') +
+                  encodeURIComponent(user.teamHashKey)
+              : routerPath,
+          )
         }
       })
   }, [router.pathname])

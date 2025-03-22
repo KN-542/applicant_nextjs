@@ -94,7 +94,10 @@ const Applicant = () => {
   const [element2, setElement2] = useState<JSX.Element>(<></>)
   const [dates, setDates] = useState<Date[]>([])
   const [reserveTable, setReserveTable] = useState<ReserveTime[][]>([])
-  const [loading, isLoading] = useState(true)
+  const [loading, isLoading] = useState<boolean>(true)
+
+  const [dispResume, isDispResume] = useState<boolean>(false)
+  const [dispCurriculumVitae, isDispCurriculumVitae] = useState<boolean>(false)
 
   const logout = async () => {
     await LogoutCSR({ hash_key: user.hashKey } as LogoutRequest)
@@ -155,6 +158,8 @@ const Applicant = () => {
 
         setDates(datesList)
         setReserveTable(options)
+        isDispResume(res.data.is_resume)
+        isDispCurriculumVitae(res.data.is_curriculum_vitae)
       })
       .catch(({ isServerError, routerPath, toastMsg }) => {
         if (isServerError) {
@@ -463,99 +468,109 @@ const Applicant = () => {
               </TableContainer>
             </Box>
 
-            <Typography
-              component="h3"
-              variant="h5"
-              sx={[SubTitle, w(90), mb(2)]}
-            >
-              <InsertDriveFileIcon sx={mr(0.25)} />
-              {t('features.main.subTitle2')}
-            </Typography>
-            <Box sx={[SubTitleMsg, mb(5)]}>
-              <p>{t('features.main.subTitle2Msg')}</p>
-              <p>{t('features.main.subTitle2Msg2')}</p>
-              <p>{t('features.main.subTitle2Msg3')}</p>
-            </Box>
+            {_.some([dispResume, dispCurriculumVitae]) && (
+              <>
+                <Typography
+                  component="h3"
+                  variant="h5"
+                  sx={[SubTitle, w(90), mb(2)]}
+                >
+                  <InsertDriveFileIcon sx={mr(0.25)} />
+                  {t('features.main.subTitle2')}
+                </Typography>
+                <Box sx={[SubTitleMsg, mb(5)]}>
+                  <p>{t('features.main.subTitle2Msg')}</p>
+                  <p>{t('features.main.subTitle2Msg2')}</p>
+                  <p>{t('features.main.subTitle2Msg3')}</p>
+                </Box>
 
-            <DialogContent sx={[DialogContentMain, w(90), mb(10)]}>
-              <CssBaseline />
-              <Box sx={[mb(10), mt(5)]}>
-                <DragDrop
-                  afterFuncAsync={(file) => readFile(file, RESUME)}
-                  title={
-                    <>
-                      <Box component="span">{`・${t(
-                        'features.main.resume',
-                      )}`}</Box>
-                      {!_.isEmpty(resumeName) && (
-                        <>
-                          <Box component="span" sx={[FileDisp, ml(5)]}>
-                            <InsertDriveFileIcon sx={[mr(0.25), mb(1)]} />
-                            {resumeName}
-                          </Box>
-                          <Box component="span" sx={ml(1)}>
-                            <Button
-                              type="button"
-                              color="error"
-                              sx={{
-                                '&:hover': {
-                                  backgroundColor: common.white,
-                                },
-                              }}
-                              onClick={() => {
-                                setResumeName('')
-                                setResume(null)
-                              }}
-                            >
-                              {t('common.button.delete')}
-                            </Button>
-                          </Box>
-                        </>
-                      )}
-                    </>
-                  }
-                  dropAreaIdentifier={RESUME}
-                ></DragDrop>
-              </Box>
-              <Box sx={[mb(10)]}>
-                <DragDrop
-                  afterFuncAsync={(file) => readFile(file, CURRICULUM_VITAE)}
-                  title={
-                    <>
-                      <Box component="span">{`・${t(
-                        'features.main.curriculumVitae',
-                      )}`}</Box>
-                      {!_.isEmpty(curriculumVitaeName) && (
-                        <>
-                          <Box component="span" sx={[FileDisp, ml(5)]}>
-                            <InsertDriveFileIcon sx={[mr(0.25), mb(1)]} />
-                            {curriculumVitaeName}
-                          </Box>
-                          <Box component="span" sx={ml(1)}>
-                            <Button
-                              type="button"
-                              color="error"
-                              sx={{
-                                '&:hover': {
-                                  backgroundColor: common.white,
-                                },
-                              }}
-                              onClick={() => {
-                                setCurriculumVitaeName('')
-                                setCurriculumVitae(null)
-                              }}
-                            >
-                              {t('common.button.delete')}
-                            </Button>
-                          </Box>
-                        </>
-                      )}
-                    </>
-                  }
-                  dropAreaIdentifier={CURRICULUM_VITAE}
-                ></DragDrop>
-              </Box>
-            </DialogContent>
+                <DialogContent sx={[DialogContentMain, w(90), mb(10)]}>
+                  <CssBaseline />
+                  {dispResume && (
+                    <Box sx={[mb(10), mt(5)]}>
+                      <DragDrop
+                        afterFuncAsync={(file) => readFile(file, RESUME)}
+                        title={
+                          <>
+                            <Box component="span">{`・${t(
+                              'features.main.resume',
+                            )}`}</Box>
+                            {!_.isEmpty(resumeName) && (
+                              <>
+                                <Box component="span" sx={[FileDisp, ml(5)]}>
+                                  <InsertDriveFileIcon sx={[mr(0.25), mb(1)]} />
+                                  {resumeName}
+                                </Box>
+                                <Box component="span" sx={ml(1)}>
+                                  <Button
+                                    type="button"
+                                    color="error"
+                                    sx={{
+                                      '&:hover': {
+                                        backgroundColor: common.white,
+                                      },
+                                    }}
+                                    onClick={() => {
+                                      setResumeName('')
+                                      setResume(null)
+                                    }}
+                                  >
+                                    {t('common.button.delete')}
+                                  </Button>
+                                </Box>
+                              </>
+                            )}
+                          </>
+                        }
+                        dropAreaIdentifier={RESUME}
+                      ></DragDrop>
+                    </Box>
+                  )}
+                  {dispCurriculumVitae && (
+                    <Box sx={[mb(10)]}>
+                      <DragDrop
+                        afterFuncAsync={(file) =>
+                          readFile(file, CURRICULUM_VITAE)
+                        }
+                        title={
+                          <>
+                            <Box component="span">{`・${t(
+                              'features.main.curriculumVitae',
+                            )}`}</Box>
+                            {!_.isEmpty(curriculumVitaeName) && (
+                              <>
+                                <Box component="span" sx={[FileDisp, ml(5)]}>
+                                  <InsertDriveFileIcon sx={[mr(0.25), mb(1)]} />
+                                  {curriculumVitaeName}
+                                </Box>
+                                <Box component="span" sx={ml(1)}>
+                                  <Button
+                                    type="button"
+                                    color="error"
+                                    sx={{
+                                      '&:hover': {
+                                        backgroundColor: common.white,
+                                      },
+                                    }}
+                                    onClick={() => {
+                                      setCurriculumVitaeName('')
+                                      setCurriculumVitae(null)
+                                    }}
+                                  >
+                                    {t('common.button.delete')}
+                                  </Button>
+                                </Box>
+                              </>
+                            )}
+                          </>
+                        }
+                        dropAreaIdentifier={CURRICULUM_VITAE}
+                      ></DragDrop>
+                    </Box>
+                  )}
+                </DialogContent>
+              </>
+            )}
 
             <Box sx={[FormButtons, mt(5), mb(5)]}>
               <Button

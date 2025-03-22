@@ -48,7 +48,7 @@ axios1.interceptors.response.use(
     if (_.isEqual(error.response?.status, HttpStatusCode.Unauthorized)) {
       return Promise.reject({
         isServerError: false,
-        routerPath: RouterPath.Login,
+        routerPath: RouterPath.Login0,
         toastMsg: '',
         storeMsg: 'common.api.header.401',
       })
